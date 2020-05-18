@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30104.148
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapAC", "MapAC\MapAC.csproj", "{92DB5C11-8C56-48DF-9B0F-6F02CA2ED64D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{92DB5C11-8C56-48DF-9B0F-6F02CA2ED64D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92DB5C11-8C56-48DF-9B0F-6F02CA2ED64D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92DB5C11-8C56-48DF-9B0F-6F02CA2ED64D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92DB5C11-8C56-48DF-9B0F-6F02CA2ED64D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E42F11F9-2A89-41D8-9D68-51DDF7E09885}
+	EndGlobalSection
+EndGlobal
