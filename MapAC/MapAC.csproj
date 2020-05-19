@@ -78,6 +78,8 @@
     <Compile Include="DatLoader\FileTypes\FileType.cs" />
     <Compile Include="DatLoader\FileTypes\Iteration.cs" />
     <Compile Include="DatLoader\FileTypes\LandblockInfo.cs" />
+    <Compile Include="DatLoader\FileTypes\Palette.cs" />
+    <Compile Include="DatLoader\FileTypes\Texture.cs" />
     <Compile Include="DatLoader\IUnpackable.cs" />
     <Compile Include="DatLoader\UnpackableExtensions.cs" />
     <Compile Include="FormMain.cs">
@@ -87,6 +89,7 @@
       <DependentUpon>FormMain.cs</DependentUpon>
     </Compile>
     <Compile Include="Helpers\MapColor.cs" />
+    <Compile Include="Helpers\PortalHelper.cs" />
     <Compile Include="Helpers\RegionHelper.cs" />
     <Compile Include="Mapper.cs" />
     <Compile Include="Program.cs" />
@@ -120,5 +123,6 @@
   <ItemGroup>
     <Content Include="w11931.ico" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

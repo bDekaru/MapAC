@@ -1,5 +1,6 @@
 ﻿using MapAC;
 using MapAC.DatLoader;
+using MapAC.Helpers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -122,6 +123,20 @@ namespace WindowsFormsApp1
                 pictureBox1.Image.Save(saveFileDialog_Image.FileName, ImageFormat.Png);
                 AddStatus($"Map image saved to {saveFileDialog_Image.FileName}");
             }
+        }
+
+        private void saveRegionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DatReader dr = DatManager.CellDat.GetReaderForFile(0x13000000);
+            string thisFile = "C:\\ACE\\13000000.bin";
+            System.IO.File.WriteAllBytes(thisFile, dr.Buffer);
+        }
+
+        private void contactSheetToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            PortalHelper ph = new PortalHelper();
+            var contactSheet = ph.BuildIconContactSheet();
+            pictureBox1.Image = contactSheet;
         }
     }
 }
