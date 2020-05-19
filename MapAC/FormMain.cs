@@ -63,9 +63,6 @@ namespace WindowsFormsApp1
                             break;
                         default:
                             AddStatus("Dat file is a PORTAL type file.");
-
-                            var test = DatManager.CellDat.AllFiles[0x06000FCF];
-
                             PortalHelper ph = new PortalHelper();
                             var contactSheet = ph.BuildIconContactSheet();
                             pictureBox1.Image = contactSheet;
