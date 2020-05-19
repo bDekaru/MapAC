@@ -90,13 +90,25 @@ namespace MapAC.DatLoader.FileTypes
         public override void Unpack(BinaryReader reader)
         {
             Id = reader.ReadUInt32();
-            Unknown = reader.ReadInt32();
-            Width = reader.ReadInt32();
-            Height = reader.ReadInt32();
-            Format = (SurfacePixelFormat)reader.ReadUInt32();
-            Length = reader.ReadInt32();
+            switch(DatManager.DatVersion){
+                case DatVersionType.ACTOD:
+                    Unknown = reader.ReadInt32();
+                    Width = reader.ReadInt32();
+                    Height = reader.ReadInt32();
+                    Format = (SurfacePixelFormat)reader.ReadUInt32();
+                    Length = reader.ReadInt32();
+                    SourceData = reader.ReadBytes(Length);
+                    break;
+                case DatVersionType.ACDM:
+                    Width = reader.ReadInt32();
+                    Height = reader.ReadInt32();
+                    Length = Width * Height * 3;
+                    Format = SurfacePixelFormat.PFID_R8G8B8;
+                    SourceData = reader.ReadBytes((int)(reader.BaseStream.Length - reader.BaseStream.Position));
 
-            SourceData = reader.ReadBytes(Length);
+                    break;
+            }
+
 
             switch (Format)
             {

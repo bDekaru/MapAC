@@ -45,9 +45,6 @@
             this.openFileDialog_Dat = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog_Image = new System.Windows.Forms.SaveFileDialog();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveRegionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.contactSheetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -61,7 +58,7 @@
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer1.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.splitContainer1.Margin = new System.Windows.Forms.Padding(6);
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -84,7 +81,7 @@
             this.panel1.Controls.Add(this.pictureBox1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 42);
-            this.panel1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.panel1.Margin = new System.Windows.Forms.Padding(6);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1467, 604);
             this.panel1.TabIndex = 8;
@@ -93,7 +90,7 @@
             // 
             this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pictureBox1.Location = new System.Drawing.Point(0, 0);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(6);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(1467, 604);
             this.pictureBox1.TabIndex = 7;
@@ -105,8 +102,7 @@
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(28, 28);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
-            this.toolsToolStripMenuItem,
-            this.testToolStripMenuItem});
+            this.toolsToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(11, 4, 0, 4);
@@ -128,7 +124,7 @@
             this.saveMapToolStripMenuItem.Enabled = false;
             this.saveMapToolStripMenuItem.Name = "saveMapToolStripMenuItem";
             this.saveMapToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.saveMapToolStripMenuItem.Size = new System.Drawing.Size(292, 40);
+            this.saveMapToolStripMenuItem.Size = new System.Drawing.Size(315, 40);
             this.saveMapToolStripMenuItem.Text = "&Save Map";
             this.saveMapToolStripMenuItem.Click += new System.EventHandler(this.saveMapToolStripMenuItem_Click);
             // 
@@ -136,7 +132,7 @@
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
             this.exitToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(292, 40);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(315, 40);
             this.exitToolStripMenuItem.Text = "E&xit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -175,7 +171,7 @@
             this.textBoxStatus.BackColor = System.Drawing.SystemColors.Window;
             this.textBoxStatus.Dock = System.Windows.Forms.DockStyle.Fill;
             this.textBoxStatus.Location = new System.Drawing.Point(0, 0);
-            this.textBoxStatus.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.textBoxStatus.Margin = new System.Windows.Forms.Padding(6);
             this.textBoxStatus.Multiline = true;
             this.textBoxStatus.Name = "textBoxStatus";
             this.textBoxStatus.ReadOnly = true;
@@ -198,29 +194,6 @@
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
-            // testToolStripMenuItem
-            // 
-            this.testToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.saveRegionToolStripMenuItem,
-            this.contactSheetToolStripMenuItem});
-            this.testToolStripMenuItem.Name = "testToolStripMenuItem";
-            this.testToolStripMenuItem.Size = new System.Drawing.Size(67, 34);
-            this.testToolStripMenuItem.Text = "Test";
-            // 
-            // saveRegionToolStripMenuItem
-            // 
-            this.saveRegionToolStripMenuItem.Name = "saveRegionToolStripMenuItem";
-            this.saveRegionToolStripMenuItem.Size = new System.Drawing.Size(315, 40);
-            this.saveRegionToolStripMenuItem.Text = "Save Region";
-            this.saveRegionToolStripMenuItem.Click += new System.EventHandler(this.saveRegionToolStripMenuItem_Click);
-            // 
-            // contactSheetToolStripMenuItem
-            // 
-            this.contactSheetToolStripMenuItem.Name = "contactSheetToolStripMenuItem";
-            this.contactSheetToolStripMenuItem.Size = new System.Drawing.Size(315, 40);
-            this.contactSheetToolStripMenuItem.Text = "Contact Sheet";
-            this.contactSheetToolStripMenuItem.Click += new System.EventHandler(this.contactSheetToolStripMenuItem_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
@@ -229,7 +202,7 @@
             this.Controls.Add(this.splitContainer1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
-            this.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "Form1";
             this.Text = "AC Mapper";
             this.splitContainer1.Panel1.ResumeLayout(false);
@@ -262,9 +235,6 @@
         private System.Windows.Forms.ToolStripMenuItem saveMapToolStripMenuItem;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.ToolStripMenuItem testToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem saveRegionToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem contactSheetToolStripMenuItem;
     }
 }
 

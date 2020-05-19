@@ -59,31 +59,23 @@ namespace WindowsFormsApp1
                     switch (DatManager.CellDat.Blocksize)
                     {
                         case 0x100:
+                            DrawMap();
                             break;
                         default:
                             AddStatus("Dat file is a PORTAL type file.");
+
+                            var test = DatManager.CellDat.AllFiles[0x06000FCF];
+
+                            PortalHelper ph = new PortalHelper();
+                            var contactSheet = ph.BuildIconContactSheet();
+                            pictureBox1.Image = contactSheet;
                             break;
                     }
                     AddStatus("-Files " + DatManager.CellDat.AllFiles.Count.ToString());
                     string iteration = DatManager.Iteration;
                     AddStatus("-Iteration " + iteration);
 
-                    // Make sure it's a CELL file
-                    if (DatManager.CellDat.Blocksize == 0x100)
-                    {
-                        Mapper map = new Mapper();
-                        if (map.MapImage != null)
-                        {
-                            pictureBox1.Image = map.MapImage;
-                            pictureBox1.Width = map.MapImage.Width;
-                            pictureBox1.Height = map.MapImage.Height;
-                            saveMapToolStripMenuItem.Enabled = true;
-                        }
-                    }
-                    else
-                    {
-                        ClearMapImage();
-                    }
+
                 }
                 else
                 {
@@ -94,6 +86,26 @@ namespace WindowsFormsApp1
             this.UseWaitCursor = false;
             Application.UseWaitCursor = false;
 
+        }
+
+        private void DrawMap()
+        {
+            // Make sure it's a CELL file
+            if (DatManager.CellDat.Blocksize == 0x100)
+            {
+                Mapper map = new Mapper();
+                if (map.MapImage != null)
+                {
+                    pictureBox1.Image = map.MapImage;
+                    pictureBox1.Width = map.MapImage.Width;
+                    pictureBox1.Height = map.MapImage.Height;
+                    saveMapToolStripMenuItem.Enabled = true;
+                }
+            }
+            else
+            {
+                ClearMapImage();
+            }
         }
 
         private void ClearMapImage()
@@ -123,20 +135,6 @@ namespace WindowsFormsApp1
                 pictureBox1.Image.Save(saveFileDialog_Image.FileName, ImageFormat.Png);
                 AddStatus($"Map image saved to {saveFileDialog_Image.FileName}");
             }
-        }
-
-        private void saveRegionToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            DatReader dr = DatManager.CellDat.GetReaderForFile(0x13000000);
-            string thisFile = "C:\\ACE\\13000000.bin";
-            System.IO.File.WriteAllBytes(thisFile, dr.Buffer);
-        }
-
-        private void contactSheetToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            PortalHelper ph = new PortalHelper();
-            var contactSheet = ph.BuildIconContactSheet();
-            pictureBox1.Image = contactSheet;
         }
     }
 }
