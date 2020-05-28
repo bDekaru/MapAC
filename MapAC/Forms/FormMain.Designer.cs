@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -43,7 +42,6 @@
             this.textBoxStatus = new System.Windows.Forms.TextBox();
             this.openFileDialog_Dat = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog_Image = new System.Windows.Forms.SaveFileDialog();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -133,7 +131,7 @@
             this.saveMapToolStripMenuItem.Name = "saveMapToolStripMenuItem";
             this.saveMapToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
             this.saveMapToolStripMenuItem.Size = new System.Drawing.Size(348, 40);
-            this.saveMapToolStripMenuItem.Text = "&Save Map";
+            this.saveMapToolStripMenuItem.Text = "&Save Image";
             this.saveMapToolStripMenuItem.Click += new System.EventHandler(this.saveMapToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
@@ -174,18 +172,12 @@
             // 
             // openFileDialog_Dat
             // 
-            this.openFileDialog_Dat.FileName = "openFileDialog1";
+            this.openFileDialog_Dat.FileName = "*.dat";
             this.openFileDialog_Dat.Filter = "All Dat Files|*.dat|All Files|*.*";
             // 
             // saveFileDialog_Image
             // 
             this.saveFileDialog_Image.Filter = "PNG Files|*.png|All Files|*.*";
-            // 
-            // contextMenuStrip1
-            // 
-            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(28, 28);
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
             // Form1
             // 
@@ -222,7 +214,6 @@
         private System.Windows.Forms.OpenFileDialog openFileDialog_Dat;
         private System.Windows.Forms.SaveFileDialog saveFileDialog_Image;
         private System.Windows.Forms.TextBox textBoxStatus;
-        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem saveMapToolStripMenuItem;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.PictureBox pictureBox1;
