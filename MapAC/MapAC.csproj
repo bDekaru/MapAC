@@ -82,20 +82,28 @@
     <Compile Include="DatLoader\FileTypes\Texture.cs" />
     <Compile Include="DatLoader\IUnpackable.cs" />
     <Compile Include="DatLoader\UnpackableExtensions.cs" />
-    <Compile Include="FormMain.cs">
+    <Compile Include="Forms\FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormMain.Designer.cs">
+    <Compile Include="Forms\FormMain.Designer.cs">
       <DependentUpon>FormMain.cs</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\MapColor.cs" />
+    <Compile Include="Forms\FormOptions.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormOptions.Designer.cs">
+      <DependentUpon>FormOptions.cs</DependentUpon>
+    </Compile>
     <Compile Include="Helpers\PortalHelper.cs" />
     <Compile Include="Helpers\RegionHelper.cs" />
     <Compile Include="Mapper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="FormMain.resx">
+    <EmbeddedResource Include="Forms\FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormOptions.resx">
+      <DependentUpon>FormOptions.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -121,6 +129,8 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Images\map-acdm_small.png" />
+    <Content Include="Images\map-tod_small.png" />
     <Content Include="w11931.ico" />
   </ItemGroup>
   <ItemGroup />

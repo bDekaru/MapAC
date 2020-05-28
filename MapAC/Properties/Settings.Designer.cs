@@ -22,5 +22,17 @@ namespace MapAC.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ACDM_MapColor {
+            get {
+                return ((bool)(this["ACDM_MapColor"]));
+            }
+            set {
+                this["ACDM_MapColor"] = value;
+            }
+        }
     }
 }

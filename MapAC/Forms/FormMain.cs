@@ -1,5 +1,6 @@
 ﻿using MapAC;
 using MapAC.DatLoader;
+using MapAC.Forms;
 using MapAC.Helpers;
 using System;
 using System.Collections.Generic;
@@ -68,7 +69,7 @@ namespace WindowsFormsApp1
                             pictureBox1.Image = contactSheet;
                             break;
                     }
-                    AddStatus("-Files " + DatManager.CellDat.AllFiles.Count.ToString());
+                    AddStatus("-Files " + DatManager.CellDat.AllFiles.Count.ToString("N0"));
                     string iteration = DatManager.Iteration;
                     AddStatus("-Iteration " + iteration);
 
@@ -122,7 +123,12 @@ namespace WindowsFormsApp1
 
         private void optionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("You have the option to ignore this until it is flushed out more...");
+            // MessageBox.Show("You have the option to ignore this until it is flushed out more...");
+            using (FormOptions form = new FormOptions())
+            {
+                form.ShowDialog();
+            }
+
         }
 
         private void saveMapToolStripMenuItem_Click(object sender, EventArgs e)
@@ -132,6 +138,62 @@ namespace WindowsFormsApp1
                 pictureBox1.Image.Save(saveFileDialog_Image.FileName, ImageFormat.Png);
                 AddStatus($"Map image saved to {saveFileDialog_Image.FileName}");
             }
+        }
+
+        private void openDatFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Show OpenDialog box
+            if (openFileDialog_Dat.ShowDialog() == DialogResult.OK)
+            {
+                this.UseWaitCursor = true;
+                Application.UseWaitCursor = true;
+                Application.DoEvents(); // hack to force the cursor update. Cleaner than DoEvents
+
+                ClearMapImage();
+
+                string datFile = openFileDialog_Dat.FileName;
+                if (DatManager.Initialize(datFile))
+                {
+                    AddStatus($"Loaded {datFile}"); ;
+
+                    DatManager.ReadDatFile();
+                    string statusMessage = "Successfully read dat file. ";
+                    switch (DatManager.DatVersion)
+                    {
+                        case DatVersionType.ACDM:
+                            statusMessage += ("Format is \"AC-DM\" era.");
+                            break;
+                        case DatVersionType.ACTOD:
+                            statusMessage += ("Format is \"AC-TOD\" era.");
+                            break;
+                    }
+                    AddStatus(statusMessage);
+                    switch (DatManager.CellDat.Blocksize)
+                    {
+                        case 0x100:
+                            DrawMap();
+                            break;
+                        default:
+                            AddStatus("Dat file is a PORTAL type file.");
+                            PortalHelper ph = new PortalHelper();
+                            var contactSheet = ph.BuildIconContactSheet();
+                            pictureBox1.Image = contactSheet;
+                            break;
+                    }
+                    AddStatus("-Files " + DatManager.CellDat.AllFiles.Count.ToString("N0"));
+                    string iteration = DatManager.Iteration;
+                    AddStatus("-Iteration " + iteration);
+
+
+                }
+                else
+                {
+                    ClearMapImage();
+                    AddStatus($"ERROR loading {datFile}. Probalby not a valid Asheron's Call dat file.");
+                }
+            }
+            this.UseWaitCursor = false;
+            Application.UseWaitCursor = false;
         }
     }
 }

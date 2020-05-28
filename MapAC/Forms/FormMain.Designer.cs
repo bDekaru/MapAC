@@ -35,11 +35,10 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openDatFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveMapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.generateMapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.textBoxStatus = new System.Windows.Forms.TextBox();
             this.openFileDialog_Dat = new System.Windows.Forms.OpenFileDialog();
@@ -70,7 +69,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.textBoxStatus);
-            this.splitContainer1.Size = new System.Drawing.Size(1467, 831);
+            this.splitContainer1.Size = new System.Drawing.Size(1276, 831);
             this.splitContainer1.SplitterDistance = 646;
             this.splitContainer1.SplitterWidth = 7;
             this.splitContainer1.TabIndex = 4;
@@ -83,7 +82,7 @@
             this.panel1.Location = new System.Drawing.Point(0, 42);
             this.panel1.Margin = new System.Windows.Forms.Padding(6);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1467, 604);
+            this.panel1.Size = new System.Drawing.Size(1276, 604);
             this.panel1.TabIndex = 8;
             // 
             // pictureBox1
@@ -92,7 +91,7 @@
             this.pictureBox1.Location = new System.Drawing.Point(0, 0);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(6);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(1467, 604);
+            this.pictureBox1.Size = new System.Drawing.Size(1276, 604);
             this.pictureBox1.TabIndex = 7;
             this.pictureBox1.TabStop = false;
             // 
@@ -106,25 +105,34 @@
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(11, 4, 0, 4);
-            this.menuStrip1.Size = new System.Drawing.Size(1467, 42);
+            this.menuStrip1.Size = new System.Drawing.Size(1276, 42);
             this.menuStrip1.TabIndex = 7;
             this.menuStrip1.Text = "menuStrip1";
             // 
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.openDatFileToolStripMenuItem,
             this.saveMapToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(62, 34);
             this.fileToolStripMenuItem.Text = "&File";
             // 
+            // openDatFileToolStripMenuItem
+            // 
+            this.openDatFileToolStripMenuItem.Name = "openDatFileToolStripMenuItem";
+            this.openDatFileToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+            this.openDatFileToolStripMenuItem.Size = new System.Drawing.Size(348, 40);
+            this.openDatFileToolStripMenuItem.Text = "&Open Dat File...";
+            this.openDatFileToolStripMenuItem.Click += new System.EventHandler(this.openDatFileToolStripMenuItem_Click);
+            // 
             // saveMapToolStripMenuItem
             // 
             this.saveMapToolStripMenuItem.Enabled = false;
             this.saveMapToolStripMenuItem.Name = "saveMapToolStripMenuItem";
             this.saveMapToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.saveMapToolStripMenuItem.Size = new System.Drawing.Size(315, 40);
+            this.saveMapToolStripMenuItem.Size = new System.Drawing.Size(348, 40);
             this.saveMapToolStripMenuItem.Text = "&Save Map";
             this.saveMapToolStripMenuItem.Click += new System.EventHandler(this.saveMapToolStripMenuItem_Click);
             // 
@@ -132,38 +140,23 @@
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
             this.exitToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(315, 40);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(348, 40);
             this.exitToolStripMenuItem.Text = "E&xit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // toolsToolStripMenuItem
             // 
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.generateMapToolStripMenuItem,
-            this.toolStripMenuItem1,
             this.optionsToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(78, 34);
             this.toolsToolStripMenuItem.Text = "&Tools";
             // 
-            // generateMapToolStripMenuItem
-            // 
-            this.generateMapToolStripMenuItem.Name = "generateMapToolStripMenuItem";
-            this.generateMapToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.M)));
-            this.generateMapToolStripMenuItem.Size = new System.Drawing.Size(341, 40);
-            this.generateMapToolStripMenuItem.Text = "Generate &Map";
-            this.generateMapToolStripMenuItem.Click += new System.EventHandler(this.generateMapToolStripMenuItem_Click);
-            // 
-            // toolStripMenuItem1
-            // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(338, 6);
-            // 
             // optionsToolStripMenuItem
             // 
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(341, 40);
-            this.optionsToolStripMenuItem.Text = "&Options";
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(315, 40);
+            this.optionsToolStripMenuItem.Text = "&Options...";
             this.optionsToolStripMenuItem.Click += new System.EventHandler(this.optionsToolStripMenuItem_Click);
             // 
             // textBoxStatus
@@ -176,7 +169,7 @@
             this.textBoxStatus.Name = "textBoxStatus";
             this.textBoxStatus.ReadOnly = true;
             this.textBoxStatus.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBoxStatus.Size = new System.Drawing.Size(1467, 178);
+            this.textBoxStatus.Size = new System.Drawing.Size(1276, 178);
             this.textBoxStatus.TabIndex = 0;
             // 
             // openFileDialog_Dat
@@ -198,7 +191,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1467, 831);
+            this.ClientSize = new System.Drawing.Size(1276, 831);
             this.Controls.Add(this.splitContainer1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
@@ -225,8 +218,6 @@
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem generateMapToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
         private System.Windows.Forms.OpenFileDialog openFileDialog_Dat;
         private System.Windows.Forms.SaveFileDialog saveFileDialog_Image;
@@ -235,6 +226,7 @@
         private System.Windows.Forms.ToolStripMenuItem saveMapToolStripMenuItem;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.ToolStripMenuItem openDatFileToolStripMenuItem;
     }
 }
 
