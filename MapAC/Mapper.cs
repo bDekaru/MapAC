@@ -40,9 +40,11 @@ namespace MapAC
 
         const int LUMINANCE = 100;
 
+        public int FoundLandblocks;
+
         public Mapper()
         {
-            uint found = 0;
+            FoundLandblocks = 0;
             foreach(var entry in DatManager.CellDat.AllFiles)
             {
                 if((entry.Key & 0x0000FFFF) == 0x0000FFFF)
@@ -69,7 +71,7 @@ namespace MapAC
                         }
                     }
 
-                    found++;
+                    FoundLandblocks++;
                 }
             }
 
@@ -78,6 +80,8 @@ namespace MapAC
 
         private void CreateMap()
         {
+            var emptyColor = Properties.Settings.Default.EmptyLandblockColor;
+
             double[] v = new double[3];
             double[] lightVector = new double[3] { -1.0, -1.0, 0.0 };
             byte[,,] topo = new byte[LANDSIZE, LANDSIZE, 3];
@@ -159,9 +163,9 @@ namespace MapAC
                     else
                     {
                         // If data is not present for a point on the map, the resultant pixel is green
-                        topo[y, x, 0] = 0; // R
-                        topo[y, x, 1] = 255;   // G
-                        topo[y, x, 2] = 0;   // B
+                        topo[y, x, 0] = emptyColor.R; // R
+                        topo[y, x, 1] = emptyColor.G;   // G
+                        topo[y, x, 2] = emptyColor.B;   // B
                     }
                 }
             }

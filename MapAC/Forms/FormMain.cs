@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,68 +31,15 @@ namespace WindowsFormsApp1
             Application.Exit();
         }
 
-        private void generateMapToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            // Show OpenDialog box
-            if (openFileDialog_Dat.ShowDialog() == DialogResult.OK) {
-                this.UseWaitCursor = true;
-                Application.UseWaitCursor = true;
-                Application.DoEvents(); // hack to force the cursor update. Cleaner than DoEvents
-
-                ClearMapImage();
-
-                string datFile = openFileDialog_Dat.FileName;
-                if (DatManager.Initialize(datFile))
-                {
-                    AddStatus($"Loaded {datFile}");;
-
-                    DatManager.ReadDatFile();
-                    string statusMessage = "Successfully read dat file. ";
-                    switch (DatManager.DatVersion)
-                    {
-                        case DatVersionType.ACDM:
-                            statusMessage += ("Format is \"AC-DM\" era.");
-                            break;
-                        case DatVersionType.ACTOD:
-                            statusMessage += ("Format is \"AC-TOD\" era.");
-                            break;
-                    }
-                    AddStatus(statusMessage);
-                    switch (DatManager.CellDat.Blocksize)
-                    {
-                        case 0x100:
-                            DrawMap();
-                            break;
-                        default:
-                            AddStatus("Dat file is a PORTAL type file.");
-                            PortalHelper ph = new PortalHelper();
-                            var contactSheet = ph.BuildIconContactSheet();
-                            pictureBox1.Image = contactSheet;
-                            break;
-                    }
-                    AddStatus("-Files " + DatManager.CellDat.AllFiles.Count.ToString("N0"));
-                    string iteration = DatManager.Iteration;
-                    AddStatus("-Iteration " + iteration);
-
-
-                }
-                else
-                {
-                    ClearMapImage();
-                    AddStatus($"ERROR loading {datFile}. Probalby not a valid Asheron's Call dat file.");
-                }
-            }
-            this.UseWaitCursor = false;
-            Application.UseWaitCursor = false;
-
-        }
-
         private void DrawMap()
         {
             // Make sure it's a CELL file
             if (DatManager.CellDat.Blocksize == 0x100)
             {
                 Mapper map = new Mapper();
+
+                float percLandblocks = (float)(map.FoundLandblocks / (255f * 255f) * 100f);
+                AddStatus($"{percLandblocks:0.##}% landblocks in file.");
                 if (map.MapImage != null)
                 {
                     pictureBox1.Image = map.MapImage;
@@ -184,6 +132,16 @@ namespace WindowsFormsApp1
                     string iteration = DatManager.Iteration;
                     AddStatus("-Iteration " + iteration);
 
+                    var v = new VersionChecker();
+                    string version = v.GetVersionInfo(Path.GetFileName(datFile), iteration);
+                    if(version != "")
+                    {
+                        AddStatus($"-File appears to be from {version}.");
+                    }
+                    else
+                    {
+                        AddStatus("This file does not appear in the Asheron's Call Archive. Please consider uploading it at https://mega.nz/megadrop/7x-Qh19h5Ek");
+                    }
 
                 }
                 else
@@ -194,6 +152,15 @@ namespace WindowsFormsApp1
             }
             this.UseWaitCursor = false;
             Application.UseWaitCursor = false;
+        }
+
+        private void textBoxStatus_LinkClicked(object sender, LinkClickedEventArgs e)
+        {
+            var url = e.LinkText;
+            if((!string.IsNullOrWhiteSpace(url)) && (url.ToLower().StartsWith("http")))
+            {
+                System.Diagnostics.Process.Start(url);
+            }
         }
     }
 }

@@ -39,9 +39,9 @@
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.textBoxStatus = new System.Windows.Forms.TextBox();
             this.openFileDialog_Dat = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog_Image = new System.Windows.Forms.SaveFileDialog();
+            this.textBoxStatus = new System.Windows.Forms.RichTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -153,22 +153,9 @@
             // optionsToolStripMenuItem
             // 
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(315, 40);
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(219, 40);
             this.optionsToolStripMenuItem.Text = "&Options...";
             this.optionsToolStripMenuItem.Click += new System.EventHandler(this.optionsToolStripMenuItem_Click);
-            // 
-            // textBoxStatus
-            // 
-            this.textBoxStatus.BackColor = System.Drawing.SystemColors.Window;
-            this.textBoxStatus.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBoxStatus.Location = new System.Drawing.Point(0, 0);
-            this.textBoxStatus.Margin = new System.Windows.Forms.Padding(6);
-            this.textBoxStatus.Multiline = true;
-            this.textBoxStatus.Name = "textBoxStatus";
-            this.textBoxStatus.ReadOnly = true;
-            this.textBoxStatus.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBoxStatus.Size = new System.Drawing.Size(1276, 178);
-            this.textBoxStatus.TabIndex = 0;
             // 
             // openFileDialog_Dat
             // 
@@ -178,6 +165,16 @@
             // saveFileDialog_Image
             // 
             this.saveFileDialog_Image.Filter = "PNG Files|*.png|All Files|*.*";
+            // 
+            // textBoxStatus
+            // 
+            this.textBoxStatus.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textBoxStatus.Location = new System.Drawing.Point(0, 0);
+            this.textBoxStatus.Name = "textBoxStatus";
+            this.textBoxStatus.Size = new System.Drawing.Size(1276, 178);
+            this.textBoxStatus.TabIndex = 1;
+            this.textBoxStatus.Text = "";
+            this.textBoxStatus.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.textBoxStatus_LinkClicked);
             // 
             // Form1
             // 
@@ -193,7 +190,6 @@
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
-            this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
@@ -213,11 +209,11 @@
         private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
         private System.Windows.Forms.OpenFileDialog openFileDialog_Dat;
         private System.Windows.Forms.SaveFileDialog saveFileDialog_Image;
-        private System.Windows.Forms.TextBox textBoxStatus;
         private System.Windows.Forms.ToolStripMenuItem saveMapToolStripMenuItem;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.ToolStripMenuItem openDatFileToolStripMenuItem;
+        private System.Windows.Forms.RichTextBox textBoxStatus;
     }
 }
 
