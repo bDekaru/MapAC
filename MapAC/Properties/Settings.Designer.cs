@@ -46,5 +46,17 @@ namespace MapAC.Properties {
                 this["EmptyLandblockColor"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool SnowMapColor {
+            get {
+                return ((bool)(this["SnowMapColor"]));
+            }
+            set {
+                this["SnowMapColor"] = value;
+            }
+        }
     }
 }

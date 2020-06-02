@@ -39,6 +39,7 @@
             this.pnlColor = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.btnColorPick = new System.Windows.Forms.Button();
+            this.chkSnow = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.picMapSample)).BeginInit();
             this.SuspendLayout();
             // 
@@ -67,6 +68,8 @@
             this.imageListMapSamples.TransparentColor = System.Drawing.Color.Transparent;
             this.imageListMapSamples.Images.SetKeyName(0, "map-tod_small.png");
             this.imageListMapSamples.Images.SetKeyName(1, "map-acdm_small.png");
+            this.imageListMapSamples.Images.SetKeyName(2, "map-tod-snow_small.png");
+            this.imageListMapSamples.Images.SetKeyName(3, "map-acdm-snow_small.png");
             // 
             // btnOK
             // 
@@ -95,7 +98,7 @@
             // pnlColor
             // 
             this.pnlColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pnlColor.Location = new System.Drawing.Point(34, 132);
+            this.pnlColor.Location = new System.Drawing.Point(34, 199);
             this.pnlColor.Name = "pnlColor";
             this.pnlColor.Size = new System.Drawing.Size(67, 50);
             this.pnlColor.TabIndex = 5;
@@ -103,7 +106,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(29, 104);
+            this.label1.Location = new System.Drawing.Point(29, 171);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(255, 25);
             this.label1.TabIndex = 6;
@@ -111,7 +114,7 @@
             // 
             // btnColorPick
             // 
-            this.btnColorPick.Location = new System.Drawing.Point(107, 137);
+            this.btnColorPick.Location = new System.Drawing.Point(107, 204);
             this.btnColorPick.Name = "btnColorPick";
             this.btnColorPick.Size = new System.Drawing.Size(44, 45);
             this.btnColorPick.TabIndex = 7;
@@ -119,11 +122,23 @@
             this.btnColorPick.UseVisualStyleBackColor = true;
             this.btnColorPick.Click += new System.EventHandler(this.btnColorPick_Click);
             // 
+            // chkSnow
+            // 
+            this.chkSnow.AutoSize = true;
+            this.chkSnow.Location = new System.Drawing.Point(34, 71);
+            this.chkSnow.Name = "chkSnow";
+            this.chkSnow.Size = new System.Drawing.Size(172, 29);
+            this.chkSnow.TabIndex = 8;
+            this.chkSnow.Text = "Use winter map";
+            this.chkSnow.UseVisualStyleBackColor = true;
+            this.chkSnow.CheckedChanged += new System.EventHandler(this.chkMapColor_CheckedChanged);
+            // 
             // FormOptions
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(750, 450);
+            this.Controls.Add(this.chkSnow);
             this.Controls.Add(this.btnColorPick);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.pnlColor);
@@ -156,5 +171,6 @@
         private System.Windows.Forms.Panel pnlColor;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnColorPick;
+        private System.Windows.Forms.CheckBox chkSnow;
     }
 }

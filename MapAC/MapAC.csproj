@@ -137,7 +137,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Images\map-acdm-snow_small.png" />
     <Content Include="Images\map-acdm_small.png" />
+    <Content Include="Images\map-tod-snow_small.png" />
     <Content Include="Images\map-tod_small.png" />
     <Content Include="w11931.ico" />
   </ItemGroup>
