@@ -43,7 +43,7 @@ namespace MapAC
 
         public int FoundLandblocks;
 
-        public Mapper()
+        public Mapper(List<Color> MapColors = null)
         {
             FoundLandblocks = 0;
             foreach(var entry in DatManager.CellDat.AllFiles)
@@ -74,8 +74,6 @@ namespace MapAC
                                 land[startY - y, startX + x].Blocked = false;
                             else
                                 land[startY - y, startX + x].Blocked = true;
-
-
                         }
                     }
 
@@ -83,10 +81,10 @@ namespace MapAC
                 }
             }
 
-            CreateMap();
+            CreateMap(MapColors);
         }
 
-        private void CreateMap()
+        private void CreateMap(List<Color> MapColors = null)
         {
             var emptyColor = Properties.Settings.Default.EmptyLandblockColor;
 
@@ -96,7 +94,11 @@ namespace MapAC
 
             double color, light;
             ushort type;
-            byte[,] landColor = RegionHelper.GetMapColors();
+            List<Color> landColor;
+            if (MapColors == null)
+                landColor = RegionHelper.GetMapColors();
+            else
+                landColor = MapColors;
 
             for (var y = 0; y < LANDSIZE; y++)
             {
@@ -157,16 +159,16 @@ namespace MapAC
                             (v[0] * v[0] + v[1] * v[1] + v[2] * v[2]))) * 128.0 + 128.0) * LIGHTCORRECTION + AMBIENTLIGHT;
 
                         // Apply lighting scalar to base colors
-                        for (int i = 0; i < 3; i++)
-                        {
-                            color = (landColor[type, i] * COLORCORRECTION / 100) * light / 256.0;
-                            if (color > 255.0)
-                                topo[y, x, i] = 255;
-                            else if (color < 0.0)
-                                topo[y, x, i] = 0;
-                            else
-                                topo[y, x, i] = (byte)color;
-                        }
+                        double r = (landColor[type].R * COLORCORRECTION / 100) * light / 256.0;
+                        double g = (landColor[type].G * COLORCORRECTION / 100) * light / 256.0;
+                        double b = (landColor[type].B * COLORCORRECTION / 100) * light / 256.0;
+                        r = ColorCheck(r);
+                        g = ColorCheck(g);
+                        b = ColorCheck(b);
+
+                        topo[y, x, 0] = (byte)r;
+                        topo[y, x, 1] = (byte)g;
+                        topo[y, x, 2] = (byte)b;
                     }
                     else
                     {
@@ -190,6 +192,15 @@ namespace MapAC
             }
             
             //map.Save(mapFile, ImageFormat.Png);
+        }
+
+        private double ColorCheck(double color)
+        {
+            if (color > 255.0)
+                return 255;
+            else if (color < 0.0)
+                return 0;
+            return color;
         }
     }
 }

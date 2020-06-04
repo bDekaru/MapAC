@@ -79,5 +79,30 @@ namespace MapAC.Helpers
 
             return contactSheet;
         }
+
+        /// <summary>
+        /// Read the Region file in the portal dat file and get all the terrain details
+        /// Once the terrain detials are loaded, get the textures and sample them to get the avg color and build the byte array
+        /// </summary>
+        public List<Color> GetColors(uint regionID)
+        {
+            List<Color> landColors = new List<Color>();
+            var Region = DatManager.CellDat.ReadFromDat<RegionDesc>(regionID);
+            foreach (var t in Region.TerrainInfo.LandSurfaces.TexMerge.TerrainDesc)
+            {
+                var surfaceId = t.TerrainTex.TexGID;
+                
+                SurfaceTexture st = DatManager.CellDat.ReadFromDat<SurfaceTexture>(surfaceId);
+                int color = st.GetAverageColor();
+
+                byte r = (byte)((color & 0xFF0000) >> 16);
+                byte g = (byte)((color & 0xFF00) >> 8);
+                byte b = (byte)(color & 0xFF);
+
+                landColors.Add(Color.FromArgb(r, g, b));
+            }
+
+            return landColors;
+        }
     }
 }

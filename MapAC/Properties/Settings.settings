@@ -6,10 +6,7 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="EmptyLandblockColor" Type="System.Drawing.Color" Scope="User">
-      <Value Profile="(Default)">Lime</Value>
-    </Setting>
-    <Setting Name="SnowMapColor" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">Black</Value>
     </Setting>
   </Settings>
 </SettingsFile>

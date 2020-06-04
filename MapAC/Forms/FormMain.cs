@@ -32,12 +32,13 @@ namespace WindowsFormsApp1
             Application.Exit();
         }
 
+        List<Color> MapColors;
         private void DrawMap()
         {
             // Make sure it's a CELL file
             if (DatManager.CellDat.Blocksize == 0x100)
             {
-                Mapper map = new Mapper();
+                Mapper map = new Mapper(MapColors);
 
                 float percLandblocks = (float)(map.FoundLandblocks / (255f * 255f) * 100f);
                 AddStatus($"{percLandblocks:0.##}% landblocks in file.");
@@ -97,6 +98,9 @@ namespace WindowsFormsApp1
                 this.UseWaitCursor = true;
                 Application.UseWaitCursor = true;
                 Application.DoEvents(); // hack to force the cursor update. Cleaner than DoEvents
+
+                if (textBoxStatus.Lines.Length > 0)
+                    AddStatus("----------------");
 
                 ClearMapImage();
 
@@ -164,35 +168,70 @@ namespace WindowsFormsApp1
             }
         }
 
-        private void surfaceTexToolStripMenuItem_Click(object sender, EventArgs e)
+        private void loadPortalColorsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if(DatManager.CellDat.AllFiles.Count > 0)
+            // Show OpenDialog box
+            if (openFileDialog_Dat.ShowDialog() == DialogResult.OK)
             {
-                try
+                if (textBoxStatus.Lines.Length > 0)
+                    AddStatus("----------------");
+
+                this.UseWaitCursor = true;
+                Application.UseWaitCursor = true;
+                Application.DoEvents(); // hack to force the cursor update. Cleaner than DoEvents
+
+                string datFile = openFileDialog_Dat.FileName;
+                if (DatManager.Initialize(datFile))
                 {
-                    var Region = DatManager.CellDat.ReadFromDat<RegionDesc>(RegionDesc.HW_FILE_ID);
-                    AddStatus("Region Loaded!");
-                    foreach (var t in Region.TerrainInfo.LandSurfaces.TexMerge.TerrainDesc)
+                    AddStatus($"Loaded {datFile}"); ;
+
+                    DatManager.ReadDatFile();
+                    string statusMessage = "Successfully read dat file. ";
+                    switch (DatManager.DatVersion)
                     {
-                        var surfaceId = t.TerrainTex.TexGID;
-                        AddStatus(surfaceId.ToString("X8"));
-
-                        SurfaceTexture st = DatManager.CellDat.ReadFromDat<SurfaceTexture>(surfaceId);
-                        Bitmap stImage = st.GetBitmap();
-                        stImage.Save("C:\\ACE\\tmp\\" + surfaceId.ToString("X8") + ".png", ImageFormat.Png);
-                        DatReader dr = DatManager.CellDat.GetReaderForFile(surfaceId);
-                        File.WriteAllBytes("C:\\ACE\\tmp\\" + surfaceId.ToString("X8") + ".bin", dr.Buffer);
+                        case DatVersionType.ACDM:
+                            statusMessage += ("Format is \"AC-DM\" era.");
+                            break;
+                        case DatVersionType.ACTOD:
+                            statusMessage += ("Format is \"AC-TOD\" era.");
+                            break;
                     }
-                    //DatReader dr = GetReaderForFile(entry.Value.ObjectId);
-                    //File.WriteAllBytes(thisFile, dr.Buffer);
-                }
-                catch (Exception ex)
-                {
-                    //  Block of code to handle errors
-                    AddStatus("ERROR - " + ex.Message);
-                }
+                    AddStatus(statusMessage);
+                    switch (DatManager.CellDat.Blocksize)
+                    {
+                        case 0x100:
+                            AddStatus("File is not a portal. No colors have been loaded.");
+                            break;
+                        default:
+                            PortalHelper ph = new PortalHelper();
+                            uint regionId;
+                            if (DatManager.DatVersion == DatVersionType.ACDM)
+                                regionId = RegionDesc.HW_FILE_ID;
+                            else
+                                regionId = RegionDesc.FILE_ID;
+                                MapColors = ph.GetColors(regionId);
+                            ClearMapImage();
+                            break;
+                    }
+                    AddStatus("-Files " + DatManager.CellDat.AllFiles.Count.ToString("N0"));
+                    string iteration = DatManager.Iteration;
+                    AddStatus("-Iteration " + iteration);
 
+                    var v = new VersionChecker();
+                    string version = v.GetVersionInfo(Path.GetFileName(datFile), iteration);
+                    if (version != "")
+                    {
+                        AddStatus($"-File appears to be from {version}.");
+                    }
+                    else
+                    {
+                        AddStatus("This file does not appear in the Asheron's Call Archive. Please consider uploading it at https://mega.nz/megadrop/7x-Qh19h5Ek");
+                    }
+
+                }
             }
+            this.UseWaitCursor = false;
+            Application.UseWaitCursor = false;
         }
     }
 }

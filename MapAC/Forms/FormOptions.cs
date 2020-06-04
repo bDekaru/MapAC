@@ -26,29 +26,11 @@ namespace MapAC.Forms
             {
                 case true:
                     chkMapColor.Checked = true;
-                    if (Properties.Settings.Default.SnowMapColor)
-                    {
-                        chkSnow.Checked = true;
-                        picMapSample.Image = imageListMapSamples.Images[3];
-                    }
-                    else
-                    {
-                        chkSnow.Checked = false;
-                        picMapSample.Image = imageListMapSamples.Images[1];
-                    }
+                    picMapSample.Image = imageListMapSamples.Images[1];
                     break;
                 default:
                     chkMapColor.Checked = false;
-                    if (Properties.Settings.Default.SnowMapColor)
-                    {
-                        chkSnow.Checked = true;
-                        picMapSample.Image = imageListMapSamples.Images[2];
-                    }
-                    else
-                    {
-                        chkSnow.Checked = false;
-                        picMapSample.Image = imageListMapSamples.Images[0];
-                    }
+                    picMapSample.Image = imageListMapSamples.Images[0];
                     break;
             }
 
@@ -58,7 +40,6 @@ namespace MapAC.Forms
         private void SaveOptions()
         {
             Properties.Settings.Default.ACDM_MapColor = chkMapColor.Checked;
-            Properties.Settings.Default.SnowMapColor = chkSnow.Checked;
 
             Properties.Settings.Default.EmptyLandblockColor = pnlColor.BackColor;
 
@@ -70,17 +51,11 @@ namespace MapAC.Forms
         {
             if (chkMapColor.Checked)
             {
-                if(chkSnow.Checked)
-                    picMapSample.Image = imageListMapSamples.Images[3];
-                else
-                    picMapSample.Image = imageListMapSamples.Images[1];
+                picMapSample.Image = imageListMapSamples.Images[1];
             }
             else
             {
-                if (chkSnow.Checked)
-                    picMapSample.Image = imageListMapSamples.Images[2];
-                else
-                    picMapSample.Image = imageListMapSamples.Images[0];
+                picMapSample.Image = imageListMapSamples.Images[0];
             }
         }
 
