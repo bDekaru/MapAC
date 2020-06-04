@@ -18,6 +18,7 @@ namespace MapAC
             public ushort Type;
             public int Z;
             public bool Used;
+            public bool Blocked; // Can't walk on
         }
 
         // each landblock is 9x9 points, with the edge points being shared between neighbor landblocks.
@@ -68,6 +69,13 @@ namespace MapAC
                             land[startY - y,startX + x].Type = type;
                             land[startY - y,startX + x].Z = RegionHelper.GetLandheight(newZ);
                             land[startY - y,startX + x].Used = true;
+                            uint itex = (uint)((type >> 2) & 0x3F);
+                            if (itex < 16 || itex > 20)
+                                land[startY - y, startX + x].Blocked = false;
+                            else
+                                land[startY - y, startX + x].Blocked = true;
+
+
                         }
                     }
 

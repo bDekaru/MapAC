@@ -1,5 +1,6 @@
 ﻿using MapAC;
 using MapAC.DatLoader;
+using MapAC.DatLoader.FileTypes;
 using MapAC.Forms;
 using MapAC.Helpers;
 using System;
@@ -160,6 +161,37 @@ namespace WindowsFormsApp1
             if((!string.IsNullOrWhiteSpace(url)) && (url.ToLower().StartsWith("http")))
             {
                 System.Diagnostics.Process.Start(url);
+            }
+        }
+
+        private void surfaceTexToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if(DatManager.CellDat.AllFiles.Count > 0)
+            {
+                try
+                {
+                    var Region = DatManager.CellDat.ReadFromDat<RegionDesc>(RegionDesc.HW_FILE_ID);
+                    AddStatus("Region Loaded!");
+                    foreach (var t in Region.TerrainInfo.LandSurfaces.TexMerge.TerrainDesc)
+                    {
+                        var surfaceId = t.TerrainTex.TexGID;
+                        AddStatus(surfaceId.ToString("X8"));
+
+                        SurfaceTexture st = DatManager.CellDat.ReadFromDat<SurfaceTexture>(surfaceId);
+                        Bitmap stImage = st.GetBitmap();
+                        stImage.Save("C:\\ACE\\tmp\\" + surfaceId.ToString("X8") + ".png", ImageFormat.Png);
+                        DatReader dr = DatManager.CellDat.GetReaderForFile(surfaceId);
+                        File.WriteAllBytes("C:\\ACE\\tmp\\" + surfaceId.ToString("X8") + ".bin", dr.Buffer);
+                    }
+                    //DatReader dr = GetReaderForFile(entry.Value.ObjectId);
+                    //File.WriteAllBytes(thisFile, dr.Buffer);
+                }
+                catch (Exception ex)
+                {
+                    //  Block of code to handle errors
+                    AddStatus("ERROR - " + ex.Message);
+                }
+
             }
         }
     }

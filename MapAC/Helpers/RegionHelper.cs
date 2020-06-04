@@ -151,9 +151,47 @@ namespace MapAC
             {101, 81, 46}, // 31 - UNKNOWN - 0x0500145c
             {182, 184, 177}, // 32 - roads - 0x05001877
         };
+
+        private static byte[,] landColor_acdm_red = new byte[33, 3]{
+            {48, 44, 50}, // 0 - BarrenRock - 0x05001463
+            {68, 80, 26}, // 1 - Grassland - 0x05001459
+            {133, 133, 145}, // 2 - Ice - 0x05001468
+            {62, 84, 15}, // 3 - LushGrass - 0x05001456
+            {83, 46, 11}, // 4 - MarshSparseSwamp - 0x05001467
+            {65, 43, 29}, // 5 - MudRichDirt - 0x05001462
+            {48, 44, 50}, // 6 - ObsidianPlain - 0x05001463
+            {104, 77, 41}, // 7 - PackedDirt - 0x05001465
+            {48, 44, 50}, // 8 - PatchyDirt - 0x05001463
+            {53, 91, 3}, // 9 - PatchyGrassland - 0x05001457
+            {166, 116, 59}, // 10 - sand-yellow - 0x0500145d
+            {152, 152, 108}, // 11 - sand-grey - 0x0500145f
+            {157, 107, 60}, // 12 - sand-rockStrewn - 0x0500145e
+            {128, 81, 49}, // 13 - SedimentaryRock - 0x050014a7
+            {86, 97, 65}, // 14 - SemiBarrenRock - 0x0500145a
+            {234, 247, 254}, // 15 - Snow - 0x05001464
+            {133, 20, 9}, // 16 - WaterRunning - 0x05001af5
+            {81, 23, 39}, // 17 - WaterStandingFresh - 0x05001af3
+            {101, 34, 47}, // 18 - WaterShallowSea - 0x05001af6
+            {136, 5, 3}, // 19 - WaterShallowStillSea - 0x05001af7
+            {118, 0, 0}, // 20 - WaterDeepSea - 0x05001af4
+            {37, 49, 9}, // 21 - forestfloor - 0x05001466
+            {133, 20, 9}, // 22 - FauxWaterRunning - 0x05001af5
+            {33, 41, 30}, // 23 - SeaSlime - 0x05001827
+            {101, 81, 46}, // 24 - Argila - 0x0500145c
+            {47, 36, 36}, // 25 - Volcano1 - 0x0500181f
+            {76, 77, 76}, // 26 - Volcano2 - 0x05001924
+            {195, 224, 239}, // 27 - BlueIce - 0x05001900
+            {101, 81, 46}, // 28 - UNKNOWN - 0x0500145c
+            {101, 81, 46}, // 29 - UNKNOWN - 0x0500145c
+            {101, 81, 46}, // 30 - UNKNOWN - 0x0500145c
+            {101, 81, 46}, // 31 - UNKNOWN - 0x0500145c
+            {138, 131, 113}, // 32 - roads - 0x05001458
+        };
+
         /// <returns></returns>
         public static byte[,] GetMapColors()
         {
+            return landColor_acdm_red;
             if (Properties.Settings.Default.ACDM_MapColor)
             {
                 if (Properties.Settings.Default.SnowMapColor)
@@ -168,6 +206,12 @@ namespace MapAC
                 else
                     return landColor_tod;
             }
+        }
+
+        public static byte[,] LoadRegion()
+        {
+            var colors = new byte[33, 3];
+            return colors;
         }
 
 

@@ -16,6 +16,20 @@ namespace MapAC.DatLoader.FileTypes
     public enum SurfacePixelFormat : uint
     {
         PFID_UNKNOWN = 0,
+        // 1 - 12 are all pre TOD image formats
+        INDEX4 = 1,
+        INDEX8 = 2,
+        ARGB1555 = 3,
+        ARGB4444 = 4,
+        ARGB8888 = 5,
+        RGB555 = 6,
+        RGB565 = 7,
+        RGB888 = 8,
+        MONO = 9,
+        COLOR_SEP = 10,
+        ALPHA_ONLY = 11,
+        NUM_IMAGE_TYPE = 12,
+        // Post TOD Image Formats
         PFID_R8G8B8 = 20,
         PFID_A8R8G8B8 = 21,
         PFID_X8R8G8B8 = 22,
@@ -197,6 +211,36 @@ namespace MapAC.DatLoader.FileTypes
 
             switch (Format)
             {
+                case SurfacePixelFormat.COLOR_SEP: // Has all the red pixel data, then green, then blue
+                    // We're just going to stuff them all into a RGB8 format for an easier time later
+                    using (BinaryReader reader = new BinaryReader(new MemoryStream(SourceData)))
+                    {
+                        List<byte> rB = new List<byte>();
+                        List<byte> gB = new List<byte>();
+                        List<byte> bB = new List<byte>();
+
+                        var totalPixels = Height * Width;
+
+                        for (uint i = 0; i < totalPixels; i++)
+                            rB.Add(reader.ReadByte());
+                        for (uint i = 0; i < totalPixels; i++)
+                            gB.Add(reader.ReadByte());
+                        for (uint i = 0; i < totalPixels; i++)
+                            bB.Add(reader.ReadByte());
+
+                        for (uint i = 0; i < Height; i++)
+                            for (uint j = 0; j < Width; j++)
+                            {
+                                int idx = (int)((i * Width) + j);
+
+                                byte r = rB[idx];
+                                byte g = gB[idx];
+                                byte b = bB[idx];
+                                int color = (r << 16) | (g << 8) | b;
+                                colors.Add(color);
+                            }
+                    }
+                    break;
                 case SurfacePixelFormat.PFID_R8G8B8: // RGB
                 case SurfacePixelFormat.PFID_CUSTOM_LSCAPE_R8G8B8:
                     using (BinaryReader reader = new BinaryReader(new MemoryStream(SourceData)))
@@ -306,6 +350,7 @@ namespace MapAC.DatLoader.FileTypes
             Bitmap image = new Bitmap(Width, Height);
             switch (this.Format)
             {
+                case SurfacePixelFormat.COLOR_SEP:
                 case SurfacePixelFormat.PFID_R8G8B8:
                 case SurfacePixelFormat.PFID_CUSTOM_LSCAPE_R8G8B8:
                     for (int i = 0; i < Height; i++)

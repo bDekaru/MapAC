@@ -40,6 +40,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.btnColorPick = new System.Windows.Forms.Button();
             this.chkSnow = new System.Windows.Forms.CheckBox();
+            this.chkPortalRegionColor = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.picMapSample)).BeginInit();
             this.SuspendLayout();
             // 
@@ -98,7 +99,7 @@
             // pnlColor
             // 
             this.pnlColor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pnlColor.Location = new System.Drawing.Point(34, 199);
+            this.pnlColor.Location = new System.Drawing.Point(51, 284);
             this.pnlColor.Name = "pnlColor";
             this.pnlColor.Size = new System.Drawing.Size(67, 50);
             this.pnlColor.TabIndex = 5;
@@ -106,7 +107,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(29, 171);
+            this.label1.Location = new System.Drawing.Point(46, 256);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(255, 25);
             this.label1.TabIndex = 6;
@@ -114,7 +115,7 @@
             // 
             // btnColorPick
             // 
-            this.btnColorPick.Location = new System.Drawing.Point(107, 204);
+            this.btnColorPick.Location = new System.Drawing.Point(124, 289);
             this.btnColorPick.Name = "btnColorPick";
             this.btnColorPick.Size = new System.Drawing.Size(44, 45);
             this.btnColorPick.TabIndex = 7;
@@ -133,11 +134,22 @@
             this.chkSnow.UseVisualStyleBackColor = true;
             this.chkSnow.CheckedChanged += new System.EventHandler(this.chkMapColor_CheckedChanged);
             // 
+            // chkPortalRegionColor
+            // 
+            this.chkPortalRegionColor.AutoSize = true;
+            this.chkPortalRegionColor.Location = new System.Drawing.Point(33, 166);
+            this.chkPortalRegionColor.Name = "chkPortalRegionColor";
+            this.chkPortalRegionColor.Size = new System.Drawing.Size(344, 29);
+            this.chkPortalRegionColor.TabIndex = 9;
+            this.chkPortalRegionColor.Text = "Use color from last loaded portal file";
+            this.chkPortalRegionColor.UseVisualStyleBackColor = true;
+            // 
             // FormOptions
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(11F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(750, 450);
+            this.Controls.Add(this.chkPortalRegionColor);
             this.Controls.Add(this.chkSnow);
             this.Controls.Add(this.btnColorPick);
             this.Controls.Add(this.label1);
@@ -172,5 +184,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnColorPick;
         private System.Windows.Forms.CheckBox chkSnow;
+        private System.Windows.Forms.CheckBox chkPortalRegionColor;
     }
 }

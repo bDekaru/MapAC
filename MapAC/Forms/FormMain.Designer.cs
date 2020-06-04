@@ -39,9 +39,11 @@
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.textBoxStatus = new System.Windows.Forms.RichTextBox();
             this.openFileDialog_Dat = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog_Image = new System.Windows.Forms.SaveFileDialog();
-            this.textBoxStatus = new System.Windows.Forms.RichTextBox();
+            this.dumpSomeFilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.surfaceTexToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -99,7 +101,8 @@
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(28, 28);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
-            this.toolsToolStripMenuItem});
+            this.toolsToolStripMenuItem,
+            this.dumpSomeFilesToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(11, 4, 0, 4);
@@ -153,18 +156,9 @@
             // optionsToolStripMenuItem
             // 
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(219, 40);
+            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(315, 40);
             this.optionsToolStripMenuItem.Text = "&Options...";
             this.optionsToolStripMenuItem.Click += new System.EventHandler(this.optionsToolStripMenuItem_Click);
-            // 
-            // openFileDialog_Dat
-            // 
-            this.openFileDialog_Dat.FileName = "*.dat";
-            this.openFileDialog_Dat.Filter = "All Dat Files|*.dat|All Files|*.*";
-            // 
-            // saveFileDialog_Image
-            // 
-            this.saveFileDialog_Image.Filter = "PNG Files|*.png|All Files|*.*";
             // 
             // textBoxStatus
             // 
@@ -175,6 +169,30 @@
             this.textBoxStatus.TabIndex = 1;
             this.textBoxStatus.Text = "";
             this.textBoxStatus.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.textBoxStatus_LinkClicked);
+            // 
+            // openFileDialog_Dat
+            // 
+            this.openFileDialog_Dat.FileName = "*.dat";
+            this.openFileDialog_Dat.Filter = "All Dat Files|*.dat|All Files|*.*";
+            // 
+            // saveFileDialog_Image
+            // 
+            this.saveFileDialog_Image.Filter = "PNG Files|*.png|All Files|*.*";
+            // 
+            // dumpSomeFilesToolStripMenuItem
+            // 
+            this.dumpSomeFilesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.surfaceTexToolStripMenuItem});
+            this.dumpSomeFilesToolStripMenuItem.Name = "dumpSomeFilesToolStripMenuItem";
+            this.dumpSomeFilesToolStripMenuItem.Size = new System.Drawing.Size(190, 34);
+            this.dumpSomeFilesToolStripMenuItem.Text = "Dump some Files";
+            // 
+            // surfaceTexToolStripMenuItem
+            // 
+            this.surfaceTexToolStripMenuItem.Name = "surfaceTexToolStripMenuItem";
+            this.surfaceTexToolStripMenuItem.Size = new System.Drawing.Size(315, 40);
+            this.surfaceTexToolStripMenuItem.Text = "SurfaceTex";
+            this.surfaceTexToolStripMenuItem.Click += new System.EventHandler(this.surfaceTexToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -214,6 +232,8 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.ToolStripMenuItem openDatFileToolStripMenuItem;
         private System.Windows.Forms.RichTextBox textBoxStatus;
+        private System.Windows.Forms.ToolStripMenuItem dumpSomeFilesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem surfaceTexToolStripMenuItem;
     }
 }
 
