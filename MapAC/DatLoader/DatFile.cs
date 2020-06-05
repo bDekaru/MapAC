@@ -24,23 +24,30 @@ namespace MapAC.DatLoader
 
         public void Unpack(BinaryReader reader)
         {
-            switch(DatManager.DatVersion){
-                case DatVersionType.ACTOD:
-                    /*BitFlags    =*/
-                    reader.ReadUInt32();
-                    ObjectId = reader.ReadUInt32();
-                    FileOffset = reader.ReadUInt32();
-                    FileSize = reader.ReadUInt32();
-                    /*Date        =*/
-                    reader.ReadUInt32();
-                    /*Iteration   =*/
-                    reader.ReadUInt32();
-                    break;
-                case DatVersionType.ACDM:
-                    ObjectId = reader.ReadUInt32();
-                    FileOffset = reader.ReadUInt32();
-                    FileSize = reader.ReadUInt32();
-                    break;
+            try
+            {
+                switch (DatManager.DatVersion)
+                {
+                    case DatVersionType.ACTOD:
+                        /*BitFlags    =*/
+                        reader.ReadUInt32();
+                        ObjectId = reader.ReadUInt32();
+                        FileOffset = reader.ReadUInt32();
+                        FileSize = reader.ReadUInt32();
+                        /*Date        =*/
+                        reader.ReadUInt32();
+                        /*Iteration   =*/
+                        reader.ReadUInt32();
+                        break;
+                    case DatVersionType.ACDM:
+                        ObjectId = reader.ReadUInt32();
+                        FileOffset = reader.ReadUInt32();
+                        FileSize = reader.ReadUInt32();
+                        break;
+                }
+            }catch(EndOfStreamException e)
+            {
+
             }
         }
 

@@ -72,9 +72,12 @@ namespace MapAC.DatLoader.FileTypes
             return tex.GetBitmap();
         }
 
-        public int GetAverageColor()
+        public Color GetAverageColor()
         {
             var bmp = GetBitmap();
+
+            if (bmp == null)
+                return Color.FromArgb(0, 255, 0); // TRANSPARENT
 
             //Used for tally
             int r = 0;
@@ -100,9 +103,7 @@ namespace MapAC.DatLoader.FileTypes
             r /= total;
             g /= total;
             b /= total;
-
-            int avg = (r << 16) | (g << 8) | b;
-            return avg;
+            return Color.FromArgb(r, g, b);
         }
     }
 }

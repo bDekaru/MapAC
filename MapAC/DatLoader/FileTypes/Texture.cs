@@ -242,7 +242,6 @@ namespace MapAC.DatLoader.FileTypes
                     }
                     break;
                 case SurfacePixelFormat.PFID_R8G8B8: // RGB
-                case SurfacePixelFormat.PFID_CUSTOM_LSCAPE_R8G8B8:
                     using (BinaryReader reader = new BinaryReader(new MemoryStream(SourceData)))
                     {
                         for (uint i = 0; i < Height; i++)
@@ -251,6 +250,20 @@ namespace MapAC.DatLoader.FileTypes
                                 byte b = reader.ReadByte();
                                 byte g = reader.ReadByte();
                                 byte r = reader.ReadByte();
+                                int color = (r << 16) | (g << 8) | b;
+                                colors.Add(color);
+                            }
+                    }
+                    break;
+                case SurfacePixelFormat.PFID_CUSTOM_LSCAPE_R8G8B8:
+                    using (BinaryReader reader = new BinaryReader(new MemoryStream(SourceData)))
+                    {
+                        for (uint i = 0; i < Height; i++)
+                            for (uint j = 0; j < Width; j++)
+                            {
+                                byte r = reader.ReadByte();
+                                byte g = reader.ReadByte();
+                                byte b = reader.ReadByte();
                                 int color = (r << 16) | (g << 8) | b;
                                 colors.Add(color);
                             }
@@ -473,6 +486,40 @@ namespace MapAC.DatLoader.FileTypes
             color.Add(blue); // Blue
 
             return color;
+        }
+
+        public Color GetAverageColor()
+        {
+            var bmp = GetBitmap();
+
+            if (bmp == null)
+                return Color.FromArgb(0, 255, 0); // TRANSPARENT
+
+            //Used for tally
+            int r = 0;
+            int g = 0;
+            int b = 0;
+
+            int total = 0;
+            for (int x = 0; x < bmp.Width; x++)
+            {
+                for (int y = 0; y < bmp.Height; y++)
+                {
+                    Color clr = bmp.GetPixel(x, y);
+
+                    r += clr.R;
+                    g += clr.G;
+                    b += clr.B;
+
+                    total++;
+                }
+            }
+
+            //Calculate average
+            r /= total;
+            g /= total;
+            b /= total;
+            return Color.FromArgb(r, g, b);
         }
     }
 }

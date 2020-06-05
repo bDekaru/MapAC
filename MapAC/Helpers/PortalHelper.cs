@@ -91,15 +91,21 @@ namespace MapAC.Helpers
             foreach (var t in Region.TerrainInfo.LandSurfaces.TexMerge.TerrainDesc)
             {
                 var surfaceId = t.TerrainTex.TexGID;
-                
-                SurfaceTexture st = DatManager.CellDat.ReadFromDat<SurfaceTexture>(surfaceId);
-                int color = st.GetAverageColor();
+                SurfaceTexture st;
+                switch (DatManager.DatVersion)
+                {
+                    case DatVersionType.ACDM:
+                        st = DatManager.CellDat.ReadFromDat<SurfaceTexture>(surfaceId);
+                        landColors.Add(st.GetAverageColor());
+                        break;
+                    case DatVersionType.ACTOD:
+                        st = DatManager.CellDat.ReadFromDat<SurfaceTexture>(surfaceId);
+                        var textureId = st.Textures[st.Textures.Count - 1];
+                        var texture = DatManager.CellDat.ReadFromDat<Texture>(textureId);
+                        landColors.Add(texture.GetAverageColor());
+                        break;
 
-                byte r = (byte)((color & 0xFF0000) >> 16);
-                byte g = (byte)((color & 0xFF00) >> 8);
-                byte b = (byte)(color & 0xFF);
-
-                landColors.Add(Color.FromArgb(r, g, b));
+                }
             }
 
             return landColors;

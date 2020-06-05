@@ -68,6 +68,8 @@ namespace WindowsFormsApp1
         private void AddStatus(string StatusMessage)
         {
             textBoxStatus.AppendText(StatusMessage + Environment.NewLine);
+            textBoxStatus.SelectionStart = textBoxStatus.Text.Length;
+            textBoxStatus.ScrollToCaret();
             textBoxStatus.Update();
         }
 
