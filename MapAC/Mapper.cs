@@ -18,6 +18,7 @@ namespace MapAC
             public ushort Type;
             public int Z;
             public bool Used;
+            public bool Blocked; // Can't walk on
         }
 
         // each landblock is 9x9 points, with the edge points being shared between neighbor landblocks.
@@ -40,9 +41,11 @@ namespace MapAC
 
         const int LUMINANCE = 100;
 
-        public Mapper()
+        public int FoundLandblocks;
+
+        public Mapper(List<Color> MapColors = null)
         {
-            uint found = 0;
+            FoundLandblocks = 0;
             foreach(var entry in DatManager.CellDat.AllFiles)
             {
                 if((entry.Key & 0x0000FFFF) == 0x0000FFFF)
@@ -66,25 +69,36 @@ namespace MapAC
                             land[startY - y,startX + x].Type = type;
                             land[startY - y,startX + x].Z = RegionHelper.GetLandheight(newZ);
                             land[startY - y,startX + x].Used = true;
+                            uint itex = (uint)((type >> 2) & 0x3F);
+                            if (itex < 16 || itex > 20)
+                                land[startY - y, startX + x].Blocked = false;
+                            else
+                                land[startY - y, startX + x].Blocked = true;
                         }
                     }
 
-                    found++;
+                    FoundLandblocks++;
                 }
             }
 
-            CreateMap();
+            CreateMap(MapColors);
         }
 
-        private void CreateMap()
+        private void CreateMap(List<Color> MapColors = null)
         {
+            var emptyColor = Properties.Settings.Default.EmptyLandblockColor;
+
             double[] v = new double[3];
             double[] lightVector = new double[3] { -1.0, -1.0, 0.0 };
             byte[,,] topo = new byte[LANDSIZE, LANDSIZE, 3];
 
             double color, light;
             ushort type;
-            byte[,] landColor = RegionHelper.GetMapColors();
+            List<Color> landColor;
+            if (MapColors == null)
+                landColor = RegionHelper.GetMapColors();
+            else
+                landColor = MapColors;
 
             for (var y = 0; y < LANDSIZE; y++)
             {
@@ -145,23 +159,23 @@ namespace MapAC
                             (v[0] * v[0] + v[1] * v[1] + v[2] * v[2]))) * 128.0 + 128.0) * LIGHTCORRECTION + AMBIENTLIGHT;
 
                         // Apply lighting scalar to base colors
-                        for (int i = 0; i < 3; i++)
-                        {
-                            color = (landColor[type, i] * COLORCORRECTION / 100) * light / 256.0;
-                            if (color > 255.0)
-                                topo[y, x, i] = 255;
-                            else if (color < 0.0)
-                                topo[y, x, i] = 0;
-                            else
-                                topo[y, x, i] = (byte)color;
-                        }
+                        double r = (landColor[type].R * COLORCORRECTION / 100) * light / 256.0;
+                        double g = (landColor[type].G * COLORCORRECTION / 100) * light / 256.0;
+                        double b = (landColor[type].B * COLORCORRECTION / 100) * light / 256.0;
+                        r = ColorCheck(r);
+                        g = ColorCheck(g);
+                        b = ColorCheck(b);
+
+                        topo[y, x, 0] = (byte)r;
+                        topo[y, x, 1] = (byte)g;
+                        topo[y, x, 2] = (byte)b;
                     }
                     else
                     {
                         // If data is not present for a point on the map, the resultant pixel is green
-                        topo[y, x, 0] = 0; // R
-                        topo[y, x, 1] = 255;   // G
-                        topo[y, x, 2] = 0;   // B
+                        topo[y, x, 0] = emptyColor.R; // R
+                        topo[y, x, 1] = emptyColor.G;   // G
+                        topo[y, x, 2] = emptyColor.B;   // B
                     }
                 }
             }
@@ -178,6 +192,15 @@ namespace MapAC
             }
             
             //map.Save(mapFile, ImageFormat.Png);
+        }
+
+        private double ColorCheck(double color)
+        {
+            if (color > 255.0)
+                return 255;
+            else if (color < 0.0)
+                return 0;
+            return color;
         }
     }
 }

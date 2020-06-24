@@ -33,14 +33,15 @@ namespace MapAC.Forms
                     picMapSample.Image = imageListMapSamples.Images[0];
                     break;
             }
+
+            pnlColor.BackColor = Properties.Settings.Default.EmptyLandblockColor;
         }
 
         private void SaveOptions()
         {
-            if (chkMapColor.Checked)
-                Properties.Settings.Default.ACDM_MapColor = true;
-            else
-                Properties.Settings.Default.ACDM_MapColor = false;
+            Properties.Settings.Default.ACDM_MapColor = chkMapColor.Checked;
+
+            Properties.Settings.Default.EmptyLandblockColor = pnlColor.BackColor;
 
             // Commit all options
             Properties.Settings.Default.Save();
@@ -49,9 +50,13 @@ namespace MapAC.Forms
         private void chkMapColor_CheckedChanged(object sender, EventArgs e)
         {
             if (chkMapColor.Checked)
+            {
                 picMapSample.Image = imageListMapSamples.Images[1];
+            }
             else
+            {
                 picMapSample.Image = imageListMapSamples.Images[0];
+            }
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -63,6 +68,14 @@ namespace MapAC.Forms
         {
             SaveOptions();
             Close();
+        }
+
+        private void btnColorPick_Click(object sender, EventArgs e)
+        {
+            if (colorDialog1.ShowDialog() == DialogResult.OK)
+            {
+                pnlColor.BackColor = colorDialog1.Color;
+            }
         }
     }
 }

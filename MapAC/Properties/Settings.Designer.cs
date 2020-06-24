@@ -34,5 +34,17 @@ namespace MapAC.Properties {
                 this["ACDM_MapColor"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Black")]
+        public global::System.Drawing.Color EmptyLandblockColor {
+            get {
+                return ((global::System.Drawing.Color)(this["EmptyLandblockColor"]));
+            }
+            set {
+                this["EmptyLandblockColor"] = value;
+            }
+        }
     }
 }

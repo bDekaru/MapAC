@@ -36,6 +36,9 @@
     <ApplicationIcon>w11931.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
@@ -67,9 +70,32 @@
     <Compile Include="DatLoader\DatManager.cs" />
     <Compile Include="DatLoader\DatReader.cs" />
     <Compile Include="DatLoader\DxtUtil.cs" />
+    <Compile Include="DatLoader\Entity\AmbientSoundDesc.cs" />
+    <Compile Include="DatLoader\Entity\AmbientSTBDesc.cs" />
     <Compile Include="DatLoader\Entity\BuildInfo.cs" />
     <Compile Include="DatLoader\Entity\CBldPortal.cs" />
     <Compile Include="DatLoader\Entity\CellPortal.cs" />
+    <Compile Include="DatLoader\Entity\DayGroup.cs" />
+    <Compile Include="DatLoader\Entity\GameTime.cs" />
+    <Compile Include="DatLoader\Entity\LandDefs.cs" />
+    <Compile Include="DatLoader\Entity\LandSurf.cs" />
+    <Compile Include="DatLoader\Entity\RegionMisc.cs" />
+    <Compile Include="DatLoader\Entity\RoadAlphaMap.cs" />
+    <Compile Include="DatLoader\Entity\SceneDesc.cs" />
+    <Compile Include="DatLoader\Entity\SceneType.cs" />
+    <Compile Include="DatLoader\Entity\Season.cs" />
+    <Compile Include="DatLoader\Entity\SkyDesc.cs" />
+    <Compile Include="DatLoader\Entity\SkyObject.cs" />
+    <Compile Include="DatLoader\Entity\SkyObjectReplace.cs" />
+    <Compile Include="DatLoader\Entity\SkyTimeOfDay.cs" />
+    <Compile Include="DatLoader\Entity\SoundDesc.cs" />
+    <Compile Include="DatLoader\Entity\TerrainAlphaMap.cs" />
+    <Compile Include="DatLoader\Entity\TerrainDesc.cs" />
+    <Compile Include="DatLoader\Entity\TerrainTex.cs" />
+    <Compile Include="DatLoader\Entity\TerrainType.cs" />
+    <Compile Include="DatLoader\Entity\TexMerge.cs" />
+    <Compile Include="DatLoader\Entity\TimeOfDay.cs" />
+    <Compile Include="DatLoader\Entity\TMTerrainDesc.cs" />
     <Compile Include="DatLoader\Enum\DatVersion.cs" />
     <Compile Include="DatLoader\Entity\Frame.cs" />
     <Compile Include="DatLoader\Entity\Stab.cs" />
@@ -79,6 +105,8 @@
     <Compile Include="DatLoader\FileTypes\Iteration.cs" />
     <Compile Include="DatLoader\FileTypes\LandblockInfo.cs" />
     <Compile Include="DatLoader\FileTypes\Palette.cs" />
+    <Compile Include="DatLoader\FileTypes\RegionDesc.cs" />
+    <Compile Include="DatLoader\FileTypes\SurfaceTexture.cs" />
     <Compile Include="DatLoader\FileTypes\Texture.cs" />
     <Compile Include="DatLoader\IUnpackable.cs" />
     <Compile Include="DatLoader\UnpackableExtensions.cs" />
@@ -96,6 +124,7 @@
     </Compile>
     <Compile Include="Helpers\PortalHelper.cs" />
     <Compile Include="Helpers\RegionHelper.cs" />
+    <Compile Include="Helpers\VersionChecker.cs" />
     <Compile Include="Mapper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -115,6 +144,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -124,12 +154,17 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="archive.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Images\map-acdm-snow_small.png" />
     <Content Include="Images\map-acdm_small.png" />
+    <Content Include="Images\map-tod-snow_small.png" />
     <Content Include="Images\map-tod_small.png" />
     <Content Include="w11931.ico" />
   </ItemGroup>
