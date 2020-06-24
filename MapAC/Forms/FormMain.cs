@@ -144,10 +144,14 @@ namespace WindowsFormsApp1
                     if(version != "")
                     {
                         AddStatus($"-File appears to be from {version}.");
+                        if(!v.IsComplete(Path.GetFileName(datFile), iteration))
+                        {
+                            AddStatus("This file is not complete in the Asheron's Call Archive. Please consider uploading it at https://mega.nz/megadrop/0WvIiXRRYmg");
+                        }
                     }
                     else
                     {
-                        AddStatus("This file does not appear in the Asheron's Call Archive. Please consider uploading it at https://mega.nz/megadrop/7x-Qh19h5Ek");
+                        AddStatus("This file does not appear in the Asheron's Call Archive. Please consider uploading it at https://mega.nz/megadrop/0WvIiXRRYmg");
                     }
 
                 }

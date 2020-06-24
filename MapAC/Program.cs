@@ -15,8 +15,10 @@ namespace WindowsFormsApp1
         static void Main()
         {
             // HiDPI http://crsouza.com/2015/04/13/how-to-fix-blurry-windows-forms-windows-in-high-dpi-settings/
+            /*
             if (Environment.OSVersion.Version.Major >= 6)
                 SetProcessDPIAware();
+            */
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

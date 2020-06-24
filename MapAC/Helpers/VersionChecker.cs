@@ -30,6 +30,27 @@ namespace MapAC.Helpers
             return false;
         }
 
+        /// <summary>
+        /// For Cell files, returns if the file in the archive is "complete"
+        /// </summary>
+        /// <returns></returns>
+        public bool IsComplete(string filename, string iteration)
+        {
+            if (archive == null)
+                archive = JObject.Parse(File.ReadAllText(@"archive.json"));
+
+            if (archive.ContainsKey(filename))
+            {
+                var dat = archive[filename];
+                if (dat[iteration] != null && dat[iteration].Contains("complete")) 
+                {
+                    if(dat[iteration]["complete"].ToString() != "100")
+                        return true;
+                }
+            }
+            return false;
+        }
+
         public string GetVersionInfo(string filename, string iteration)
         {
             filename = filename.ToLower(); // convert to lower case as that's the format in our json
