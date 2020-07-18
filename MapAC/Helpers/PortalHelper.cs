@@ -20,7 +20,7 @@ namespace MapAC.Helpers
             int FONT_SIZE = 9;
             string FONT_NAME = "Arial";
 
-            Font myFont = new Font(FONT_NAME, FONT_SIZE, FontStyle.Regular) ;
+            System.Drawing.Font myFont = new System.Drawing.Font(FONT_NAME, FONT_SIZE, FontStyle.Regular) ;
 
             var numRows = Math.Ceiling((float)(numIcons / ICONS_PER_ROW));
             int width = (ICON_SIZE + PADDING) * ICONS_PER_ROW;

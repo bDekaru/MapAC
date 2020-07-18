@@ -67,7 +67,7 @@ namespace WindowsFormsApp1
 
         private void AddStatus(string StatusMessage)
         {
-            textBoxStatus.AppendText(StatusMessage + Environment.NewLine);
+            textBoxStatus.AppendText(StatusMessage + System.Environment.NewLine);
             textBoxStatus.SelectionStart = textBoxStatus.Text.Length;
             textBoxStatus.ScrollToCaret();
             textBoxStatus.Update();
@@ -126,6 +126,7 @@ namespace WindowsFormsApp1
                     switch (DatManager.CellDat.Blocksize)
                     {
                         case 0x100:
+                            ExportDatBlocks();
                             DrawMap();
                             break;
                         default:
@@ -238,6 +239,67 @@ namespace WindowsFormsApp1
             }
             this.UseWaitCursor = false;
             Application.UseWaitCursor = false;
+        }
+
+        private void ExportDatBlocks()
+        {
+            //return;
+            string patchFolder = @"D:\source\Patches\";
+            string patchFile = patchFolder + "eastern-island.txt";
+            string binFolder = patchFolder + "eastern-island";
+
+            var saveBin = true;
+            var datLoad = true;
+
+            string[] str_lines = System.IO.File.ReadAllLines(patchFile);
+            List<uint> landblocks_to_export = new List<uint>();
+
+            foreach (string l in str_lines)
+            {
+                uint hexdec = uint.Parse(l, System.Globalization.NumberStyles.HexNumber);
+                landblocks_to_export.Add(hexdec);
+            }
+
+            for(var i = 0; i<landblocks_to_export.Count;i++)
+            {
+                foreach (var entry in DatManager.CellDat.AllFiles)
+                {
+                    var lb = entry.Key >> 16;
+                    if (lb == landblocks_to_export[i])
+                    {
+                        if (saveBin) {
+                            DatReader dr = DatManager.CellDat.GetReaderForFile(entry.Key);
+                            string hex = entry.Value.ObjectId.ToString("X8");
+                            string thisFile = Path.Combine(binFolder, hex + ".bin");
+                            File.WriteAllBytes(thisFile, dr.Buffer);
+                        }
+
+                        if (datLoad)
+                        {
+                            if ((entry.Key & 0x0000FFFF) == 0x0000FFFF)
+                            {
+                                // LANDBLOCK
+                                CellLandblock landblock = DatManager.CellDat.ReadFromDat<CellLandblock>(entry.Key);
+                            }
+                            else if ((entry.Key & 0x0000FFFE) == 0x0000FFFE)
+                            {
+                                LandblockInfo landblockInfo = DatManager.CellDat.ReadFromDat<LandblockInfo>(entry.Key);
+                            }
+                            else
+                            {
+                                // EnvCell needs to be converted from ACDM to ACTOD (end of retail)
+                                EnvCell envCell = DatManager.CellDat.ReadFromDat<EnvCell>(entry.Key);
+                                if (saveBin)
+                                {
+                                    string hex = entry.Value.ObjectId.ToString("X8");
+                                    string thisFile = Path.Combine(binFolder, hex + ".bin");
+                                    File.WriteAllBytes(thisFile, envCell.Pack());
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }
