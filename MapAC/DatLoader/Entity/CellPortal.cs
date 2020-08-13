@@ -19,5 +19,14 @@ namespace MapAC.DatLoader.Entity
             OtherCellId     = reader.ReadUInt16();
             OtherPortalId   = reader.ReadUInt16();
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            writer.Write((ushort)Flags);
+            writer.Write(PolygonId);
+            writer.Write(OtherCellId);
+            writer.Write(OtherPortalId);
+        }
+
     }
 }

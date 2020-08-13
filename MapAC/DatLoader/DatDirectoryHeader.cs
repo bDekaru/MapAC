@@ -25,5 +25,10 @@ namespace MapAC.DatLoader
                 Entries[i].Unpack(reader);
             }
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            throw new System.NotSupportedException();
+        }
     }
 }

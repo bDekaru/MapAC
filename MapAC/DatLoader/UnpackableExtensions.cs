@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Windows.Forms;
 
 namespace MapAC.DatLoader
 {
@@ -24,13 +25,24 @@ namespace MapAC.DatLoader
         /// </summary>
         public static void UnpackSmartArray(this List<uint> value, BinaryReader reader)
         {
-            var totalObjects = reader.ReadCompressedUInt32();
+            uint totalObjects;
+            if (DatManager.DatVersion == DatVersionType.ACDM)
+                totalObjects = reader.ReadUInt32();
+            else
+                totalObjects = reader.ReadCompressedUInt32();
 
             for (int i = 0; i < totalObjects; i++)
             {
                 var item = reader.ReadUInt32();
                 value.Add(item);
             }
+        }
+
+        public static void PackSmartArray(this List<uint> value, BinaryWriter Writer)
+        {
+            Writer.Write((uint)value.Count);
+            for (int i = 0; i < value.Count; i++)
+                Writer.Write(value[i]);
         }
 
         /// <summary>
@@ -63,6 +75,14 @@ namespace MapAC.DatLoader
                 var item = new T();
                 item.Unpack(reader);
                 value.Add(key, item);
+            }
+        }
+        public static void PackSmartArray<T>(this Dictionary<ushort, T> value, BinaryWriter writer) where T : IUnpackable, new()
+        {
+            foreach(var e in value)
+            {
+                writer.Write(e.Key);
+                e.Value.Pack(writer);
             }
         }
 
@@ -113,6 +133,16 @@ namespace MapAC.DatLoader
 
             for (int i = 0; i < totalObjects; i++)
                 value.Add(reader.ReadUInt32(), reader.ReadUInt32());
+        }
+
+        /// <summary>
+        /// A PackedHashTable uses a UInt16 for length, and a UInt16 for bucket size.
+        /// We don't need to worry about the bucket size with C#.
+        /// </summary>
+        public static void PackHashTable(this Dictionary<uint, uint> value, BinaryWriter writer)
+        {
+            throw new System.NotSupportedException();
+            return;
         }
 
         /// <summary>
@@ -182,6 +212,14 @@ namespace MapAC.DatLoader
                 value.Add(item);
             }
         }
+        public static void Pack<T>(this List<T> value, BinaryWriter writer) where T : IUnpackable, new()
+        {
+            writer.Write(value.Count);
+            for (int i = 0; i < value.Count; i++)
+            {
+                item.Pack(writer);
+            }
+        }
 
         public static void Unpack<T>(this List<T> value, BinaryReader reader, uint fixedQuantity) where T : IUnpackable, new()
         {
@@ -203,6 +241,15 @@ namespace MapAC.DatLoader
                 var item = new T();
                 item.Unpack(reader);
                 value.Add(key, item);
+            }
+        }
+
+        public static void Pack<T>(this Dictionary<ushort, T> value, BinaryWriter writer, uint fixedQuantity) where T : IUnpackable, new()
+        {
+            foreach(var e in value)
+            {
+                writer.Write(e.Key);
+                e.Value.Pack(writer);
             }
         }
 

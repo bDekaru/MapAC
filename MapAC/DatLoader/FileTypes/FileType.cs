@@ -7,5 +7,6 @@ namespace MapAC.DatLoader.FileTypes
         public uint Id { get; protected set; }
 
         public abstract void Unpack(BinaryReader reader);
+        public abstract void Pack(BinaryWriter writer);
     }
 }

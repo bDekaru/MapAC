@@ -51,6 +51,10 @@ namespace MapAC.DatLoader
             }
         }
 
+        public void Pack(BinaryWriter writer)
+        {
+            throw new System.NotSupportedException();
+        }
 
         /*private DatFileType? fileType;
 

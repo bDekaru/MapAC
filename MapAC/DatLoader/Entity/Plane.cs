@@ -14,6 +14,12 @@ namespace MapAC.DatLoader.Entity
             D = reader.ReadSingle();
         }
 
+        public void Pack(BinaryWriter writer)
+        {
+            writer.WriteVector3(N);
+            writer.Write(D);
+        }
+
         public System.Numerics.Plane ToNumerics()
         {
             return new System.Numerics.Plane(N, D);

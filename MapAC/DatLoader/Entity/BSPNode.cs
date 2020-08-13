@@ -119,5 +119,65 @@ namespace MapAC.DatLoader.Entity
 
             return node;
         }
+
+        /// <summary>
+        /// You must use the Pack(BinaryWriter writer, BSPType treeType) method.
+        /// </summary>
+        /// <exception cref="NotSupportedException">You must use the Pack(BinaryWriter writer, BSPType treeType) method.</exception>
+        public virtual void Pack(BinaryWriter writer)
+        {
+            throw new NotSupportedException();
+        }
+
+        public virtual void Pack(BinaryWriter writer, BSPType treeType)
+        {
+            byte[] typeBytes = Encoding.ASCII.GetBytes(Type);
+            for (var i = typeBytes.Length; i > 0; i--)
+                writer.Write(typeBytes[i]);
+
+            switch (Type)
+            {
+                // These types will unpack the data completely, in their own classes
+                case "PORT":
+                case "LEAF":
+                    throw new Exception();
+            }
+
+            SplittingPlane.Pack(writer);
+
+            switch (Type)
+            {
+                case "BPnn":
+                case "BPIn":
+                    PosNode.Pack(writer, treeType);
+                    break;
+                case "BpIN":
+                case "BpnN":
+                    NegNode.Pack(writer, treeType);
+                    break;
+                case "BPIN":
+                case "BPnN":
+                    PosNode.Pack(writer, treeType);
+                    NegNode.Pack(writer, treeType);
+                    break;
+            }
+
+            if (treeType == BSPType.Cell)
+                return;
+
+            Sphere.Pack(writer);
+
+            if (treeType == BSPType.Physics)
+                return;
+
+            writer.Write(InPolys.Count);
+            for (int i = 0; i < InPolys.Count; i++)
+                writer.Write(InPolys[i]);
+        }
+
+        public static void WriteNode(BinaryWriter writer, BSPNode node, BSPType treeType)
+        {
+            node.Pack(writer, treeType);
+        }
     }
 }

@@ -21,10 +21,10 @@ namespace MapAC.DatLoader.FileTypes
 
         public override void Unpack(BinaryReader reader)
         {
-            Id          = reader.ReadUInt32();
-            Flags       = (AnimationFlags)reader.ReadUInt32();
-            NumParts    = reader.ReadUInt32();
-            NumFrames   = reader.ReadUInt32();
+            Id = reader.ReadUInt32();
+            Flags = (AnimationFlags)reader.ReadUInt32();
+            NumParts = reader.ReadUInt32();
+            NumFrames = reader.ReadUInt32();
 
             if ((Flags & AnimationFlags.PosFrames) != 0)
                 PosFrames.Unpack(reader, NumFrames);
@@ -35,6 +35,19 @@ namespace MapAC.DatLoader.FileTypes
                 animationFrame.Unpack(reader, NumParts);
                 PartFrames.Add(animationFrame);
             }
+        }
+        public override void Pack(BinaryWriter writer)
+        {
+            writer.Write(Id);
+            writer.Write((uint)Flags);
+            writer.Write(NumParts);
+            writer.Write(NumFrames);
+            
+            if ((Flags & AnimationFlags.PosFrames) != 0)
+                PosFrames.Pack(writer);
+
+            for (int i = 0; i < PartFrames.Count; i++)
+                PartFrames[i].Pack(writer);
         }
     }
 }

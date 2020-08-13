@@ -101,6 +101,59 @@ namespace MapAC.DatLoader.FileTypes
             DefaultScriptTable  = reader.ReadUInt32();
         }
 
+        public override void Pack(BinaryWriter writer)
+        {
+            writer.Write(Id);
+            writer.Write((uint)Flags);
+
+            // Get all the GraphicsObjects in this SetupModel. These are all the 01-types.
+            writer.Write(Parts.Count);
+            for (int i = 0; i < Parts.Count; i++)
+                writer.Write(Parts[i]);
+
+            if ((Flags & SetupFlags.HasParent) != 0)
+            {
+                for (int i = 0; i < ParentIndex.Count; i++)
+                    writer.Write(ParentIndex[i]);
+            }
+
+            if ((Flags & SetupFlags.HasDefaultScale) != 0)
+            {
+                for (int i = 0; i < DefaultScale.Count; i++)
+                    writer.WriteVector3(DefaultScale[i]);
+            }
+
+            HoldingLocations.Pack(writer);
+            ConnectionPoints.Pack(writer);
+
+            writer.Write(PlacementFrames.Count);
+            foreach(var e in PlacementFrames)
+            {
+                writer.Write(e.Key);
+                e.Value.Pack(writer);
+            }
+
+            CylSpheres.Pack(writer);
+
+            Spheres.Pack(writer);
+
+            writer.Write(Height);
+            writer.Write(Radius);
+            writer.Write(StepUpHeight);
+            writer.Write(StepDownHeight);
+            
+            SortingSphere.Pack(writer);
+            SelectionSphere.Pack(writer);
+
+            Lights.Pack(writer);
+
+            writer.Write(DefaultAnimation);
+            writer.Write(DefaultScript);
+            writer.Write(DefaultMotionTable);
+            writer.Write(DefaultSoundTable);
+            writer.Write(DefaultScriptTable);
+        }
+
         public static SetupModel CreateSimpleSetup()
         {
             var setup = new SetupModel();

@@ -12,11 +12,20 @@ namespace MapAC.DatLoader.Entity
 
         public void Unpack(BinaryReader reader)
         {
-            SType       = reader.ReadUInt32();
-            Volume      = reader.ReadSingle();
-            BaseChance  = reader.ReadSingle();
-            MinRate     = reader.ReadSingle();
-            MaxRate     = reader.ReadSingle();
+            SType = reader.ReadUInt32();
+            Volume = reader.ReadSingle();
+            BaseChance = reader.ReadSingle();
+            MinRate = reader.ReadSingle();
+            MaxRate = reader.ReadSingle();
+        }
+
+        public void Pack(BinaryWriter writer)
+        {
+            writer.Write(SType);
+            writer.Write(Volume);
+            writer.Write(BaseChance);
+            writer.Write(MinRate);
+            writer.Write(MaxRate);
         }
 
         public bool IsContinuous => (BaseChance == 0);

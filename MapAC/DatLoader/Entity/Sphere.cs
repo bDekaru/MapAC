@@ -14,6 +14,12 @@ namespace MapAC.DatLoader.Entity
             Radius = reader.ReadSingle();
         }
 
+        public void Pack(BinaryWriter writer)
+        {
+            writer.WriteVector3(Origin);
+            writer.Write(Radius);
+        }
+
         public static Sphere CreateDummySphere()
         {
             var sphere = new Sphere();

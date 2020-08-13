@@ -60,5 +60,11 @@ namespace MapAC.DatLoader
 
             Success = true;
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            throw new System.NotSupportedException();
+        }
+
     }
 }

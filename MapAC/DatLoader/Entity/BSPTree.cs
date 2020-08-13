@@ -22,5 +22,21 @@ namespace MapAC.DatLoader.Entity
         {
             RootNode = BSPNode.ReadNode(reader, treeType);
         }
+
+        /// <summary>
+        /// You must use the Pack(BinaryWriter writer, BSPType treeType) method.
+        /// </summary>
+        /// <exception cref="NotSupportedException">You must use the Pack(BinaryWriter writer, BSPType treeType) method.</exception>
+        public void Pack(BinaryWriter writer)
+        {
+            throw new NotSupportedException();
+        }
+
+        public void Pack(BinaryWriter writer, BSPType treeType)
+        {
+            RootNode.WriteNode(writer, treeType);
+            //RootNode = BSPNode.ReadNode(reader, treeType);
+        }
+
     }
 }

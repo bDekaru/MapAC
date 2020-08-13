@@ -23,5 +23,17 @@ namespace MapAC.DatLoader.Entity
             else
                 throw new NotImplementedException();
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            writer.Write(VertexType);
+            writer.Write((uint)Vertices.Count);
+
+            if (VertexType == 1)
+                Vertices.Pack(writer, (uint)Vertices.Count);
+            else
+                throw new NotImplementedException();
+        }
+
     }
 }

@@ -29,6 +29,12 @@ namespace MapAC.DatLoader.Entity
             Direction = (AnimationHookDir)reader.ReadInt32();
         }
 
+        public virtual void Pack(BinaryWriter writer)
+        {
+            writer.Write((uint)HookType);
+            writer.Write((uint)Direction);
+        }
+
         public static AnimationHook ReadHook(BinaryReader reader)
         {
             // We peek forward to get the hook type, then revert our position.

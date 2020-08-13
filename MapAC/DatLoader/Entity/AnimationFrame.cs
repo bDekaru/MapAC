@@ -29,5 +29,17 @@ namespace MapAC.DatLoader.Entity
                 Hooks.Add(hook);
             }
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            Frames.Pack(writer);
+
+            writer.Write(Hooks.Count);
+            for (int i = 0; i < Hooks.Count; i++)
+            {
+                Hooks[i].Pack(writer);
+            }
+        }
+
     }
 }

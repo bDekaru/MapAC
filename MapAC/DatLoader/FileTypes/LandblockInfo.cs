@@ -58,5 +58,22 @@ namespace MapAC.DatLoader.FileTypes
             if ((PackMask & 1) == 1)
                 RestrictionTables.UnpackPackedHashTable(reader);
         }
+        public override void Pack(BinaryWriter writer)
+        {
+            writer.Write(Id);
+
+            writer.Write(NumCells);
+
+            Objects.Pack(writer);
+
+            writer.Write((ushort)Buildings.Count);
+
+            writer.Write((ushort)PackMask);
+
+            Buildings.Pack(writer);
+
+            if ((PackMask & 1) == 1)
+                RestrictionTables.UnpackPackedHashTable(reader);
+        }
     }
 }

@@ -14,5 +14,11 @@ namespace MapAC.DatLoader.Entity
 
             AmbientSounds.Unpack(reader);
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            writer.Write(STBId);
+            AmbientSounds.Pack(writer);
+        }
     }
 }

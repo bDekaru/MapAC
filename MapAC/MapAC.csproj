@@ -60,6 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DatLoader\BinaryReaderExtensions.cs" />
+    <Compile Include="DatLoader\BinaryWriterExtensions.cs" />
     <Compile Include="DatLoader\CellDatDatabase.cs" />
     <Compile Include="DatLoader\DatDatabase.cs" />
     <Compile Include="DatLoader\DatDatabaseHeader.cs" />
