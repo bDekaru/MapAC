@@ -20,5 +20,13 @@ namespace MapAC.DatLoader.Entity
 
             PaletteSet = reader.ReadUInt32();
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            Ranges.Pack(writer);
+
+            writer.Write(PaletteSet);
+        }
+
     }
 }

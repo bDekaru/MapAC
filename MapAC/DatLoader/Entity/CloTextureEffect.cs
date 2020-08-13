@@ -19,5 +19,12 @@ namespace MapAC.DatLoader.Entity
             OldTexture = reader.ReadUInt32();
             NewTexture = reader.ReadUInt32();
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            writer.Write(OldTexture);
+            writer.Write(NewTexture);
+        }
+
     }
 }

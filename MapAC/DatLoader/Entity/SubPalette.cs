@@ -20,5 +20,16 @@ namespace MapAC.DatLoader.Entity
 
             NumColors *= 8;
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            writer.WriteAsDataIDOfKnownType(SubID, 0x04000000);
+            writer.Write(Offset / 8);
+
+            var colors = NumColors / 8;
+            if (colors == 256) colors = 0;
+            writer.Write(colors);
+        }
+
     }
 }

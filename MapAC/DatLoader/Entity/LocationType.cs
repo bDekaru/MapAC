@@ -12,5 +12,12 @@ namespace MapAC.DatLoader.Entity
             PartId = reader.ReadInt32();
             Frame.Unpack(reader);
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            writer.Write(PartId);
+            Frame.Pack(writer);
+        }
+
     }
 }

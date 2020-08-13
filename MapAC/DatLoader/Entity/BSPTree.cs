@@ -34,7 +34,7 @@ namespace MapAC.DatLoader.Entity
 
         public void Pack(BinaryWriter writer, BSPType treeType)
         {
-            RootNode.WriteNode(writer, treeType);
+            RootNode.Pack(writer, treeType);
             //RootNode = BSPNode.ReadNode(reader, treeType);
         }
 

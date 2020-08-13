@@ -19,5 +19,11 @@ namespace MapAC.DatLoader.FileTypes
 
             ScriptData.Unpack(reader);
         }
+
+        public override void Pack(BinaryWriter writer)
+        {
+            writer.Write(Id);
+            ScriptData.Pack(writer);
+        }
     }
 }

@@ -12,5 +12,12 @@ namespace MapAC.DatLoader.Entity
             TerrainType = reader.ReadUInt32();
             TerrainTex.Unpack(reader);
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            writer.Write(TerrainType);
+            TerrainTex.Pack(writer);
+        }
+
     }
 }

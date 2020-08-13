@@ -24,6 +24,11 @@ namespace MapAC.DatLoader.FileTypes
             Data   = reader.ReadBytes(dataSize);
         }
 
+        public override void Pack(BinaryWriter writer)
+        {
+            throw new System.NotSupportedException();
+        }
+
         /// <summary>
         /// Exports Wave to a playable .wav file
         /// </summary>

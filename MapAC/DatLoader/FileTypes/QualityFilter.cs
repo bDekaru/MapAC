@@ -59,5 +59,10 @@ namespace MapAC.DatLoader.FileTypes
             for (var i = 0; i < numSkill; i++)
                 SkillStatFilter.Add(reader.ReadUInt32());
         }
+
+        public override void Pack(BinaryWriter writer)
+        {
+            throw new System.NotSupportedException();
+        }
     }
 }

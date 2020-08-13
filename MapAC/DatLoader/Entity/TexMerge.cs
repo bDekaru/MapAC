@@ -20,5 +20,16 @@ namespace MapAC.DatLoader.Entity
             RoadMaps.Unpack(reader);
             TerrainDesc.Unpack(reader);
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            writer.Write(BaseTexSize);
+
+            CornerTerrainMaps.Pack(writer);
+            SideTerrainMaps.Pack(writer);
+            RoadMaps.Pack(writer);
+            TerrainDesc.Pack(writer);
+        }
+
     }
 }

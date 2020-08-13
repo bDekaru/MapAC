@@ -18,5 +18,16 @@ namespace MapAC.DatLoader.Entity
 
             DayGroups.Unpack(reader);
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            writer.Write(TickSize);
+            writer.Write(LightTickSize);
+
+            writer.AlignBoundary();
+
+            DayGroups.Pack(writer);
+        }
+
     }
 }

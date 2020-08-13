@@ -26,6 +26,11 @@ namespace MapAC.DatLoader.FileTypes
             SpellSet.UnpackPackedHashTable(reader);
         }
 
+        public override void Pack(BinaryWriter writer)
+        {
+            throw new System.NotSupportedException();
+        }
+
         /// <summary>
         /// Generates a hash based on the string. Used to decrypt spell formulas and calculate taper rotation for players.
         /// </summary>

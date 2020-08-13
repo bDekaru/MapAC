@@ -28,5 +28,20 @@ namespace MapAC.DatLoader.Entity
             DetailTexTiling = reader.ReadUInt32();
             DetailTexGID    = reader.ReadUInt32();
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            writer.Write(TexGID);
+            writer.Write(TexTiling);
+            writer.Write(MaxVertBright);
+            writer.Write(MinVertBright);
+            writer.Write(MaxVertSaturate);
+            writer.Write(MinVertSaturate);
+            writer.Write(MaxVertHue);
+            writer.Write(MinVertHue);
+            writer.Write(DetailTexTiling);
+            writer.Write(DetailTexGID);
+        }
+
     }
 }

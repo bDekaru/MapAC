@@ -25,5 +25,19 @@ namespace MapAC.DatLoader.FileTypes
 
             HeritageGroups.UnpackSmartArray(reader);
         }
+
+        public override void Pack(BinaryWriter writer)
+        {
+            writer.Write(Id);
+            writer.Write(Id); // this is in there twice
+
+            StarterAreas.PackSmartArray(writer);
+
+            // HERITAGE GROUPS -- 11 standard player races and 2 Olthoi.
+            writer.Write((byte)1);
+
+            HeritageGroups.PackSmartArray(writer);
+        }
+
     }
 }

@@ -15,5 +15,12 @@ namespace MapAC.DatLoader.Entity
             U = reader.ReadSingle();
             V = reader.ReadSingle();
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            writer.Write(U);
+            writer.Write(V);
+        }
+
     }
 }

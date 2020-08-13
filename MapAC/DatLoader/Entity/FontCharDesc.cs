@@ -24,5 +24,18 @@ namespace MapAC.DatLoader.Entity
             HorizontalOffsetAfter = reader.ReadByte();
             VerticalOffsetBefore = reader.ReadByte();
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            writer.Write(Unicode);
+            writer.Write(OffsetX);
+            writer.Write(OffsetY);
+            writer.Write(Width);
+            writer.Write(Height);
+            writer.Write(HorizontalOffsetBefore);
+            writer.Write(HorizontalOffsetAfter);
+            writer.Write(VerticalOffsetBefore);
+        }
+
     }
 }

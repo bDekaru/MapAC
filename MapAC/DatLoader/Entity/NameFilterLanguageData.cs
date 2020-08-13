@@ -26,5 +26,20 @@ namespace MapAC.DatLoader.Entity
             for (uint i = 0; i < numLetterGroup; i++)
                 CompoundLetterGroups.Add(reader.ReadUnicodeString());
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            writer.Write(MaximumVowelsInARow);
+            writer.Write(FirstNCharactersMustHaveAVowel);
+            writer.Write(VowelContainingSubstringLength);
+            writer.Write(ExtraAllowedCharacters);
+
+            writer.Write(Unknown);
+
+            writer.Write(CompoundLetterGroups.Count);
+            for (int i = 0; i < CompoundLetterGroups.Count; i++)
+                writer.WriteObfuscatedString(CompoundLetterGroups[i]);
+        }
+
     }
 }

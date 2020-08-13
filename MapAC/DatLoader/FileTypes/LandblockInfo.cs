@@ -73,7 +73,7 @@ namespace MapAC.DatLoader.FileTypes
             Buildings.Pack(writer);
 
             if ((PackMask & 1) == 1)
-                RestrictionTables.UnpackPackedHashTable(reader);
+                RestrictionTables.PackHashTable(writer);
         }
     }
 }

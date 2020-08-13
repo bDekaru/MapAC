@@ -56,5 +56,10 @@ namespace MapAC.DatLoader.FileTypes
             for (int i = 0; i <= levelCount; i++)
                 CharacterLevelSkillCreditList.Add(reader.ReadUInt32());
         }
+
+        public override void Pack(BinaryWriter writer)
+        {
+            throw new System.NotSupportedException();
+        }
     }
 }

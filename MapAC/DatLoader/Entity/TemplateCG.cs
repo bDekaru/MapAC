@@ -33,5 +33,23 @@ namespace MapAC.DatLoader.Entity
             NormalSkillsList.UnpackSmartArray(reader);
             PrimarySkillsList.UnpackSmartArray(reader);
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            writer.Write(Name);
+            writer.Write(IconImage);
+            writer.Write(Title);
+            // Attributes
+            writer.Write(Strength);
+            writer.Write(Endurance);
+            writer.Write(Coordination);
+            writer.Write(Quickness);
+            writer.Write(Focus);
+            writer.Write(Self);
+
+            NormalSkillsList.PackSmartArray(writer);
+            PrimarySkillsList.PackSmartArray(writer);
+        }
+
     }
 }

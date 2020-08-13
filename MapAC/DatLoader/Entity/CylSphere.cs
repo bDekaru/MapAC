@@ -19,5 +19,14 @@ namespace MapAC.DatLoader.Entity
             Radius = reader.ReadSingle();
             Height = reader.ReadSingle();
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            writer.WriteVector3(Origin); ;
+
+            writer.Write(Radius);
+            writer.Write(Height);
+        }
+
     }
 }

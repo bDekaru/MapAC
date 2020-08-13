@@ -17,5 +17,13 @@ namespace MapAC.DatLoader.Entity
 
             CloSubPalettes.Unpack(reader);
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            writer.Write(Icon);
+
+            CloSubPalettes.Pack(writer);
+        }
+
     }
 }

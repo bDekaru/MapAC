@@ -35,5 +35,25 @@ namespace MapAC.DatLoader.Entity
 
             Seasons.Unpack(reader);
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            writer.Write(ZeroTimeOfYear);
+            writer.Write(ZeroYear);
+            writer.Write(DayLength);
+            writer.Write(DaysPerYear);
+            writer.WritePString(YearSpec); writer.AlignBoundary();
+
+            TimesOfDay.Pack(writer);
+
+            writer.Write(DaysOfTheWeek.Count);
+            for (int i = 0; i < DaysOfTheWeek.Count; i++)
+            {
+                writer.WritePString(DaysOfTheWeek[i]); writer.AlignBoundary();
+            }
+
+            Seasons.Pack(writer);
+        }
+
     }
 }

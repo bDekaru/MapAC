@@ -17,5 +17,15 @@ namespace MapAC.DatLoader.Entity
                 throw new NotImplementedException();
             TexMerge.Unpack(reader);
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            writer.Write(Type); // This is always 0
+
+            if (Type == 1)
+                throw new NotImplementedException();
+            TexMerge.Pack(writer);
+        }
+
     }
 }

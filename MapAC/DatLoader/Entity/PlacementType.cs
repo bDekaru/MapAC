@@ -20,5 +20,11 @@ namespace MapAC.DatLoader.Entity
         {
             AnimFrame.Unpack(reader, numParts);
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            AnimFrame.Pack(writer);
+        }
+
     }
 }

@@ -40,6 +40,16 @@ namespace MapAC.DatLoader.Entity
             Orientation = new Quaternion(qx, qy, qz, qw);
         }
 
+        public void Pack(BinaryWriter writer)
+        {
+            writer.WriteVector3(Origin);
+
+            writer.Write(Orientation.W);
+            writer.Write(Orientation.X);
+            writer.Write(Orientation.Y);
+            writer.Write(Orientation.Z);
+        }
+
         public override string ToString()
         {
             return Origin + " " + Orientation;

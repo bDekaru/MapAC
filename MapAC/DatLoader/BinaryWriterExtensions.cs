@@ -74,19 +74,15 @@ namespace MapAC.DatLoader
 
             writer.Write(myBytes);
         }
-        /*
-        public static string ReadUnicodeString(this BinaryWriter writer)
+
+        public static void WriteUnicodeString(this BinaryWriter writer, string value)
         {
-            uint stringLength = reader.ReadCompressedUInt32();
-            string thestring = "";
-            for (int i = 0; i < stringLength; i++)
-            {
-                ushort myChar = reader.ReadUInt16();
-                thestring += Convert.ToChar(myChar);
-            }
-            return thestring;
+            writer.WriteCompressedUInt32((uint)value.Length);
+            for(int i = 0; i < value.Length; i++)
+                writer.Write((ushort)value[i]);
         }
 
+        /*
         public static string Reverse(this string s)
         {
             char[] charArray = s.ToCharArray();

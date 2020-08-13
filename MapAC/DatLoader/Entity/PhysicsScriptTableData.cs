@@ -11,5 +11,11 @@ namespace MapAC.DatLoader.Entity
         {
             Scripts.Unpack(reader);
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            Scripts.Pack(writer);
+        }
+
     }
 }

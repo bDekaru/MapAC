@@ -18,5 +18,14 @@ namespace MapAC.DatLoader.Entity
 
             SceneTypes.Unpack(reader);
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            writer.WritePString(TerrainName); writer.AlignBoundary();
+            writer.Write(TerrainColor);
+
+            SceneTypes.Pack(writer);
+        }
+
     }
 }

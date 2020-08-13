@@ -34,6 +34,12 @@ namespace MapAC.DatLoader.FileTypes
             ClothingSubPalEffects.UnpackPackedHashTable(reader);
         }
 
+        public override void Pack(BinaryWriter writer)
+        {
+            throw new System.NotSupportedException();
+        }
+
+
         public uint GetIcon(uint palEffectIdx)
         {
             if (ClothingSubPalEffects.TryGetValue(palEffectIdx, out CloSubPalEffect result))

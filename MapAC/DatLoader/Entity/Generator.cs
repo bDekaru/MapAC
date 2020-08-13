@@ -18,5 +18,15 @@ namespace MapAC.DatLoader.Entity
 
             Items.Unpack(reader);
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            writer.WriteObfuscatedString(Name);
+            writer.AlignBoundary();
+
+            writer.Write(Id);
+            Items.Pack(writer);
+        }
+
     }
 }

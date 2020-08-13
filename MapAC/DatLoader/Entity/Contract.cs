@@ -59,5 +59,30 @@ namespace MapAC.DatLoader.Entity
             LocationNPCEnd.Unpack(reader);
             LocationQuestArea.Unpack(reader);
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            writer.Write(Version);
+            writer.Write(ContractId);
+            writer.WritePString(ContractName); writer.AlignBoundary();
+
+            writer.WritePString(Description); writer.AlignBoundary();
+            writer.WritePString(DescriptionProgress); writer.AlignBoundary();
+
+            writer.WritePString(NameNPCStart); writer.AlignBoundary();
+            writer.WritePString(NameNPCEnd); writer.AlignBoundary();
+
+            writer.WritePString(QuestflagStamped); writer.AlignBoundary();
+            writer.WritePString(QuestflagStarted); writer.AlignBoundary();
+            writer.WritePString(QuestflagFinished); writer.AlignBoundary();
+            writer.WritePString(QuestflagProgress); writer.AlignBoundary();
+            writer.WritePString(QuestflagTimer); writer.AlignBoundary();
+            writer.WritePString(QuestflagRepeatTime); writer.AlignBoundary();
+
+            LocationNPCStart.Pack(writer);
+            LocationNPCEnd.Pack(writer);
+            LocationQuestArea.Pack(writer);
+        }
+
     }
 }

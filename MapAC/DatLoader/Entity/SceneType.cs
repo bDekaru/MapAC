@@ -14,5 +14,12 @@ namespace MapAC.DatLoader.Entity
 
             Scenes.Unpack(reader);
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            writer.Write(StbIndex);
+            Scenes.Pack(writer);
+        }
+
     }
 }

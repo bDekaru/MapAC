@@ -30,7 +30,7 @@ namespace MapAC.DatLoader.Entity
             writer.Write((uint)Vertices.Count);
 
             if (VertexType == 1)
-                Vertices.Pack(writer, (uint)Vertices.Count);
+                Vertices.Pack(writer);
             else
                 throw new NotImplementedException();
         }

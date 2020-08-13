@@ -13,5 +13,10 @@ namespace MapAC.DatLoader.Entity
         {
             Formula.Unpack(reader);
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            Formula.Pack(writer);
+        }
     }
 }

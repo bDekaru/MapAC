@@ -163,5 +163,35 @@ namespace MapAC.DatLoader.Entity
             FootwearList.UnpackSmartArray(reader);
             ClothingColorsList.UnpackSmartArray(reader);
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            writer.Write(Name);
+            writer.Write(Scale);
+            writer.Write(SetupID);
+            writer.Write(SoundTable);
+            writer.Write(IconImage);
+            writer.Write(BasePalette);
+            writer.Write(SkinPalSet);
+            writer.Write(PhysicsTable);
+            writer.Write(MotionTable);
+            writer.Write(CombatTable);
+
+            BaseObjDesc.Pack(writer);
+
+            HairColorList.PackSmartArray(writer);
+            HairStyleList.PackSmartArray(writer);
+            EyeColorList.PackSmartArray(writer);
+            EyeStripList.PackSmartArray(writer);
+            NoseStripList.PackSmartArray(writer);
+            MouthStripList.PackSmartArray(writer);
+
+            HeadgearList.PackSmartArray(writer);
+            ShirtList.PackSmartArray(writer);
+            PantsList.PackSmartArray(writer);
+            FootwearList.PackSmartArray(writer);
+            ClothingColorsList.PackSmartArray(writer);
+        }
+
     }
 }

@@ -45,5 +45,38 @@ namespace MapAC.DatLoader.Entity
 
             reader.AlignBoundary();
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            writer.Write(Polygons.Count);
+            writer.Write(PhysicsPolygons.Count);
+            writer.Write(Portals.Count);
+
+            VertexArray.Pack(writer);
+
+            Polygons.Pack(writer);
+
+            for (int i = 0; i < Portals.Count; i++)
+                writer.Write(Portals[i]);
+
+            writer.AlignBoundary();
+
+            CellBSP.Pack(writer, BSPType.Cell);
+
+            PhysicsPolygons.Pack(writer);
+
+            PhysicsBSP.Pack(writer, BSPType.Physics);
+
+            if(DrawingBSP == null)
+                writer.Write(0);
+            else
+            {
+                writer.Write(1);
+                DrawingBSP.Pack(writer, BSPType.Drawing);
+            }
+
+            writer.AlignBoundary();
+        }
+
     }
 }

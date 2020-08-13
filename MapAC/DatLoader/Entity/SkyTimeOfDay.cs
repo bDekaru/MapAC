@@ -43,5 +43,28 @@ namespace MapAC.DatLoader.Entity
 
             SkyObjReplace.Unpack(reader);
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            writer.Write(Begin);
+
+            writer.Write(DirBright);
+            writer.Write(DirHeading);
+            writer.Write(DirPitch);
+            writer.Write(DirColor);
+
+            writer.Write(AmbBright);
+            writer.Write(AmbColor);
+
+            writer.Write(MinWorldFog);
+            writer.Write(MaxWorldFog);
+            writer.Write(WorldFogColor);
+            writer.Write(WorldFog);
+
+            writer.AlignBoundary();
+
+            SkyObjReplace.Pack(writer);
+        }
+
     }
 }

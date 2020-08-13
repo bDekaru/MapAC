@@ -11,5 +11,11 @@ namespace MapAC.DatLoader.Entity
         {
             CloObjectEffects.Unpack(reader);
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            CloObjectEffects.Pack(writer);
+        }
+
     }
 }

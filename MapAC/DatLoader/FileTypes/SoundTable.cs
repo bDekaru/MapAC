@@ -27,5 +27,14 @@ namespace MapAC.DatLoader.FileTypes
             SoundHash.Unpack(reader);
             Data.UnpackPackedHashTable(reader);
         }
+
+        public override void Pack(BinaryWriter writer)
+        {
+            writer.Write(Id);
+            writer.Write(Unknown);
+            SoundHash.Pack(writer);
+            Data.PackHashTable(writer);
+        }
+
     }
 }

@@ -11,5 +11,11 @@ namespace MapAC.DatLoader.Entity
         {
             STBDesc.Unpack(reader);
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            STBDesc.Pack(writer);
+        }
+
     }
 }

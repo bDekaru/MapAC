@@ -57,6 +57,20 @@ namespace MapAC.DatLoader
             return (knownType + value);
         }
 
+        public static void WriteAsDataIDOfKnownType(this BinaryWriter writer, uint value, uint knownType)
+        {
+            /*
+            if ((value & 0x8000) != 0)
+            {
+                var lower = reader.ReadUInt16();
+                var higher = (value & 0x3FFF) << 16;
+
+                return (uint)(knownType + (higher | lower));
+            }
+            */
+            writer.Write(value - knownType);
+        }
+
         /// <summary>
         /// Returns a string as defined by the first sizeOfLength-byte's length
         /// </summary>

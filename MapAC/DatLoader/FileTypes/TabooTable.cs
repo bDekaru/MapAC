@@ -30,6 +30,11 @@ namespace MapAC.DatLoader.FileTypes
             TabooTableEntries.Unpack(reader, length);
         }
 
+        public override void Pack(BinaryWriter writer)
+        {
+            throw new System.NotSupportedException();
+        }
+
         /// <summary>
         /// This will search all the first entry to see if the input passes or fails.<para />
         /// Only the first entry is searched (for now) because they're all the same.

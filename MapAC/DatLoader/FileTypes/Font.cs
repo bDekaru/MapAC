@@ -41,5 +41,10 @@ namespace MapAC.DatLoader.FileTypes
             ForegroundSurfaceDataID = reader.ReadUInt32();
             BackgroundSurfaceDataID = reader.ReadUInt32();
         }
+
+        public override void Pack(BinaryWriter writer)
+        {
+            throw new System.NotSupportedException();
+        }
     }
 }

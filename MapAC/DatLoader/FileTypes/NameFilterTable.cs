@@ -27,5 +27,10 @@ namespace MapAC.DatLoader.FileTypes
                 LanguageData.Add(key, val);
             }
         }
+
+        public override void Pack(BinaryWriter writer)
+        {
+            throw new System.NotSupportedException();
+        }
     }
 }

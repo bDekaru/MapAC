@@ -38,5 +38,26 @@ namespace MapAC.DatLoader.FileTypes
             Luminosity      = reader.ReadSingle();
             Diffuse         = reader.ReadSingle();
         }
+
+        public override void Pack(BinaryWriter writer)
+        {
+            writer.Write((uint)Type);
+
+            if (Type.HasFlag(SurfaceType.Base1Image) || Type.HasFlag(SurfaceType.Base1ClipMap))
+            {
+                // image or clipmap
+                writer.Write(OrigTextureId);
+                writer.Write(OrigPaletteId);
+            }
+            else
+            {
+                // solid color
+                writer.Write(ColorValue);
+            }
+
+            writer.Write(Translucency);
+            writer.Write(Luminosity);
+            writer.Write(Diffuse);
+        }
     }
 }

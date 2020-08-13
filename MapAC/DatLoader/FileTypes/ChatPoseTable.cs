@@ -39,5 +39,32 @@ namespace MapAC.DatLoader.FileTypes
                 ChatEmoteHash.Add(key, value);
             }
         }
+
+        public override void Pack(BinaryWriter writer)
+        {
+            writer.Write(Id);
+
+            writer.Write((ushort)ChatPoseHash.Count);
+            throw new System.NotSupportedException();
+            /*
+            reader.ReadUInt16(); // var bucketSize
+            for (int i = 0; i < totalObjects; i++)
+            {
+                string key = reader.ReadPString(); reader.AlignBoundary();
+                string value = reader.ReadPString(); reader.AlignBoundary();
+                ChatPoseHash.Add(key, value);
+            }
+
+            var totalEmoteObjects = reader.ReadUInt16();
+            reader.ReadUInt16();// var bucketSize
+            for (int i = 0; i < totalEmoteObjects; i++)
+            {
+                string key = reader.ReadPString(); reader.AlignBoundary();
+                ChatEmoteData value = new ChatEmoteData();
+                value.Unpack(reader);
+                ChatEmoteHash.Add(key, value);
+            }
+            */
+        }
     }
 }

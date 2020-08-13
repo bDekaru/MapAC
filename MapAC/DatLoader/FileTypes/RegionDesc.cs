@@ -73,5 +73,10 @@ namespace MapAC.DatLoader.FileTypes
             if ((PartsMask & 0x0200) != 0)
                 RegionMisc.Unpack(reader);
         }
+
+        public override void Pack(BinaryWriter writer)
+        {
+            throw new System.NotSupportedException();
+        }
     }
 }

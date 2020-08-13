@@ -22,6 +22,11 @@ namespace MapAC.DatLoader.FileTypes
             SkillBaseHash.UnpackPackedHashTable(reader);
         }
 
+        public override void Pack(BinaryWriter writer)
+        {
+            throw new System.NotSupportedException();
+        }
+
         public void AddRetiredSkills()
         {
             SkillBaseHash.Add((int)Skill.Axe, new SkillBase(new SkillFormula(PropertyAttribute.Strength, PropertyAttribute.Coordination, 3)));

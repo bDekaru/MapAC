@@ -15,5 +15,16 @@ namespace MapAC.DatLoader.Entity
             Name    = reader.ReadPString();
             reader.AlignBoundary();
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            writer.Write(Start);
+            if (IsNight)
+                writer.Write(1);
+            else
+                writer.Write(0);
+            writer.WritePString(Name); writer.AlignBoundary();
+        }
+
     }
 }

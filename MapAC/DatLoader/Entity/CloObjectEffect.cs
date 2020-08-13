@@ -16,5 +16,14 @@ namespace MapAC.DatLoader.Entity
 
             CloTextureEffects.Unpack(reader);
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            writer.Write(Index);
+            writer.Write(ModelId);
+
+            CloTextureEffects.Pack(writer);
+        }
+
     }
 }

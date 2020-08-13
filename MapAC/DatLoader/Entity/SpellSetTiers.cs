@@ -14,5 +14,11 @@ namespace MapAC.DatLoader.FileTypes
         {
             Spells.Unpack(reader);
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            Spells.Pack(writer);
+        }
+
     }
 }

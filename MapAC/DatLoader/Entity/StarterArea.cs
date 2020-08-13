@@ -14,5 +14,12 @@ namespace MapAC.DatLoader.Entity
 
             Locations.UnpackSmartArray(reader);
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            writer.Write(Name);
+            Locations.PackSmartArray(writer);
+        }
+
     }
 }

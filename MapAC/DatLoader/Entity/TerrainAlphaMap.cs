@@ -12,5 +12,12 @@ namespace MapAC.DatLoader.Entity
             TCode   = reader.ReadUInt32();
             TexGID  = reader.ReadUInt32();
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            writer.Write(TCode);
+            writer.Write(TexGID);
+        }
+
     }
 }

@@ -49,7 +49,36 @@ namespace MapAC.DatLoader.Entity
                 NegSurface = PosSurface;
                 NegUVIndices = PosUVIndices;
             }
+
+            if (DatManager.DatVersion == DatVersionType.ACDM)
+                reader.AlignBoundary();
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            writer.Write(NumPts);
+            writer.Write((byte)Stippling);
+
+            writer.Write((uint)SidesType);
+            writer.Write(PosSurface);
+            writer.Write(NegSurface);
+
+            for (short i = 0; i < NumPts; i++)
+                writer.Write(VertexIds[i]);
+
+            if (!Stippling.HasFlag(StipplingType.NoPos))
+            {
+                for (short i = 0; i < NumPts; i++)
+                    writer.Write(PosUVIndices[i]);
+            }
+
+            if (SidesType == CullMode.Clockwise && !Stippling.HasFlag(StipplingType.NoNeg))
+            {
+                for (short i = 0; i < NumPts; i++)
+                    writer.Write(NegUVIndices[i]);
+            }
+        }
+
 
         public void LoadVertices(CVertexArray vertexArray)
         {

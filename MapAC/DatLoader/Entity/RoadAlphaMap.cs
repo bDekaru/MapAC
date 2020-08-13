@@ -9,8 +9,14 @@ namespace MapAC.DatLoader.Entity
 
         public void Unpack(BinaryReader reader)
         {
-            RCode       = reader.ReadUInt32();
-            RoadTexGID  = reader.ReadUInt32();
+            RCode = reader.ReadUInt32();
+            RoadTexGID = reader.ReadUInt32();
+        }
+
+        public void Pack(BinaryWriter writer)
+        {
+            writer.Write(RCode);
+            writer.Write(RoadTexGID);
         }
     }
 }

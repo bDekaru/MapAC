@@ -17,5 +17,12 @@ namespace MapAC.DatLoader.FileTypes
             Id = reader.ReadUInt32();
             Bad.UnpackPackedHashTable(reader);
         }
+
+        public override void Pack(BinaryWriter writer)
+        {
+            writer.Write(Id);
+            Bad.PackHashTable(writer);
+        }
+
     }
 }

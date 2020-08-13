@@ -28,6 +28,11 @@ namespace MapAC.DatLoader.FileTypes
             reader.AlignBoundary();
         }
 
+        public override void Pack(BinaryWriter writer)
+        {
+            throw new System.NotSupportedException();
+        }
+
         public override string ToString()
         {
             string s = "";

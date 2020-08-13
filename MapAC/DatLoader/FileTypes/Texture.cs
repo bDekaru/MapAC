@@ -136,6 +136,11 @@ namespace MapAC.DatLoader.FileTypes
             }
         }
 
+        public override void Pack(BinaryWriter writer)
+        {
+            throw new System.NotSupportedException();
+        }
+
         /// <summary>
         /// Exports RenderSurface to a image file
         /// </summary>

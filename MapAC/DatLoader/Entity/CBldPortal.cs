@@ -39,5 +39,20 @@ namespace MapAC.DatLoader.Entity
 
             reader.AlignBoundary();
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            writer.Write((ushort)Flags);
+
+            writer.Write(OtherCellId);
+            writer.Write(OtherPortalId);
+
+            writer.Write((ushort)StabList.Count);
+            for (var i = 0; i < StabList.Count; i++)
+                writer.Write(StabList[i]);
+
+            writer.AlignBoundary();
+        }
+
     }
 }

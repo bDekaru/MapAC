@@ -19,5 +19,10 @@ namespace MapAC.DatLoader.FileTypes
 
             Objects.Unpack(reader);
         }
+
+        public override void Pack(BinaryWriter writer)
+        {
+            throw new System.NotSupportedException();
+        }
     }
 }

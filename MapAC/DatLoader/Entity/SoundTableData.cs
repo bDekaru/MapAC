@@ -19,5 +19,13 @@ namespace MapAC.DatLoader.Entity
             Probability = reader.ReadSingle();
             Volume = reader.ReadSingle();
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            writer.Write(SoundId);
+            writer.Write(Priority);
+            writer.Write(Probability);
+            writer.Write(Volume);
+        }
     }
 }

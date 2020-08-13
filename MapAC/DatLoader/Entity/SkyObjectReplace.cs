@@ -22,5 +22,17 @@ namespace MapAC.DatLoader.Entity
 
             reader.AlignBoundary();
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            writer.Write(ObjectIndex);
+            writer.Write(GFXObjId);
+            writer.Write(Rotate);
+            writer.Write(Transparent);
+            writer.Write(Luminosity);
+            writer.Write(MaxBright);
+            writer.AlignBoundary();
+        }
+
     }
 }

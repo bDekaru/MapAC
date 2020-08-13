@@ -26,5 +26,18 @@ namespace MapAC.DatLoader.Entity
             reader.AlignBoundary();
             CDM         = reader.ReadSingle();
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            writer.WriteObfuscatedString(Name); writer.AlignBoundary();
+            writer.Write(Category);
+            writer.Write(Icon);
+            writer.Write(Type);
+            writer.Write(Gesture);
+            writer.Write(Time);
+            writer.WriteObfuscatedString(Text); writer.AlignBoundary();
+            writer.Write(CDM);
+        }
+
     }
 }

@@ -94,6 +94,11 @@ namespace MapAC.DatLoader.FileTypes
             IsParentLocal = reader.ReadInt32();
         }
 
+        public override void Pack(BinaryWriter writer)
+        {
+            throw new System.NotSupportedException();
+        }
+
         public override string ToString()
         {
             var sb = new StringBuilder();

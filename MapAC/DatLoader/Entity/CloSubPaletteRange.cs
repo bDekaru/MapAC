@@ -12,5 +12,12 @@ namespace MapAC.DatLoader.Entity
             Offset      = reader.ReadUInt32();
             NumColors   = reader.ReadUInt32();
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            writer.Write(Offset);
+            writer.Write(NumColors);
+        }
+
     }
 }

@@ -113,6 +113,53 @@ namespace MapAC.DatLoader.Entity
             ManaMod = reader.ReadUInt32();
         }
 
+        public void Pack(BinaryWriter writer)
+        {
+            writer.WriteObfuscatedString(Name); writer.AlignBoundary();
+            writer.WriteObfuscatedString(Desc); writer.AlignBoundary();
+
+            writer.Write((uint)School);
+            writer.Write(Icon);
+            writer.Write((uint)Category);
+            writer.Write(Bitfield);
+            writer.Write(BaseMana);
+            writer.Write(BaseRangeConstant);
+            writer.Write(BaseRangeMod);
+            writer.Write(Power);
+            writer.Write(SpellEconomyMod);
+            writer.Write(FormulaVersion);
+            writer.Write(ComponentLoss);
+            writer.Write((uint)MetaSpellType);
+            writer.Write(MetaSpellId);
+
+            switch (MetaSpellType)
+            {
+                case SpellType.Enchantment:
+                case SpellType.FellowEnchantment:
+                    writer.Write(Duration);
+                    writer.Write(DegradeModifier);
+                    writer.Write(DegradeLimit);
+                    break;
+                case SpellType.PortalSummon:
+                    writer.Write(PortalLifetime);
+                    break;
+            }
+
+            // Components : Store the comps encrypted...
+            List<uint> encryptedFormula = EncryptFormula(Formula, Name, Desc);
+            for (int j = 0; j < 8; j++)
+                writer.Write(encryptedFormula[j]);
+
+            writer.Write(CasterEffect);
+            writer.Write(TargetEffect);
+            writer.Write(FizzleEffect);
+            writer.Write(RecoveryInterval);
+            writer.Write(RecoveryAmount);
+            writer.Write(DisplayOrder);
+            writer.Write(NonComponentTargetType);
+            writer.Write(ManaMod);
+        }
+
         private const uint HIGHEST_COMP_ID = 198; // "Essence of Kemeroi", for Void Spells -- not actually ever in game!
 
         /// <summary>
@@ -138,6 +185,28 @@ namespace MapAC.DatLoader.Entity
 
                 comps.Add(comp);
             }
+
+            return comps;
+        }
+        private static List<uint> EncryptFormula(List<uint> formula, string name, string desc)
+        {
+            List<uint> comps = new List<uint>();
+
+            // uint testDescHash = ComputeHash(" – 200");
+            uint nameHash = SpellTable.ComputeHash(name);
+            uint descHash = SpellTable.ComputeHash(desc);
+
+            uint key = (nameHash % 0x12107680) + (descHash % 0xBEADCF45);
+
+            for (int i = 0; i < formula.Count; i++)
+            {
+                uint comp = (formula[i] + key);
+                comps.Add(comp);
+            }
+
+            // Have to have 8 total comps... Pad with 0's
+            for (int i = formula.Count; i < 8; i++)
+                comps.Add(0);
 
             return comps;
         }

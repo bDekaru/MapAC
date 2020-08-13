@@ -13,5 +13,12 @@ namespace MapAC.DatLoader.Entity
 
             Hook = AnimationHook.ReadHook(reader);
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            writer.Write(StartTime);
+            Hook.Pack(writer);
+        }
+
     }
 }

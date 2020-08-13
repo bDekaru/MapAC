@@ -17,5 +17,15 @@ namespace MapAC.DatLoader.Entity
 
             ObjDesc.Unpack(reader);
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            writer.Write(IconImage);
+            writer.Write(Bald);
+            writer.Write(AlternateSetup);
+
+            ObjDesc.Pack(writer);
+        }
+
     }
 }

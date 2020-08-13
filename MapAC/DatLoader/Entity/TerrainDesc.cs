@@ -13,5 +13,12 @@ namespace MapAC.DatLoader.Entity
             TerrainTypes.Unpack(reader);
             LandSurfaces.Unpack(reader);
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            TerrainTypes.Pack(writer);
+            LandSurfaces.Pack(writer);
+        }
+
     }
 }

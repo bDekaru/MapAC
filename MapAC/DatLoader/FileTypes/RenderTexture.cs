@@ -31,5 +31,10 @@ namespace MapAC.DatLoader.FileTypes
             UnknownByte = reader.ReadByte();
             Textures.Unpack(reader);
         }
+
+        public override void Pack(BinaryWriter writer)
+        {
+            throw new System.NotSupportedException();
+        }
     }
 }

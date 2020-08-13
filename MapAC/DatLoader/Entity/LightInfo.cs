@@ -19,5 +19,16 @@ namespace MapAC.DatLoader.Entity
             Falloff     = reader.ReadSingle();
             ConeAngle   = reader.ReadSingle();
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            ViewerSpaceLocation.Pack(writer);
+
+            writer.Write(Color);
+            writer.Write(Intensity);
+            writer.Write(Falloff);
+            writer.Write(ConeAngle);
+        }
+
     }
 }

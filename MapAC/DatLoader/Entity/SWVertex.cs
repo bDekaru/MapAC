@@ -24,5 +24,18 @@ namespace MapAC.DatLoader.Entity
 
             UVs.Unpack(reader, numUVs);
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            writer.Write((ushort)UVs.Count);
+
+            writer.WriteVector3(Origin);
+            writer.WriteVector3(Normal);
+
+            for (var i = 0; i < UVs.Count; i++)
+                UVs[i].Pack(writer);
+
+        }
+
     }
 }

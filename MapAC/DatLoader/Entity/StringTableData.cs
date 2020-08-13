@@ -36,5 +36,28 @@ namespace MapAC.DatLoader.Entity
 
             Unknown = reader.ReadByte();
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            writer.Write(Id);
+
+            writer.Write((ushort)VarNames.Count);
+            for (int i = 0; i < VarNames.Count; i++)
+                writer.WriteUnicodeString(VarNames[i]);
+
+            writer.Write((ushort)Vars.Count);
+            for (int i = 0; i < Vars.Count; i++)
+                writer.WriteUnicodeString(Vars[i]);
+
+            writer.Write((ushort)Strings.Count);
+            for (int i = 0; i < Strings.Count; i++)
+                writer.WriteUnicodeString(Strings[i]);
+
+            writer.Write((ushort)Comments.Count);
+            for (int i = 0; i < Comments.Count; i++)
+                writer.Write(Comments[i]);
+
+            writer.Write(Unknown);
+        }
     }
 }

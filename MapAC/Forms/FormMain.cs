@@ -301,5 +301,36 @@ namespace WindowsFormsApp1
                 }
             }
         }
+
+        private void exportToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string folder = @"C:\ACE\PortalTemp\";
+
+            var setup = DatManager.CellDat.ReadFromDat<SetupModel>(0x020008E9);
+            string fileName = @"C:\ACE\PortalTemp\020008E9.bin";
+            using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
+                setup.Pack(writer);
+
+            var surface = DatManager.CellDat.ReadFromDat<Surface>(0x0800047e);
+            fileName = @"C:\ACE\PortalTemp\0800047e.bin";
+            using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
+                surface.Pack(writer);
+
+            DatReader dr = DatManager.CellDat.GetReaderForFile(0x010001ec);
+            fileName = @"C:\ACE\PortalTemp\010001ec-orig.bin";
+            File.WriteAllBytes(fileName, dr.Buffer);
+
+            /*
+            var gfxObj = DatManager.CellDat.ReadFromDat<GfxObj>(0x010001ec);
+            fileName = @"C:\ACE\PortalTemp\010001ec.bin";
+            using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
+                gfxObj.Pack(writer);
+            */
+            var pScript = DatManager.CellDat.ReadFromDat<PhysicsScript>(0x3300094E);
+            fileName = @"C:\ACE\PortalTemp\3300094E.bin";
+            using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
+                pScript.Pack(writer);
+
+        }
     }
 }

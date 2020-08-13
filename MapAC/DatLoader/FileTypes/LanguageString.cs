@@ -18,5 +18,10 @@ namespace MapAC.DatLoader.FileTypes
             if (strLen > 0)
                 CharBuffer = reader.ReadPString(strLen);
         }
+
+        public override void Pack(BinaryWriter writer)
+        {
+            throw new System.NotSupportedException();
+        }
     }
 }

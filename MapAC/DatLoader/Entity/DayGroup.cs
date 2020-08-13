@@ -19,5 +19,15 @@ namespace MapAC.DatLoader.Entity
             SkyObjects.Unpack(reader);
             SkyTime.Unpack(reader);
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            writer.Write(ChanceOfOccur);
+            writer.WritePString(DayName); writer.AlignBoundary();
+
+            SkyObjects.Pack(writer);
+            SkyTime.Pack(writer);
+        }
+
     }
 }

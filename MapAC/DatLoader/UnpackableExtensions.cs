@@ -20,6 +20,13 @@ namespace MapAC.DatLoader
             }
         }
 
+        public static void PackSmartArray(this List<int> value, BinaryWriter writer)
+        {
+            writer.Write((uint)value.Count);
+            for (int i = 0; i < value.Count; i++)
+                writer.Write(value[i]);
+        }
+
         /// <summary>
         /// A SmartArray uses a Compressed UInt32 for the length.
         /// </summary>
@@ -38,11 +45,11 @@ namespace MapAC.DatLoader
             }
         }
 
-        public static void PackSmartArray(this List<uint> value, BinaryWriter Writer)
+        public static void PackSmartArray(this List<uint> value, BinaryWriter writer)
         {
-            Writer.Write((uint)value.Count);
+            writer.Write((uint)value.Count);
             for (int i = 0; i < value.Count; i++)
-                Writer.Write(value[i]);
+                writer.Write(value[i]);
         }
 
         /// <summary>
@@ -58,6 +65,14 @@ namespace MapAC.DatLoader
                 item.Unpack(reader);
                 value.Add(item);
             }
+        }
+
+        public static void PackSmartArray<T>(this List<T> value, BinaryWriter writer) where T : IUnpackable, new()
+        {
+            writer.WriteCompressedUInt32((uint)value.Count);
+
+            for (int i = 0; i < value.Count; i++)
+                value[i].Pack(writer);
         }
 
 
@@ -103,6 +118,17 @@ namespace MapAC.DatLoader
             }
         }
 
+        public static void PackSmartArray<T>(this Dictionary<int, T> value, BinaryWriter writer) where T : IUnpackable, new()
+        {
+            writer.WriteCompressedUInt32((uint)value.Count);
+
+            foreach(var e in value)
+            {
+                writer.Write(e.Key);
+                e.Value.Pack(writer);
+            }
+        }
+
         /// <summary>
         /// A SmartArray uses a Compressed UInt32 for the length.
         /// </summary>
@@ -117,6 +143,17 @@ namespace MapAC.DatLoader
                 var item = new T();
                 item.Unpack(reader);
                 value.Add(key, item);
+            }
+        }
+
+        public static void PackSmartArray<T>(this Dictionary<uint, T> value, BinaryWriter writer) where T : IUnpackable, new()
+        {
+            writer.WriteCompressedUInt32((uint)value.Count);
+
+            foreach(var e in value)
+            {
+                writer.Write(e.Key);
+                e.Value.Pack(writer);
             }
         }
 
@@ -142,7 +179,6 @@ namespace MapAC.DatLoader
         public static void PackHashTable(this Dictionary<uint, uint> value, BinaryWriter writer)
         {
             throw new System.NotSupportedException();
-            return;
         }
 
         /// <summary>
@@ -152,7 +188,8 @@ namespace MapAC.DatLoader
         public static void UnpackPackedHashTable<T>(this Dictionary<uint, T> value, BinaryReader reader) where T : IUnpackable, new()
         {
             var totalObjects = reader.ReadUInt16();
-            /*var bucketSize = */reader.ReadUInt16();
+            /*var bucketSize = */
+            reader.ReadUInt16();
 
             for (int i = 0; i < totalObjects; i++)
             {
@@ -162,6 +199,24 @@ namespace MapAC.DatLoader
                 item.Unpack(reader);
                 value.Add(key, item);
             }
+        }
+
+        public static void PackHashTable<T>(this Dictionary<uint, T> value, BinaryWriter writer) where T : IUnpackable, new()
+        {
+            throw new System.NotSupportedException();
+            /*
+            var totalObjects = reader.ReadUInt16();
+            var bucketSize = reader.ReadUInt16();
+
+            for (int i = 0; i < totalObjects; i++)
+            {
+                var key = reader.ReadUInt32();
+
+                var item = new T();
+                item.Unpack(reader);
+                value.Add(key, item);
+            }
+            */
         }
 
         /// <summary>
@@ -184,6 +239,24 @@ namespace MapAC.DatLoader
             }
         }
 
+        public static void PackHashTable<T>(this SortedDictionary<uint, T> value, BinaryWriter writer) where T : IUnpackable, new()
+        {
+            throw new System.NotSupportedException();
+            /*
+            var totalObjects = reader.ReadUInt16();
+            var bucketSize = reader.ReadUInt16();
+
+            for (int i = 0; i < totalObjects; i++)
+            {
+                var key = reader.ReadUInt32();
+
+                var item = new T();
+                item.Unpack(reader);
+                value.Add(key, item);
+            }
+            */
+        }
+
         /// <summary>
         /// A list that uses a Int32 for the length.
         /// </summary>
@@ -196,6 +269,14 @@ namespace MapAC.DatLoader
                 var item = reader.ReadUInt32();
                 value.Add(item);
             }
+        }
+
+        public static void Pack(this List<uint> value, BinaryWriter writer)
+        {
+            writer.Write(value.Count);
+
+            for (int i = 0; i < value.Count; i++)
+                writer.Write(value[i]);
         }
 
         /// <summary>
@@ -216,9 +297,7 @@ namespace MapAC.DatLoader
         {
             writer.Write(value.Count);
             for (int i = 0; i < value.Count; i++)
-            {
-                item.Pack(writer);
-            }
+                value[i].Pack(writer);
         }
 
         public static void Unpack<T>(this List<T> value, BinaryReader reader, uint fixedQuantity) where T : IUnpackable, new()
@@ -244,7 +323,7 @@ namespace MapAC.DatLoader
             }
         }
 
-        public static void Pack<T>(this Dictionary<ushort, T> value, BinaryWriter writer, uint fixedQuantity) where T : IUnpackable, new()
+        public static void Pack<T>(this Dictionary<ushort, T> value, BinaryWriter writer) where T : IUnpackable, new()
         {
             foreach(var e in value)
             {
@@ -269,6 +348,16 @@ namespace MapAC.DatLoader
                 value.Add(key, item);
             }
         }
+        public static void Pack<T>(this Dictionary<int, T> value, BinaryWriter writer) where T : IUnpackable, new()
+        {
+            writer.Write(value.Count);
+            foreach(var e in value)
+            {
+                writer.Write(e.Key);
+                e.Value.Pack(writer);
+            }
+        }
+
 
         /// <summary>
         /// A Dictionary that uses a Int32 for the length.

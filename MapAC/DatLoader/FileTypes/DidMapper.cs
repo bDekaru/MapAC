@@ -55,5 +55,10 @@ namespace MapAC.DatLoader.FileTypes
             for (var i = 0; i < numServerEnumToNames; i++)
                 ServerEnumToName.Add(reader.ReadUInt32(), reader.ReadPString(1));
         }
+
+        public override void Pack(BinaryWriter writer)
+        {
+            throw new System.NotSupportedException();
+        }
     }
 }

@@ -67,6 +67,26 @@ namespace MapAC.DatLoader.FileTypes
             reader.AlignBoundary();
         }
 
+        public override void Pack(BinaryWriter writer)
+        {
+            writer.Write(Id);
+
+            if (HasObjects)
+                writer.Write(1);
+            else
+                writer.Write(0);
+
+            // Write the terrain. 9x9 so 81 records.
+            for (int i = 0; i < 81; i++)
+                writer.Write(Terrain[i]);
+
+            // Write the height. 9x9 so 81 records
+            for (int i = 0; i < 81; i++)
+                writer.Write(Height[i]);
+
+            writer.AlignBoundary();
+        }
+
         public static ushort GetRoad(ushort terrain)
         {
             return GetTerrain(terrain, TerrainMask_Road, TerrainShift_Road);

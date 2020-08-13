@@ -21,5 +21,10 @@ namespace MapAC.DatLoader.FileTypes
             MaxStamina.Unpack(reader);
             MaxMana.Unpack(reader);
         }
+
+        public override void Pack(BinaryWriter writer)
+        {
+            throw new System.NotSupportedException();
+        }
     }
 }

@@ -32,5 +32,10 @@ namespace MapAC.DatLoader.FileTypes
                 Contracts.Add(key, value);
             }
         }
+
+        public override void Pack(BinaryWriter writer)
+        {
+            throw new System.NotSupportedException();
+        }
     }
 }

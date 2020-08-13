@@ -14,10 +14,18 @@ namespace MapAC.DatLoader.Entity
 
         public void Unpack(BinaryReader reader)
         {
-            AnimId      = reader.ReadUInt32();
-            LowFrame    = reader.ReadInt32();
-            HighFrame   = reader.ReadInt32();
-            Framerate   = reader.ReadSingle();
+            AnimId = reader.ReadUInt32();
+            LowFrame = reader.ReadInt32();
+            HighFrame = reader.ReadInt32();
+            Framerate = reader.ReadSingle();
+        }
+
+        public void Pack(BinaryWriter writer)
+        {
+            writer.Write(AnimId);
+            writer.Write(LowFrame);
+            writer.Write(HighFrame);
+            writer.Write(Framerate);
         }
 
         public override string ToString()

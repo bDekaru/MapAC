@@ -50,6 +50,11 @@ namespace MapAC.DatLoader.FileTypes
             }
         }
 
+        public override void Pack(BinaryWriter writer)
+        {
+            throw new System.NotSupportedException();
+        }
+
         public class AttackHeights
         {
             public Dictionary<AttackHeight, AttackTypes> Table = new Dictionary<AttackHeight, AttackTypes>();

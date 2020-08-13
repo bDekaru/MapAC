@@ -18,5 +18,15 @@ namespace MapAC.DatLoader.Entity
             IdealDist   = reader.ReadSingle();
             MaxDist     = reader.ReadSingle();
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            writer.Write(Id);
+            writer.Write(DegradeMode);
+            writer.Write(MinDist);
+            writer.Write(IdealDist);
+            writer.Write(MaxDist);
+        }
+
     }
 }

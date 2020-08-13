@@ -31,6 +31,17 @@ namespace MapAC.DatLoader.Entity
                 BannedPatterns.Add(reader.ReadString());
         }
 
+        public void Pack(BinaryWriter writer)
+        {
+            writer.Write(Unknown1);
+            writer.Write(Unknown2);
+
+            writer.Write(BannedPatterns.Count);
+
+            for (int i = 0; i < BannedPatterns.Count; i++)
+                writer.Write(BannedPatterns[i]);
+        }
+
         /// <summary>
         /// This will search all the BannedPatterns to see if the input passes or fails.
         /// </summary>

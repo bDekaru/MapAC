@@ -35,5 +35,17 @@ namespace MapAC.DatLoader.Entity
 
             Portals.Unpack(reader);
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            writer.Write(ModelId);
+
+            Frame.Pack(writer);
+
+            writer.Write(NumLeaves);
+
+            Portals.Pack(writer);
+        }
+
     }
 }

@@ -33,5 +33,25 @@ namespace MapAC.DatLoader.Entity
             reader.BaseStream.Position++; // 0x01 byte here. Not sure what/why, so skip it!
             Genders.UnpackSmartArray(reader);
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            writer.Write(Name);
+            writer.Write(IconImage);
+            writer.Write(SetupID);
+            writer.Write(EnvironmentSetupID);
+            writer.Write(AttributeCredits);
+            writer.Write(SkillCredits);
+
+            PrimaryStartAreas.PackSmartArray(writer);
+            SecondaryStartAreas.PackSmartArray(writer);
+            Skills.PackSmartArray(writer);
+            Templates.PackSmartArray(writer);
+
+            writer.Write((byte)1); // 0x01 byte here. Not sure what/why
+
+            Genders.PackSmartArray(writer);
+        }
+
     }
 }

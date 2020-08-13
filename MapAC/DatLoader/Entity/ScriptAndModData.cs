@@ -12,5 +12,12 @@ namespace MapAC.DatLoader.Entity
             Mod         = reader.ReadSingle();
             ScriptId    = reader.ReadUInt32();
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            writer.Write(Mod);
+            writer.Write(ScriptId);
+        }
+
     }
 }

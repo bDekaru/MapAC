@@ -19,5 +19,15 @@ namespace MapAC.DatLoader.Entity
             MinSkillLevel   = reader.ReadUInt32();
             Motion          = (MotionCommand)reader.ReadUInt32();
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            writer.Write((uint)Style);
+            writer.Write((uint)AttackHeight);
+            writer.Write((uint)AttackType);
+            writer.Write((uint)MinSkillLevel);
+            writer.Write((uint)Motion);
+        }
+
     }
 }

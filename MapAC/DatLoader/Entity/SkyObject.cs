@@ -32,5 +32,20 @@ namespace MapAC.DatLoader.Entity
 
             reader.AlignBoundary();
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            writer.Write(BeginTime);
+            writer.Write(EndTime);
+            writer.Write(BeginAngle);
+            writer.Write(EndAngle);
+            writer.Write(TexVelocityX);
+            writer.Write(TexVelocityY);
+            writer.Write(DefaultGFXObjectId);
+            writer.Write(DefaultPESObjectId);
+            writer.Write(Properties);
+            writer.AlignBoundary();
+        }
+
     }
 }

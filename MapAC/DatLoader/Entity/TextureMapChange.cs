@@ -15,5 +15,13 @@ namespace MapAC.DatLoader.Entity
             OldTexture  = reader.ReadAsDataIDOfKnownType(0x05000000);
             NewTexture  = reader.ReadAsDataIDOfKnownType(0x05000000);
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            writer.Write(PartIndex);
+            writer.WriteAsDataIDOfKnownType(OldTexture, 0x05000000);
+            writer.WriteAsDataIDOfKnownType(NewTexture, 0x05000000);
+        }
+
     }
 }

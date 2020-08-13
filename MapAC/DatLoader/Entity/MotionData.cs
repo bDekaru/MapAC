@@ -29,5 +29,22 @@ namespace MapAC.DatLoader.Entity
             if ((Flags & MotionDataFlags.HasOmega) != 0)
                 Omega = reader.ReadVector3();
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            writer.Write((byte)Anims.Count);
+            writer.Write(Bitfield);
+            writer.Write((byte)Flags);
+            writer.AlignBoundary();
+
+            Anims.Pack(writer);
+
+            if ((Flags & MotionDataFlags.HasVelocity) != 0)
+                writer.WriteVector3(Velocity);
+
+            if ((Flags & MotionDataFlags.HasOmega) != 0)
+                writer.WriteVector3(Omega);
+        }
+
     }
 }

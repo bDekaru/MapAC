@@ -34,6 +34,11 @@ namespace MapAC.DatLoader.FileTypes
             SpellComponents.Unpack(reader, numComps);
         }
 
+        public override void Pack(BinaryWriter writer)
+        {
+            throw new System.NotSupportedException();
+        }
+
         public static string GetSpellWords(SpellComponentsTable comps, List<uint> formula)
         {
             string firstSpellWord = "";

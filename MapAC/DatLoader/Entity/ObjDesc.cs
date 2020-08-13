@@ -29,5 +29,26 @@ namespace MapAC.DatLoader.Entity
 
             reader.AlignBoundary();
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            writer.AlignBoundary();
+
+            writer.Write((byte)0x11); // ObjDesc always starts with 11.
+
+            writer.Write((byte)SubPalettes.Count);
+            writer.Write((byte)TextureChanges.Count);
+            writer.Write((byte)AnimPartChanges.Count);
+
+            if (SubPalettes.Count > 0)
+                writer.WriteAsDataIDOfKnownType(PaletteID, 0x04000000);
+
+            SubPalettes.Pack(writer);
+            TextureChanges.Pack(writer);
+            AnimPartChanges.Pack(writer);
+
+            writer.AlignBoundary();
+        }
+
     }
 }

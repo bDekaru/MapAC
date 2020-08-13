@@ -46,6 +46,24 @@ namespace MapAC.DatLoader.Entity
             LearnMod = reader.ReadDouble();
         }
 
+
+        public void Pack(BinaryWriter writer)
+        {
+            writer.WritePString(Description); writer.AlignBoundary();
+            writer.WritePString(Name); writer.AlignBoundary();
+            writer.Write(IconId);
+            writer.Write(TrainedCost);
+            writer.Write(SpecializedCost);
+            writer.Write(Category);
+            writer.Write(ChargenUse);
+            writer.Write(MinLevel);
+            Formula.Pack(writer);
+            writer.Write(UpperBound);
+            writer.Write(LowerBound);
+            writer.Write(LearnMod);
+        }
+
+
         public SkillBase() { }
 
         public SkillBase(SkillFormula formula)

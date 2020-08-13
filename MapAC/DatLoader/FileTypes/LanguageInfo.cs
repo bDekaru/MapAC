@@ -108,6 +108,11 @@ namespace MapAC.DatLoader.FileTypes
             AdditionalFlags = reader.ReadUInt32();
         }
 
+        public override void Pack(BinaryWriter writer)
+        {
+            throw new System.NotSupportedException();
+        }
+
         // just a little helper function...
         private List<char> UnpackList(BinaryReader reader)
         {

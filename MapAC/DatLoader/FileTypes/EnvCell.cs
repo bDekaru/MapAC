@@ -90,6 +90,11 @@ namespace MapAC.DatLoader.FileTypes
                 RestrictionObj = reader.ReadUInt32();
         }
 
+        public override void Pack(BinaryWriter writer)
+        {
+            throw new System.NotSupportedException();
+        }
+
         public byte[] Pack()
         {
             using(MemoryStream Data = new System.IO.MemoryStream()){

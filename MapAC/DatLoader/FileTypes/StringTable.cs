@@ -26,5 +26,10 @@ namespace MapAC.DatLoader.FileTypes
 
             StringTableData.UnpackSmartArray(reader);
         }
+
+        public override void Pack(BinaryWriter writer)
+        {
+            throw new System.NotSupportedException();
+        }
     }
 }

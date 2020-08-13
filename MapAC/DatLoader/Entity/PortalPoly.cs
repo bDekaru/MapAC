@@ -12,5 +12,12 @@ namespace MapAC.DatLoader.Entity
             PortalIndex = reader.ReadInt16();
             PolygonId   = reader.ReadInt16();
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            writer.Write(PortalIndex);
+            writer.Write(PolygonId);
+        }
+
     }
 }

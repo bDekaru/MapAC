@@ -16,5 +16,12 @@ namespace MapAC.DatLoader.Entity
             Data.Unpack(reader);
             Unknown = reader.ReadUInt32();
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            Data.Pack(writer);
+            writer.Write(Unknown);
+        }
+
     }
 }

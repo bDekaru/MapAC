@@ -33,5 +33,11 @@ namespace MapAC.DatLoader.Entity
                     SpellSetTiersNoGaps.Add(i, lastSpellSetTier);
             }
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            SpellSetTiers.PackHashTable(writer);
+        }
+
     }
 }

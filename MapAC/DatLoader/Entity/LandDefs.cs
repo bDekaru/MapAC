@@ -30,5 +30,21 @@ namespace MapAC.DatLoader.Entity
             for (int i = 0; i < 256; i++)
                 LandHeightTable.Add(reader.ReadSingle());
         }
+
+        public void Pack(BinaryWriter writer)
+        {
+            writer.Write(NumBlockLength);
+            writer.Write(NumBlockWidth);
+            writer.Write(SquareLength);
+            writer.Write(LBlockLength);
+            writer.Write(VertexPerCell);
+            writer.Write(MaxObjHeight);
+            writer.Write(SkyHeight);
+            writer.Write(RoadWidth);
+
+            for (int i = 0; i < 256; i++)
+                writer.Write(LandHeightTable[i]);
+        }
+
     }
 }
