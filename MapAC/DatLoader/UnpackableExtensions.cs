@@ -57,7 +57,11 @@ namespace MapAC.DatLoader
         /// </summary>
         public static void UnpackSmartArray<T>(this List<T> value, BinaryReader reader) where T : IUnpackable, new()
         {
-            var totalObjects = reader.ReadCompressedUInt32();
+            uint totalObjects;
+            if (DatManager.DatVersion == DatVersionType.ACDM)
+                totalObjects = reader.ReadUInt32();
+            else
+                totalObjects = reader.ReadCompressedUInt32();
 
             for (int i = 0; i < totalObjects; i++)
             {
@@ -81,7 +85,11 @@ namespace MapAC.DatLoader
         /// </summary>
         public static void UnpackSmartArray<T>(this Dictionary<ushort, T> value, BinaryReader reader) where T : IUnpackable, new()
         {
-            var totalObjects = reader.ReadCompressedUInt32();
+            uint totalObjects;
+            if (DatManager.DatVersion == DatVersionType.ACDM)
+                totalObjects = reader.ReadUInt32();
+            else
+                totalObjects = reader.ReadCompressedUInt32();
 
             for (int i = 0; i < totalObjects; i++)
             {
@@ -165,8 +173,7 @@ namespace MapAC.DatLoader
         public static void UnpackPackedHashTable(this Dictionary<uint, uint> value, BinaryReader reader)
         {
             var totalObjects = reader.ReadUInt16();
-            /*var bucketSize = */
-            reader.ReadUInt16();
+            var bucketSize = reader.ReadUInt16();
 
             for (int i = 0; i < totalObjects; i++)
                 value.Add(reader.ReadUInt32(), reader.ReadUInt32());
@@ -188,24 +195,6 @@ namespace MapAC.DatLoader
         public static void UnpackPackedHashTable<T>(this Dictionary<uint, T> value, BinaryReader reader) where T : IUnpackable, new()
         {
             var totalObjects = reader.ReadUInt16();
-            /*var bucketSize = */
-            reader.ReadUInt16();
-
-            for (int i = 0; i < totalObjects; i++)
-            {
-                var key = reader.ReadUInt32();
-
-                var item = new T();
-                item.Unpack(reader);
-                value.Add(key, item);
-            }
-        }
-
-        public static void PackHashTable<T>(this Dictionary<uint, T> value, BinaryWriter writer) where T : IUnpackable, new()
-        {
-            throw new System.NotSupportedException();
-            /*
-            var totalObjects = reader.ReadUInt16();
             var bucketSize = reader.ReadUInt16();
 
             for (int i = 0; i < totalObjects; i++)
@@ -216,7 +205,17 @@ namespace MapAC.DatLoader
                 item.Unpack(reader);
                 value.Add(key, item);
             }
-            */
+        }
+
+        public static void PackHashTable<T>(this Dictionary<uint, T> value, BinaryWriter writer, ushort bucketSize) where T : IUnpackable, new()
+        {
+            writer.Write((ushort)value.Count);
+            writer.Write(bucketSize);
+            foreach(var e in value)
+            {
+                writer.Write(e.Key);
+                e.Value.Pack(writer);
+            }
         }
 
         /// <summary>
@@ -226,8 +225,7 @@ namespace MapAC.DatLoader
         public static void UnpackPackedHashTable<T>(this SortedDictionary<uint, T> value, BinaryReader reader) where T : IUnpackable, new()
         {
             var totalObjects = reader.ReadUInt16();
-            /*var bucketSize = */
-            reader.ReadUInt16();
+            var bucketSize = reader.ReadUInt16();
 
             for (int i = 0; i < totalObjects; i++)
             {

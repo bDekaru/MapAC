@@ -119,7 +119,6 @@ namespace MapAC.DatLoader.FileTypes
                     Length = Width * Height * 3;
                     Format = SurfacePixelFormat.PFID_R8G8B8;
                     SourceData = reader.ReadBytes((int)(reader.BaseStream.Length - reader.BaseStream.Position));
-
                     break;
             }
 
@@ -300,6 +299,7 @@ namespace MapAC.DatLoader.FileTypes
                     }
                     break;
                 case SurfacePixelFormat.PFID_P8: // Indexed
+                case SurfacePixelFormat.INDEX8:
                     using (BinaryReader reader = new BinaryReader(new MemoryStream(SourceData)))
                     {
                         for (uint y = 0; y < Height; y++)
@@ -393,6 +393,7 @@ namespace MapAC.DatLoader.FileTypes
                             image.SetPixel(j, i, Color.FromArgb(a, r, g, b));
                         }
                     break;
+                case SurfacePixelFormat.INDEX8:
                 case SurfacePixelFormat.PFID_INDEX16:
                 case SurfacePixelFormat.PFID_P8:
                     Palette pal = DatManager.CellDat.ReadFromDat<Palette>((uint)DefaultPaletteId);

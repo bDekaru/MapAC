@@ -20,6 +20,9 @@ namespace MapAC.DatLoader.FileTypes
 
         public override void Unpack(BinaryReader reader)
         {
+            if (DatManager.DatVersion == DatVersionType.ACDM)
+                Id = reader.ReadUInt32();
+
             Type = (SurfaceType)reader.ReadUInt32();
 
             if (Type.HasFlag(SurfaceType.Base1Image) || Type.HasFlag(SurfaceType.Base1ClipMap))

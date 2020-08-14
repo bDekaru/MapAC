@@ -21,9 +21,11 @@ namespace MapAC.DatLoader.FileTypes
         // public int TextureCount { get; private set; }
         public List<uint> Textures { get; private set; } = new List<uint>(); // These values correspond to a Surface (0x06) entry
 
-        public int Format;
+        public SurfacePixelFormat Format;
         public int Width;
         public int Height;
+        public int Length;
+        public uint? DefaultPaletteId;
         public byte[] SourceData { get; set; }
 
         public override void Unpack(BinaryReader reader)
@@ -37,22 +39,37 @@ namespace MapAC.DatLoader.FileTypes
                     Textures.Unpack(reader);
                     break;
                 case DatVersionType.ACDM:
-                    Format = reader.ReadInt32();
+                    Format = (SurfacePixelFormat)reader.ReadInt32();
                     Width = reader.ReadInt32();
                     Height = reader.ReadInt32();
                     SourceData = reader.ReadBytes((int)(reader.BaseStream.Length - reader.BaseStream.Position));
+                    switch (Format)
+                    {
+                        case SurfacePixelFormat.INDEX8:
+                            reader.BaseStream.Position -= 4; // move position back 4 bytes
+                            DefaultPaletteId = reader.ReadUInt32();
+                            break;
+                    }
                     break;
             }
         }
 
         public override void Pack(BinaryWriter writer)
         {
-            throw new System.NotSupportedException();
+            switch (DatManager.DatVersion)
+            {
+                case DatVersionType.ACTOD:
+                    throw new System.NotSupportedException();
+                    break;
+                case DatVersionType.ACDM:
+
+                    break;
+            }
         }
 
-        /// <summary>
-        /// </summary>
-        /// <returns></returns>
+            /// <summary>
+            /// </summary>
+            /// <returns></returns>
         public Bitmap GetBitmap()
         {
             if(Width == 0)
@@ -64,14 +81,17 @@ namespace MapAC.DatLoader.FileTypes
             tex.Width = Width;
             tex.Height = Height;
             tex.SourceData = SourceData;
+            tex.Format = Format;
             switch (Format)
             {
-                case 0xa:
-                    tex.Format = SurfacePixelFormat.COLOR_SEP;
+                case SurfacePixelFormat.COLOR_SEP:
                     tex.Length = Width * Height * 3;
                     break;
-                default:
-                    return null;
+                case SurfacePixelFormat.INDEX8:
+                    tex.DefaultPaletteId = DefaultPaletteId;
+                    tex.DefaultPaletteId = 0x040010b1;
+                    tex.Length = Width * Height * 8;
+                    break;
             }
             return tex.GetBitmap();
         }

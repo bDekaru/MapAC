@@ -36,7 +36,9 @@ namespace MapAC.DatLoader.FileTypes
 
         public override void Pack(BinaryWriter writer)
         {
-            throw new System.NotSupportedException();
+            writer.Write(Id);
+            ClothingBaseEffects.PackHashTable(writer, 0x8); //bucket size = 8
+            ClothingSubPalEffects.PackHashTable(writer, 0x20); //bucket size = 0x20
         }
 
 

@@ -305,32 +305,98 @@ namespace WindowsFormsApp1
         private void exportToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string folder = @"C:\ACE\PortalTemp\";
+            string fileName;
+            DatReader dr;
+            uint fileId;
 
-            var setup = DatManager.CellDat.ReadFromDat<SetupModel>(0x020008E9);
-            string fileName = @"C:\ACE\PortalTemp\020008E9.bin";
+            foreach(var entry in DatManager.CellDat.AllFiles)
+            {
+                if(entry.Key > 0x20000000 && entry.Key < 0x20FFFFFF)
+                {
+                    var myThing = DatManager.CellDat.ReadFromDat<SoundTable>(entry.Key);
+                }
+            }
+            
+            fileId = 0x100002AE;
+            var cb = DatManager.CellDat.ReadFromDat<ClothingTable>(fileId);
+            dr = DatManager.CellDat.GetReaderForFile(fileId);
+            fileName = @"C:\ACE\PortalTemp\" + fileId .ToString("X8") + "- orig.bin";
+            File.WriteAllBytes(fileName, dr.Buffer);
+            fileName = @"C:\ACE\PortalTemp\" + fileId.ToString("X8") + ".bin";
+            using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
+                cb.Pack(writer);
+
+            var SpellTable = DatManager.CellDat.ReadFromDat<SpellTable>(0x0E00000E);
+
+            return;
+            fileId = 0x0f00019b;
+            var palSet = DatManager.CellDat.ReadFromDat<PaletteSet>(fileId);
+            dr = DatManager.CellDat.GetReaderForFile(fileId);
+            fileName = @"C:\ACE\PortalTemp\" + fileId.ToString("X8") + "- orig.bin";
+            File.WriteAllBytes(fileName, dr.Buffer);
+            fileName = @"C:\ACE\PortalTemp\" + fileId.ToString("X8") + ".bin";
+            using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
+                palSet.Pack(writer);
+
+            var setup = DatManager.CellDat.ReadFromDat<SetupModel>(0x020009ED);
+            fileName = @"C:\ACE\PortalTemp\020009ED.bin";
             using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
                 setup.Pack(writer);
 
+            /*
             var surface = DatManager.CellDat.ReadFromDat<Surface>(0x0800047e);
             fileName = @"C:\ACE\PortalTemp\0800047e.bin";
             using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
                 surface.Pack(writer);
-
-            DatReader dr = DatManager.CellDat.GetReaderForFile(0x010001ec);
-            fileName = @"C:\ACE\PortalTemp\010001ec-orig.bin";
+            */
+            dr = DatManager.CellDat.GetReaderForFile(0x010020c2);
+            fileName = @"C:\ACE\PortalTemp\010020c2-orig.bin";
             File.WriteAllBytes(fileName, dr.Buffer);
 
+            var gfxObj = DatManager.CellDat.ReadFromDat<GfxObj>(0x010020c2);
+            fileName = @"C:\ACE\PortalTemp\010020c2.bin";
             /*
-            var gfxObj = DatManager.CellDat.ReadFromDat<GfxObj>(0x010001ec);
-            fileName = @"C:\ACE\PortalTemp\010001ec.bin";
             using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
                 gfxObj.Pack(writer);
             */
-            var pScript = DatManager.CellDat.ReadFromDat<PhysicsScript>(0x3300094E);
-            fileName = @"C:\ACE\PortalTemp\3300094E.bin";
-            using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
-                pScript.Pack(writer);
 
+            for(var i = 0; i < gfxObj.Surfaces.Count; i++)
+            {
+                var surfaceId = gfxObj.Surfaces[i];
+                var surface = DatManager.CellDat.ReadFromDat<Surface>(surfaceId);
+                fileName = @"C:\ACE\PortalTemp\" + surfaceId.ToString("X8") + ".bin";
+                using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
+                    surface.Pack(writer);
+
+                if(surface.OrigPaletteId > 0)
+                {
+                    var pal = DatManager.CellDat.ReadFromDat<Palette>(surface.OrigPaletteId);
+                    fileName = @"C:\ACE\PortalTemp\" + surface.OrigPaletteId.ToString("X8") + ".bin";
+                    using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
+                        pal.Pack(writer);
+
+                }
+
+                if (surface.OrigTextureId > 0)
+                {
+                    var tex = DatManager.CellDat.ReadFromDat<SurfaceTexture>(surface.OrigTextureId);
+                    fileName = @"C:\ACE\PortalTemp\" + surface.OrigTextureId.ToString("X8") + "-orig.bin";
+                    /*
+                    using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
+                        tex.Pack(writer);
+                    */
+                    dr = DatManager.CellDat.GetReaderForFile(surface.OrigTextureId);
+                    File.WriteAllBytes(fileName, dr.Buffer);
+
+                    var bmp = tex.GetBitmap();
+                    if (bmp != null)
+                    {
+                        fileName = @"C:\ACE\PortalTemp\" + surface.OrigTextureId.ToString("X8") + ".png";
+                        bmp.Save(fileName, ImageFormat.Png);
+                    }
+                }
+
+            }
         }
     }
 }
