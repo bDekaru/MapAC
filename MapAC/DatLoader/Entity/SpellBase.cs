@@ -108,9 +108,12 @@ namespace MapAC.DatLoader.Entity
             FizzleEffect = reader.ReadUInt32();
             RecoveryInterval = reader.ReadDouble();
             RecoveryAmount = reader.ReadSingle();
-            DisplayOrder = reader.ReadUInt32();
-            NonComponentTargetType = reader.ReadUInt32();
-            ManaMod = reader.ReadUInt32();
+            if (DatManager.DatVersion == DatVersionType.ACTOD)
+            {
+                DisplayOrder = reader.ReadUInt32();
+                NonComponentTargetType = reader.ReadUInt32();
+                ManaMod = reader.ReadUInt32();
+            }
         }
 
         public void Pack(BinaryWriter writer)

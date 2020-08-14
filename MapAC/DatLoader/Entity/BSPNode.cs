@@ -135,7 +135,7 @@ namespace MapAC.DatLoader.Entity
         public virtual void Pack(BinaryWriter writer, BSPType treeType)
         {
             byte[] typeBytes = Encoding.ASCII.GetBytes(Type);
-            for (var i = typeBytes.Length; i > 0; i--)
+            for (var i = typeBytes.Length-1; i > 0; i--)
                 writer.Write(typeBytes[i]);
 
             switch (Type)

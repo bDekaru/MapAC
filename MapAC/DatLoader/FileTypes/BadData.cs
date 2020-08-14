@@ -21,7 +21,7 @@ namespace MapAC.DatLoader.FileTypes
         public override void Pack(BinaryWriter writer)
         {
             writer.Write(Id);
-            Bad.PackHashTable(writer);
+            Bad.PackHashTable(writer, 0x20);
         }
 
     }

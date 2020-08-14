@@ -309,14 +309,6 @@ namespace WindowsFormsApp1
             DatReader dr;
             uint fileId;
 
-            foreach(var entry in DatManager.CellDat.AllFiles)
-            {
-                if(entry.Key > 0x20000000 && entry.Key < 0x20FFFFFF)
-                {
-                    var myThing = DatManager.CellDat.ReadFromDat<SoundTable>(entry.Key);
-                }
-            }
-            
             fileId = 0x100002AE;
             var cb = DatManager.CellDat.ReadFromDat<ClothingTable>(fileId);
             dr = DatManager.CellDat.GetReaderForFile(fileId);
@@ -326,9 +318,6 @@ namespace WindowsFormsApp1
             using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
                 cb.Pack(writer);
 
-            var SpellTable = DatManager.CellDat.ReadFromDat<SpellTable>(0x0E00000E);
-
-            return;
             fileId = 0x0f00019b;
             var palSet = DatManager.CellDat.ReadFromDat<PaletteSet>(fileId);
             dr = DatManager.CellDat.GetReaderForFile(fileId);
@@ -355,10 +344,8 @@ namespace WindowsFormsApp1
 
             var gfxObj = DatManager.CellDat.ReadFromDat<GfxObj>(0x010020c2);
             fileName = @"C:\ACE\PortalTemp\010020c2.bin";
-            /*
             using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
                 gfxObj.Pack(writer);
-            */
 
             for(var i = 0; i < gfxObj.Surfaces.Count; i++)
             {

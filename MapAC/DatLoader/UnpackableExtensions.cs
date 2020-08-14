@@ -179,13 +179,15 @@ namespace MapAC.DatLoader
                 value.Add(reader.ReadUInt32(), reader.ReadUInt32());
         }
 
-        /// <summary>
-        /// A PackedHashTable uses a UInt16 for length, and a UInt16 for bucket size.
-        /// We don't need to worry about the bucket size with C#.
-        /// </summary>
-        public static void PackHashTable(this Dictionary<uint, uint> value, BinaryWriter writer)
+        public static void PackHashTable(this Dictionary<uint, uint> value, BinaryWriter writer, ushort bucketSize)
         {
-            throw new System.NotSupportedException();
+            writer.Write((ushort)value.Count);
+            writer.Write(bucketSize);
+            foreach (var e in value)
+            {
+                writer.Write(e.Key);
+                writer.Write(e.Value);
+            }
         }
 
         /// <summary>
@@ -204,6 +206,10 @@ namespace MapAC.DatLoader
                 var item = new T();
                 item.Unpack(reader);
                 value.Add(key, item);
+                if(value.Count > 2)
+                {
+                    var test = 1;
+                }
             }
         }
 
@@ -237,22 +243,15 @@ namespace MapAC.DatLoader
             }
         }
 
-        public static void PackHashTable<T>(this SortedDictionary<uint, T> value, BinaryWriter writer) where T : IUnpackable, new()
+        public static void PackHashTable<T>(this SortedDictionary<uint, T> value, BinaryWriter writer, ushort bucketSize) where T : IUnpackable, new()
         {
-            throw new System.NotSupportedException();
-            /*
-            var totalObjects = reader.ReadUInt16();
-            var bucketSize = reader.ReadUInt16();
-
-            for (int i = 0; i < totalObjects; i++)
+            writer.Write((ushort)value.Count);
+            writer.Write(bucketSize);
+            foreach (var e in value)
             {
-                var key = reader.ReadUInt32();
-
-                var item = new T();
-                item.Unpack(reader);
-                value.Add(key, item);
+                writer.Write(e.Key);
+                e.Value.Pack(writer);
             }
-            */
         }
 
         /// <summary>

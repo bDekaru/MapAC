@@ -19,12 +19,12 @@ namespace MapAC.DatLoader.FileTypes
         public override void Unpack(BinaryReader reader)
         {
             Id = reader.ReadUInt32();
-            SkillBaseHash.UnpackPackedHashTable(reader);
         }
 
         public override void Pack(BinaryWriter writer)
         {
-            throw new System.NotSupportedException();
+            writer.Write(Id);
+            SkillBaseHash.PackHashTable(writer, 0x20);
         }
 
         public void AddRetiredSkills()

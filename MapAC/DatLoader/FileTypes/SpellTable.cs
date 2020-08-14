@@ -23,12 +23,17 @@ namespace MapAC.DatLoader.FileTypes
             Id = reader.ReadUInt32();
 
             Spells.UnpackPackedHashTable(reader);
-            SpellSet.UnpackPackedHashTable(reader);
+
+            var dataRemaining = reader.BaseStream.Length - reader.BaseStream.Position;
+            if(dataRemaining > 4 && DatManager.DatVersion == DatVersionType.ACTOD)
+                SpellSet.UnpackPackedHashTable(reader);
         }
 
         public override void Pack(BinaryWriter writer)
         {
-            throw new System.NotSupportedException();
+            writer.Write(Id);
+            Spells.PackHashTable(writer, 0x2000);
+            SpellSet.PackHashTable(writer, 0x0100);
         }
 
         /// <summary>

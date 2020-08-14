@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -72,8 +73,9 @@ namespace MapAC.DatLoader.FileTypes
 
             Buildings.Pack(writer);
 
+            throw new NotImplementedException();
             if ((PackMask & 1) == 1)
-                RestrictionTables.PackHashTable(writer);
+                RestrictionTables.PackHashTable(writer,0);
         }
     }
 }

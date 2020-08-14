@@ -36,7 +36,7 @@ namespace MapAC.DatLoader.Entity
 
         public void Pack(BinaryWriter writer)
         {
-            SpellSetTiers.PackHashTable(writer);
+            SpellSetTiers.PackHashTable(writer, 0);
         }
 
     }

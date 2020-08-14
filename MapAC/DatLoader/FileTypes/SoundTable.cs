@@ -25,15 +25,7 @@ namespace MapAC.DatLoader.FileTypes
             Id = reader.ReadUInt32();
             Unknown = reader.ReadUInt32();
             SoundHash.Unpack(reader);
-            /*
-            reader.ReadUInt16();
-            var firstBucketSize = reader.ReadUInt16();
-            if (firstBucketSize != 0)
-            {
-                var test = 1;
-            }
-            reader.BaseStream.Position -= 4;
-            */
+           
             Data.UnpackPackedHashTable(reader);
         }
 
