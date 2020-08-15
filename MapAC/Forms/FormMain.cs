@@ -332,18 +332,25 @@ namespace WindowsFormsApp1
             using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
                 setup.Pack(writer);
 
-            /*
-            var surface = DatManager.CellDat.ReadFromDat<Surface>(0x0800047e);
-            fileName = @"C:\ACE\PortalTemp\0800047e.bin";
+            var surfaceThing = DatManager.CellDat.ReadFromDat<Surface>(0x0800047e);
+            fileName = @"C:\ACE\PortalTemp\0800047E.bin";
             using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
-                surface.Pack(writer);
-            */
-            dr = DatManager.CellDat.GetReaderForFile(0x010020c2);
-            fileName = @"C:\ACE\PortalTemp\010020c2-orig.bin";
-            File.WriteAllBytes(fileName, dr.Buffer);
+                surfaceThing.Pack(writer);
 
-            var gfxObj = DatManager.CellDat.ReadFromDat<GfxObj>(0x010020c2);
-            fileName = @"C:\ACE\PortalTemp\010020c2.bin";
+
+            fileId = 0x040010B1;
+            var myPal = DatManager.CellDat.ReadFromDat<Palette>(fileId);
+            fileName = @"C:\ACE\PortalTemp\" + fileId.ToString("X8") + ".bin";
+            using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
+                myPal.Pack(writer);
+
+            fileId = 0x010020c2;
+            dr = DatManager.CellDat.GetReaderForFile(fileId);
+            fileName = @"C:\ACE\PortalTemp\" + fileId.ToString("X8") + "- orig.bin";
+            File.WriteAllBytes(fileName, dr.Buffer);
+                        
+            var gfxObj = DatManager.CellDat.ReadFromDat<GfxObj>(fileId);
+            fileName = @"C:\ACE\PortalTemp\" + fileId.ToString("X8") + ".bin";
             using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
                 gfxObj.Pack(writer);
 
@@ -384,6 +391,8 @@ namespace WindowsFormsApp1
                 }
 
             }
+
+            AddStatus("Done Exporting Files.");
         }
     }
 }

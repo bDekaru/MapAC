@@ -47,7 +47,7 @@ namespace MapAC.DatLoader
 
         public static void PackSmartArray(this List<uint> value, BinaryWriter writer)
         {
-            writer.Write((uint)value.Count);
+            writer.WriteCompressedUInt32((uint)value.Count);
             for (int i = 0; i < value.Count; i++)
                 writer.Write(value[i]);
         }
@@ -102,7 +102,8 @@ namespace MapAC.DatLoader
         }
         public static void PackSmartArray<T>(this Dictionary<ushort, T> value, BinaryWriter writer) where T : IUnpackable, new()
         {
-            foreach(var e in value)
+            writer.WriteCompressedUInt32((uint)value.Count);
+            foreach (var e in value)
             {
                 writer.Write(e.Key);
                 e.Value.Pack(writer);

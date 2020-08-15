@@ -54,29 +54,52 @@ namespace MapAC.DatLoader.FileTypes
             }
         }
 
+        /// <summary>
+        /// Note that for Pre-TOD SurfaceTextures, this will convert to a Post-TOD SurfaceTexture.
+        /// </summary>
+        /// <param name="writer"></param>
         public override void Pack(BinaryWriter writer)
         {
             switch (DatManager.DatVersion)
             {
                 case DatVersionType.ACTOD:
-                    throw new System.NotSupportedException();
+                    writer.Write(Id);
+                    writer.Write(Unknown); // Always 0?
+                    writer.Write(UnknownByte); // Always 2?
+                    Textures.Pack(writer);
                     break;
                 case DatVersionType.ACDM:
-
+                    // The max value in the end-of-retail Client_portal.dat was 05003358. We will add 0x00010000 to this to ensure a unique value.
+                    var newId = Id + 0x00010000;
+                    writer.Write(newId);
+                    writer.Write(Unknown); // Always 0?
+                    writer.Write(UnknownByte); // Always 2?
+                    Textures.Clear();
+                    uint newTextureId = Id + 0x01010000; // Generates a unique 0x06 range TextureId
+                    Textures.Add(newTextureId);
+                    Textures.Pack(writer);
                     break;
             }
         }
 
-            /// <summary>
-            /// </summary>
-            /// <returns></returns>
-        public Bitmap GetBitmap()
+        /// <summary>
+        /// This will Pack a pre-TOD SurfaceTexture into a post-TOD Surface format.
+        /// The highest 06-Texture ID in the retail client_portal.dat was 06007576.
+        /// These new textures will just add 0x01010000 to that value to be a unique value in the 0x06 range.
+        /// 
+        /// Note the Texture range goes all the way up to 0x07FFFFFF.
+        /// </summary>
+        /// <param name="writer"></param>
+        public void PackAsTexture(BinaryWriter writer)
         {
-            if(Width == 0)
-            {
-                return null;
-            }
-            /// Just copy this into a Texture type, since that already does all this image work for us...
+            if(DatManager.DatVersion == DatVersionType.ACTOD) throw new System.NotSupportedException();
+            Texture tex = ConvertToTexture();
+            tex.SetIdFromSurfaceTexture(Id);
+            tex.Pack(writer);
+        }
+
+        public Texture ConvertToTexture()
+        {
             Texture tex = new Texture();
             tex.Width = Width;
             tex.Height = Height;
@@ -93,6 +116,17 @@ namespace MapAC.DatLoader.FileTypes
                     tex.Length = Width * Height * 8;
                     break;
             }
+            return tex;
+        }
+
+        public Bitmap GetBitmap()
+        {
+            if(Width == 0)
+            {
+                return null;
+            }
+            /// Just copy this into a Texture type, since that already does all this image work for us...
+            Texture tex = ConvertToTexture();
             return tex.GetBitmap();
         }
 

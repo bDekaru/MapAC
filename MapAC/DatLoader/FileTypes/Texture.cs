@@ -141,6 +141,18 @@ namespace MapAC.DatLoader.FileTypes
         }
 
         /// <summary>
+        /// A little helper function to set the Id when converting from a Pre-TOD SurfaceTexture format
+        /// 
+        /// Converts a SurfaceTexture ID, e.g. 0x0500NNNN to a unique 0x06001NNNN value.
+        /// </summary>
+        /// <param name="SurfaceTextureId"></param>
+        public void SetIdFromSurfaceTexture(uint SurfaceTextureId)
+        {
+            if (DatManager.DatVersion == DatVersionType.ACTOD) throw new System.NotSupportedException();
+            Id = SurfaceTextureId + 0x01010000;
+        }
+
+        /// <summary>
         /// Exports RenderSurface to a image file
         /// </summary>
         public void ExportTexture(string directory)

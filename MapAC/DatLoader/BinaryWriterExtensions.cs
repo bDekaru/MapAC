@@ -27,7 +27,11 @@ namespace MapAC.DatLoader
         /// </summary>
         public static void WriteCompressedUInt32(this BinaryWriter writer, uint value)
         {
-            if (value <= 32767)
+            if (value <= 0x7F)
+            {
+                writer.Write((byte)value);
+            }
+            else if (value <= 0x7FFF)
             {
                 ushort networkValue = Convert.ToUInt16(value);
                 writer.Write(BitConverter.GetBytes(networkValue));
