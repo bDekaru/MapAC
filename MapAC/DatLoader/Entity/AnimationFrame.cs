@@ -32,7 +32,8 @@ namespace MapAC.DatLoader.Entity
 
         public void Pack(BinaryWriter writer)
         {
-            Frames.Pack(writer);
+            for(var i = 0; i < Frames.Count; i++)
+                Frames[i].Pack(writer);
 
             writer.Write(Hooks.Count);
             for (int i = 0; i < Hooks.Count; i++)

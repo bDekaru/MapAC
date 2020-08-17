@@ -36,7 +36,7 @@ namespace MapAC.DatLoader
                 return (uint)(((b0 & 0x7F) << 8) | b1);
 
             var s = reader.ReadUInt16();
-            return (uint)(((((b0 & 0x3F) << 8) | b1) << 16) | s);
+            return (uint)((((((uint)b0 & 0x3F) << 8) | b1) << 16) | s);
         }
 
         /// <summary>

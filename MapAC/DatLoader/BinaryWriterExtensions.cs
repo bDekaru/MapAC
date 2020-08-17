@@ -24,22 +24,34 @@ namespace MapAC.DatLoader
         /// If the first MSB (0x80) is 0, it is one byte.<para />
         /// If the first MSB (0x80) is set and the second MSB (0x40) is 0, it's 2 bytes.<para />
         /// If both (0x80) and (0x40) are set, it's 4 bytes.
+        /// 
+        /// Thanks to GDLE for this code!
         /// </summary>
-        public static void WriteCompressedUInt32(this BinaryWriter writer, uint value)
+        public static void WriteCompressedUInt32(this BinaryWriter writer,uint value)
         {
+            int iValue = (int)value;
             if (value <= 0x7F)
+                writer.Write((byte)iValue);
+            else if (value <= 0x3FFF)
             {
-                writer.Write((byte)value);
-            }
-            else if (value <= 0x7FFF)
-            {
-                ushort networkValue = Convert.ToUInt16(value);
-                writer.Write(BitConverter.GetBytes(networkValue));
+                byte[] shortBytes = BitConverter.GetBytes((ushort)iValue);
+                byte b0 = (byte)(shortBytes[1] | 0x80);
+                byte b1 = (byte)shortBytes[0];
+                writer.Write(b0);
+                writer.Write(b1);
             }
             else
             {
-                uint packedValue = (value << 16) | ((value >> 16) | 0x8000);
-                writer.Write(BitConverter.GetBytes(packedValue));
+                byte[] intBytes = BitConverter.GetBytes(value);
+                byte b0 = (byte)(intBytes[3] | 0xC0);
+                byte b1 = (byte)intBytes[2];
+                byte b2 = (byte)intBytes[0];
+                byte b3 = (byte)intBytes[1];
+
+                writer.Write(b0);
+                writer.Write((byte)intBytes[2]);
+                writer.Write((byte)intBytes[0]);
+                writer.Write((byte)intBytes[1]);
             }
         }
 
@@ -100,9 +112,14 @@ namespace MapAC.DatLoader
         /// </summary>
         public static void WriteVector3(this BinaryWriter writer, Vector3 vector)
         {
+            writer.Write(vector);
+        }
+        public static void Write(this BinaryWriter writer, Vector3 vector)
+        {
             writer.Write(vector.X);
             writer.Write(vector.Y);
             writer.Write(vector.Z);
         }
+
     }
 }

@@ -83,6 +83,26 @@ namespace MapAC.DatLoader.FileTypes
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public uint GetId()
+        {
+            if (DatManager.DatVersion == DatVersionType.ACTOD)
+                return Id;
+
+            // Mark all ACDM "SurfaceTextures" as a unique ID above 0x05010000;
+            return Id + 0x10000;
+        }
+
+        public uint GetTextureId()
+        {
+            if (DatManager.DatVersion == DatVersionType.ACTOD) throw new System.NotSupportedException();
+            // Mark all ACDM SurfaceTextures converted to Textures as a unique ID above 0x06010000;
+            return Id + 0x01010000;
+        }
+
+        /// <summary>
         /// This will Pack a pre-TOD SurfaceTexture into a post-TOD Surface format.
         /// The highest 06-Texture ID in the retail client_portal.dat was 06007576.
         /// These new textures will just add 0x01010000 to that value to be a unique value in the 0x06 range.
@@ -107,13 +127,13 @@ namespace MapAC.DatLoader.FileTypes
             tex.Format = Format;
             switch (Format)
             {
-                case SurfacePixelFormat.COLOR_SEP:
-                    tex.Length = Width * Height * 3;
-                    break;
                 case SurfacePixelFormat.INDEX8:
                     tex.DefaultPaletteId = DefaultPaletteId;
                     tex.DefaultPaletteId = 0x040010b1;
-                    tex.Length = Width * Height * 8;
+                    tex.Length = Width * Height * 8 - 4;
+                    break;
+                case SurfacePixelFormat.COLOR_SEP:
+                    tex.Length = Width * Height * 3;
                     break;
             }
             return tex;

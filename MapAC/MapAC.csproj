@@ -277,6 +277,7 @@
     <Compile Include="Forms\FormOptions.Designer.cs">
       <DependentUpon>FormOptions.cs</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\Export.cs" />
     <Compile Include="Helpers\PortalHelper.cs" />
     <Compile Include="Helpers\RegionHelper.cs" />
     <Compile Include="Helpers\VersionChecker.cs" />

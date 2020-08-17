@@ -65,7 +65,19 @@ namespace MapAC.DatLoader.FileTypes
             writer.Write(Id);
             writer.Write((uint)Flags);
 
-            Surfaces.PackSmartArray(writer);
+            if(DatManager.DatVersion == DatVersionType.ACDM)
+            {
+                // We need to adjust the IDs of these to unique TOD values
+                List<uint> adjustedSurfaces = new List<uint>();
+                for(var i = 0; i < Surfaces.Count; i++)
+                    adjustedSurfaces.Add(Surfaces[i] + 0x10000);
+
+                adjustedSurfaces.PackSmartArray(writer);
+            }
+            else
+            {
+                Surfaces.PackSmartArray(writer);
+            }
             VertexArray.Pack(writer);
 
             // Has Physics 

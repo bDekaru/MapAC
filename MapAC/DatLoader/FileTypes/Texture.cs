@@ -137,7 +137,35 @@ namespace MapAC.DatLoader.FileTypes
 
         public override void Pack(BinaryWriter writer)
         {
-            throw new System.NotSupportedException();
+            writer.Write(Id);
+            if (DatManager.DatVersion == DatVersionType.ACTOD)
+            {
+                writer.Write(Unknown);
+                writer.Write(Width);
+                writer.Write(Height);
+                writer.Write((uint)Format);
+                writer.Write(Length);
+                writer.Write(SourceData);
+            }
+            else
+            {
+                // ACDM 
+                writer.Write(Unknown);
+                writer.Write(Width);
+                writer.Write(Height);
+                writer.Write((uint)Format);
+                Length = SourceData.Length;
+                switch (Format)
+                {
+                    case SurfacePixelFormat.INDEX8:
+                        // Remove 4 from the length which is the DefaultPaletteId.
+                        // This is already part of the SourceData, so just back up the length...
+                        Length -= 4;
+                        break;
+                }
+                writer.Write(Length);
+                writer.Write(SourceData);
+            }
         }
 
         /// <summary>

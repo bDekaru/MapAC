@@ -107,7 +107,7 @@ namespace MapAC.DatLoader.FileTypes
             writer.Write((uint)Flags);
 
             // Get all the GraphicsObjects in this SetupModel. These are all the 01-types.
-            writer.Write(Parts.Count);
+            writer.Write(Parts.Count); //numParts
             for (int i = 0; i < Parts.Count; i++)
                 writer.Write(Parts[i]);
 
@@ -120,7 +120,7 @@ namespace MapAC.DatLoader.FileTypes
             if ((Flags & SetupFlags.HasDefaultScale) != 0)
             {
                 for (int i = 0; i < DefaultScale.Count; i++)
-                    writer.WriteVector3(DefaultScale[i]);
+                    writer.Write(DefaultScale[i]);
             }
 
             HoldingLocations.Pack(writer);

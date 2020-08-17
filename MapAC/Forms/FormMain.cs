@@ -302,13 +302,54 @@ namespace WindowsFormsApp1
             }
         }
 
-        private void exportToolStripMenuItem_Click(object sender, EventArgs e)
+
+
+        private void exportToolStripMenuItem_Click(object sender, EventArgs eventArgs)
         {
             string folder = @"C:\ACE\PortalTemp\";
             string fileName;
             DatReader dr;
             uint fileId;
+            uint SetupToExport;
 
+            uint gfxObjId = 0x01001F61;
+            Export.ExportGfxObject(gfxObjId, folder);
+            return;
+
+            List<uint> SetupsToExport = new List<uint>{ 0x02000046, 0x0200011B,0x02000142
+,0x020001DC
+,0x020003D0
+,0x0200040C
+,0x0200049C
+,0x0200063B
+,0x0200070F
+,0x0200075B
+,0x02000786
+,0x020007BA
+,0x020007C2
+,0x02000846
+,0x020008C3
+,0x020008CC
+,0x020008CD
+,0x020008E6
+,0x020008E8
+,0x020008E9
+,0x020008EA
+,0x020008EB
+,0x02000980
+,0x020009ED
+,0x02000A44
+,0x020008EC
+};
+            for(var i = 0; i < SetupsToExport.Count; i++)
+            {
+                SetupToExport = SetupsToExport[i];
+                Export.ExportSetup(SetupToExport, folder);
+                AddStatus($"Done Exporting {SetupToExport:X8} and associated files.");
+            }
+
+            return;
+            
             fileId = 0x100002AE;
             var cb = DatManager.CellDat.ReadFromDat<ClothingTable>(fileId);
             dr = DatManager.CellDat.GetReaderForFile(fileId);
