@@ -12,7 +12,7 @@ namespace MapAC.DatLoader
         private static int count;
 
         public static CellDatDatabase CellDat { get; private set; }
-
+        public static DatDatabaseType DatType;
         public static DatVersionType DatVersion;
         private static readonly uint DAT_HEADER_OFFSET_TOD = 0x140;
         private static readonly uint DAT_HEADER_OFFSET_ACDM = 0x12C;
@@ -34,6 +34,17 @@ namespace MapAC.DatLoader
         {
             CellDat = new CellDatDatabase(DatFile, false);
             count = CellDat.AllFiles.Count;
+
+            switch (CellDat.Blocksize)
+            {
+                case 0x100:
+                    DatType = DatDatabaseType.Cell;
+                    break;
+                default:
+                    DatType = DatDatabaseType.Portal;
+                    break;
+            }
+
         }
 
         private static bool GetDatVersion()

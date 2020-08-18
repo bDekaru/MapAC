@@ -16,7 +16,7 @@ namespace MapAC.DatLoader.FileTypes
 
         public override void Unpack(BinaryReader reader)
         {
-            int objectId   = reader.ReadInt32();
+            Id   = reader.ReadUInt32();
             int headerSize = reader.ReadInt32();
             int dataSize   = reader.ReadInt32();
 
@@ -26,7 +26,11 @@ namespace MapAC.DatLoader.FileTypes
 
         public override void Pack(BinaryWriter writer)
         {
-            throw new System.NotSupportedException();
+            writer.Write(Id);
+            writer.Write(Header.Length);
+            writer.Write(Data.Length);
+            writer.Write(Header);
+            writer.Write(Data);
         }
 
         /// <summary>

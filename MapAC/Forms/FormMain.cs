@@ -142,10 +142,10 @@ namespace WindowsFormsApp1
 
                     var v = new VersionChecker();
                     string version = v.GetVersionInfo(Path.GetFileName(datFile), iteration);
-                    if(version != "")
+                    if (version != "")
                     {
                         AddStatus($"-File appears to be from {version}.");
-                        if(!v.IsComplete(Path.GetFileName(datFile), iteration))
+                        if (!v.IsComplete(Path.GetFileName(datFile), iteration))
                         {
                             AddStatus("This file is not complete in the Asheron's Call Archive. Please consider uploading it at https://mega.nz/megadrop/0WvIiXRRYmg");
                         }
@@ -169,7 +169,7 @@ namespace WindowsFormsApp1
         private void textBoxStatus_LinkClicked(object sender, LinkClickedEventArgs e)
         {
             var url = e.LinkText;
-            if((!string.IsNullOrWhiteSpace(url)) && (url.ToLower().StartsWith("http")))
+            if ((!string.IsNullOrWhiteSpace(url)) && (url.ToLower().StartsWith("http")))
             {
                 System.Diagnostics.Process.Start(url);
             }
@@ -216,7 +216,7 @@ namespace WindowsFormsApp1
                                 regionId = RegionDesc.HW_FILE_ID;
                             else
                                 regionId = RegionDesc.FILE_ID;
-                                MapColors = ph.GetColors(regionId);
+                            MapColors = ph.GetColors(regionId);
                             ClearMapImage();
                             break;
                     }
@@ -260,7 +260,7 @@ namespace WindowsFormsApp1
                 landblocks_to_export.Add(hexdec);
             }
 
-            for(var i = 0; i<landblocks_to_export.Count;i++)
+            for (var i = 0; i < landblocks_to_export.Count; i++)
             {
                 foreach (var entry in DatManager.CellDat.AllFiles)
                 {
@@ -311,49 +311,48 @@ namespace WindowsFormsApp1
             DatReader dr;
             uint fileId;
             uint SetupToExport;
-
+            /*
             uint gfxObjId = 0x01001F61;
             Export.ExportGfxObject(gfxObjId, folder);
             return;
-
-            List<uint> SetupsToExport = new List<uint>{ 0x02000046, 0x0200011B,0x02000142
-,0x020001DC
-,0x020003D0
-,0x0200040C
-,0x0200049C
-,0x0200063B
-,0x0200070F
-,0x0200075B
-,0x02000786
-,0x020007BA
-,0x020007C2
-,0x02000846
-,0x020008C3
-,0x020008CC
-,0x020008CD
-,0x020008E6
-,0x020008E8
-,0x020008E9
-,0x020008EA
-,0x020008EB
-,0x02000980
-,0x020009ED
-,0x02000A44
-,0x020008EC
-};
-            for(var i = 0; i < SetupsToExport.Count; i++)
+            */
+            List<uint> SetupsToExport = new List<uint> { 0x02000CA8 };
+            List<uint> WavsToExport = new List<uint> { 0x0A000022, 0x0A000183, 0x0A0003C6, 0x0A000022, 0x0A000183, 0x0A0001FA, 0x0A0001FD, 0x0A00022D, 0x0A0003EE, 0x0A0003F2, 0x0A0003F3, 0x0A00043A, 0x0A00043C, 0x0A000463, };
+            /*
+            for (var i = 0; i < SetupsToExport.Count; i++)
             {
                 SetupToExport = SetupsToExport[i];
-                Export.ExportSetup(SetupToExport, folder);
-                AddStatus($"Done Exporting {SetupToExport:X8} and associated files.");
+                try
+                {
+                    Export.ExportSetup(SetupToExport, folder);
+                    AddStatus($"Done Exporting {SetupToExport:X8} and associated files.");
+                }
+                catch (Exception ex)
+                {
+                    AddStatus($"---Error Exporting {SetupToExport:X8} and associated files.");
+                }
+            }
+            */
+            for (var i = 0; i < WavsToExport.Count; i++)
+            {
+                uint WaveToExport = WavsToExport[i];
+                try
+                {
+                    Export.ExportWave(WaveToExport, folder);
+                    AddStatus($"Done Exporting {WaveToExport:X8}.");
+                }
+                catch (Exception ex)
+                {
+                    AddStatus($"---Error Exporting {WaveToExport:X8} and associated files.");
+                }
             }
 
             return;
-            
+
             fileId = 0x100002AE;
             var cb = DatManager.CellDat.ReadFromDat<ClothingTable>(fileId);
             dr = DatManager.CellDat.GetReaderForFile(fileId);
-            fileName = @"C:\ACE\PortalTemp\" + fileId .ToString("X8") + "- orig.bin";
+            fileName = @"C:\ACE\PortalTemp\" + fileId.ToString("X8") + "- orig.bin";
             File.WriteAllBytes(fileName, dr.Buffer);
             fileName = @"C:\ACE\PortalTemp\" + fileId.ToString("X8") + ".bin";
             using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
@@ -389,13 +388,13 @@ namespace WindowsFormsApp1
             dr = DatManager.CellDat.GetReaderForFile(fileId);
             fileName = @"C:\ACE\PortalTemp\" + fileId.ToString("X8") + "- orig.bin";
             File.WriteAllBytes(fileName, dr.Buffer);
-                        
+
             var gfxObj = DatManager.CellDat.ReadFromDat<GfxObj>(fileId);
             fileName = @"C:\ACE\PortalTemp\" + fileId.ToString("X8") + ".bin";
             using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
                 gfxObj.Pack(writer);
 
-            for(var i = 0; i < gfxObj.Surfaces.Count; i++)
+            for (var i = 0; i < gfxObj.Surfaces.Count; i++)
             {
                 var surfaceId = gfxObj.Surfaces[i];
                 var surface = DatManager.CellDat.ReadFromDat<Surface>(surfaceId);
@@ -403,7 +402,7 @@ namespace WindowsFormsApp1
                 using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
                     surface.Pack(writer);
 
-                if(surface.OrigPaletteId > 0)
+                if (surface.OrigPaletteId > 0)
                 {
                     var pal = DatManager.CellDat.ReadFromDat<Palette>(surface.OrigPaletteId);
                     fileName = @"C:\ACE\PortalTemp\" + surface.OrigPaletteId.ToString("X8") + ".bin";
@@ -435,5 +434,26 @@ namespace WindowsFormsApp1
 
             AddStatus("Done Exporting Files.");
         }
+
+        private void dumpDatContentsToTXTToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string iteration = DatManager.Iteration;
+            string folder = @"C:\ACE\PortalTemp\";
+            string datType = DatManager.DatType.ToString();
+
+            string file = $"{datType}-{iteration}.txt";
+
+            string fileName = Path.Combine(folder, file);
+            using (StreamWriter writer = new StreamWriter(fileName))
+            {
+                foreach(var f in DatManager.CellDat.AllFiles)
+                {
+                    writer.WriteLine(f.Key.ToString("X8"));
+                }
+            }
+
+            AddStatus("Saved Exported Dat Contents List");
+        }
+       
     }
 }

@@ -62,28 +62,30 @@ namespace MapAC
         public static void ExportSetup(uint setupID, string path)
         {
             string fileName;
-            var setup = DatManager.CellDat.ReadFromDat<SetupModel>(setupID);
-            fileName = GetExportPath(DatDatabaseType.Portal, path, setupID);
-            using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
-                setup.Pack(writer);
-
-            // Get all the GfxObjs in the Setup
-            for (var i = 0; i < setup.Parts.Count; i++)
-                ExportGfxObject(setup.Parts[i], path);
-
-            // Search through the ClothingTable entries for records with this Setup
-            foreach (var e in DatManager.CellDat.AllFiles)
+            if (DatManager.CellDat.AllFiles.ContainsKey(setupID))
             {
-                // Just get the ClothingTable entries...
-                if (e.Key > 0x10000000 && e.Key < 0x10FFFFFF)
+                var setup = DatManager.CellDat.ReadFromDat<SetupModel>(setupID);
+                fileName = GetExportPath(DatDatabaseType.Portal, path, setupID);
+                using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
+                    setup.Pack(writer);
+
+                // Get all the GfxObjs in the Setup
+                for (var i = 0; i < setup.Parts.Count; i++)
+                    ExportGfxObject(setup.Parts[i], path);
+
+                // Search through the ClothingTable entries for records with this Setup
+                foreach (var e in DatManager.CellDat.AllFiles)
                 {
-                    var cb = DatManager.CellDat.ReadFromDat<ClothingTable>(e.Key);
-                    // Search the cb for our setupId
-                    if (cb.ClothingBaseEffects.ContainsKey(setupID))
-                        ExportClothingTable(e.Key, path);
+                    // Just get the ClothingTable entries...
+                    if (e.Key > 0x10000000 && e.Key < 0x10FFFFFF)
+                    {
+                        var cb = DatManager.CellDat.ReadFromDat<ClothingTable>(e.Key);
+                        // Search the cb for our setupId
+                        if (cb.ClothingBaseEffects.ContainsKey(setupID))
+                            ExportClothingTable(e.Key, path);
+                    }
                 }
             }
-
         }
 
         // 0x04
@@ -149,6 +151,19 @@ namespace MapAC
             if (surface.OrigPaletteId > 0)
                 ExportPalette(surface.OrigPaletteId, path);
         }
+
+        // 0xA
+        public static void ExportWave(uint waveID, string path)
+        {
+            if (DatManager.CellDat.AllFiles.ContainsKey(waveID))
+            {
+                var wav = DatManager.CellDat.ReadFromDat<Wave>(waveID);
+                var fileName = GetExportPath(DatDatabaseType.Portal, path, waveID);
+                wav.ExportWave(Path.GetDirectoryName(fileName));
+                using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
+                    wav.Pack(writer);
+            }
+         }
 
         // 0x0F
         public static void ExportPalSet(uint palSetId, string path)
