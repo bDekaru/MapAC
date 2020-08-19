@@ -126,7 +126,6 @@ namespace WindowsFormsApp1
                     switch (DatManager.CellDat.Blocksize)
                     {
                         case 0x100:
-                            ExportDatBlocks();
                             DrawMap();
                             break;
                         default:
@@ -241,69 +240,6 @@ namespace WindowsFormsApp1
             Application.UseWaitCursor = false;
         }
 
-        private void ExportDatBlocks()
-        {
-            //return;
-            string patchFolder = @"D:\source\Patches\";
-            string patchFile = patchFolder + "eastern-island.txt";
-            string binFolder = patchFolder + "eastern-island";
-
-            var saveBin = true;
-            var datLoad = true;
-
-            string[] str_lines = System.IO.File.ReadAllLines(patchFile);
-            List<uint> landblocks_to_export = new List<uint>();
-
-            foreach (string l in str_lines)
-            {
-                uint hexdec = uint.Parse(l, System.Globalization.NumberStyles.HexNumber);
-                landblocks_to_export.Add(hexdec);
-            }
-
-            for (var i = 0; i < landblocks_to_export.Count; i++)
-            {
-                foreach (var entry in DatManager.CellDat.AllFiles)
-                {
-                    var lb = entry.Key >> 16;
-                    if (lb == landblocks_to_export[i])
-                    {
-                        if (saveBin) {
-                            DatReader dr = DatManager.CellDat.GetReaderForFile(entry.Key);
-                            string hex = entry.Value.ObjectId.ToString("X8");
-                            string thisFile = Path.Combine(binFolder, hex + ".bin");
-                            File.WriteAllBytes(thisFile, dr.Buffer);
-                        }
-
-                        if (datLoad)
-                        {
-                            if ((entry.Key & 0x0000FFFF) == 0x0000FFFF)
-                            {
-                                // LANDBLOCK
-                                CellLandblock landblock = DatManager.CellDat.ReadFromDat<CellLandblock>(entry.Key);
-                            }
-                            else if ((entry.Key & 0x0000FFFE) == 0x0000FFFE)
-                            {
-                                LandblockInfo landblockInfo = DatManager.CellDat.ReadFromDat<LandblockInfo>(entry.Key);
-                            }
-                            else
-                            {
-                                // EnvCell needs to be converted from ACDM to ACTOD (end of retail)
-                                EnvCell envCell = DatManager.CellDat.ReadFromDat<EnvCell>(entry.Key);
-                                if (saveBin)
-                                {
-                                    string hex = entry.Value.ObjectId.ToString("X8");
-                                    string thisFile = Path.Combine(binFolder, hex + ".bin");
-                                    File.WriteAllBytes(thisFile, envCell.Pack());
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-
-
         private void exportToolStripMenuItem_Click(object sender, EventArgs eventArgs)
         {
             string folder = @"C:\ACE\PortalTemp\";
@@ -311,6 +247,11 @@ namespace WindowsFormsApp1
             DatReader dr;
             uint fileId;
             uint SetupToExport;
+
+            Export.ExportCellLandblock(0xA9B4FFFE, folder, -30, -35);
+            AddStatus($"Done Exporting {0xA9B4FFFE:X8}."); ;
+            return;
+
             /*
             uint gfxObjId = 0x01001F61;
             Export.ExportGfxObject(gfxObjId, folder);
@@ -454,6 +395,43 @@ namespace WindowsFormsApp1
 
             AddStatus("Saved Exported Dat Contents List");
         }
-       
+
+        private void testReadDatToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Search through the entries for records matching this type...
+            foreach (var f in DatManager.CellDat.AllFiles)
+            {
+                try
+                {
+                    var check = f.Key & 0xFFFF;
+                    if (check == 0xFFFE)
+                    {
+                        var testFile = DatManager.CellDat.ReadFromDat<LandblockInfo>(f.Key);
+                        DatReader dr = DatManager.CellDat.GetReaderForFile(f.Key);
+
+                        using (MemoryStream stream = new MemoryStream())
+                            using (BinaryWriter writer = new BinaryWriter(stream))
+                        {
+                            testFile.Pack(writer);
+
+                            var streamArray = stream.ToArray();
+                            var drArray = dr.Buffer.ToArray();
+                            if (!streamArray.SequenceEqual(drArray))
+                            {
+                                if(testFile.Buildings.Count > 0)
+                                    AddStatus($"Error matching {f.Key:X8} -- has buildings");
+                                else
+                                    AddStatus($"Error matching {f.Key:X8}");
+                                
+                            }
+                        }
+
+                    }
+                    }catch{
+                    AddStatus($"----Error testing {f.Key:X8}");
+                }
+            }
+            AddStatus("DONE TEST READ");
+        }
     }
 }

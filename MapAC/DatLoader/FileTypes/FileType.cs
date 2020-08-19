@@ -4,7 +4,7 @@ namespace MapAC.DatLoader.FileTypes
 {
     public abstract class FileType : IUnpackable
     {
-        public uint Id { get; protected set; }
+        public uint Id { get; set; }
 
         public abstract void Unpack(BinaryReader reader);
         public abstract void Pack(BinaryWriter writer);

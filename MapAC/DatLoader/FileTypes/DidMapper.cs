@@ -58,7 +58,39 @@ namespace MapAC.DatLoader.FileTypes
 
         public override void Pack(BinaryWriter writer)
         {
-            throw new System.NotSupportedException();
+            writer.Write(Id);
+
+            writer.Write((byte)ClientIDNumberingType);
+            writer.WriteCompressedUInt32((uint)ClientEnumToID.Count);
+            foreach (var e in ClientEnumToID)
+            {
+                writer.Write(e.Key);
+                writer.Write(e.Value);
+            }
+
+            writer.Write((byte)ClientNameNumberingType);
+            writer.WriteCompressedUInt32((uint)ClientEnumToName.Count);
+            foreach (var e in ClientEnumToName)
+            {
+                writer.Write(e.Key);
+                writer.WritePString(e.Value, 1);
+            }
+
+            writer.Write((byte)ServerIDNumberingType);
+            writer.WriteCompressedUInt32((uint)ServerEnumToID.Count);
+            foreach (var e in ServerEnumToID)
+            {
+                writer.Write(e.Key);
+                writer.Write(e.Value);
+            }
+
+            writer.Write((byte)ServerNameNumberingType);
+            writer.WriteCompressedUInt32((uint)ServerEnumToName.Count);
+            foreach (var e in ServerEnumToName)
+            {
+                writer.Write(e.Key);
+                writer.WritePString(e.Value, 1);
+            }
         }
     }
 }

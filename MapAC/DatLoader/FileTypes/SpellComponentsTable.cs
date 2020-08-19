@@ -36,7 +36,10 @@ namespace MapAC.DatLoader.FileTypes
 
         public override void Pack(BinaryWriter writer)
         {
-            throw new System.NotSupportedException();
+            writer.Write(Id);
+            writer.Write((ushort)SpellComponents.Count);
+            writer.AlignBoundary();
+            SpellComponents.Pack(writer);
         }
 
         public static string GetSpellWords(SpellComponentsTable comps, List<uint> formula)

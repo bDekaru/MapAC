@@ -33,9 +33,9 @@ namespace MapAC.DatLoader.FileTypes
 
             StarterAreas.PackSmartArray(writer);
 
-            // HERITAGE GROUPS -- 11 standard player races and 2 Olthoi.
-            writer.Write((byte)1);
+            writer.Write((byte)1); // Some seemingly random byte. Possibly a bool for "has heritage groups" or something?
 
+            // HERITAGE GROUPS -- 11 standard player races and 2 Olthoi.
             HeritageGroups.PackSmartArray(writer);
         }
 

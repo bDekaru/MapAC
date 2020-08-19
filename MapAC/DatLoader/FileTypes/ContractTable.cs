@@ -20,7 +20,7 @@ namespace MapAC.DatLoader.FileTypes
             Id = reader.ReadUInt32();
 
             ushort num_contracts = reader.ReadUInt16();
-            /*ushort table_size = */reader.ReadUInt16(); // We don't need this since C# handles it's own memory
+            /*ushort table_size = */reader.ReadUInt16(); // We don't need this since C# handles it's own memory -- 0x1000
 
             for (ushort i = 0; i < num_contracts; i++)
             {
@@ -35,7 +35,15 @@ namespace MapAC.DatLoader.FileTypes
 
         public override void Pack(BinaryWriter writer)
         {
-            throw new System.NotSupportedException();
+            writer.Write(Id);
+            writer.Write((ushort)Contracts.Count);
+            writer.Write((ushort)0x1000); // table_size
+
+            foreach(var e in Contracts)
+            {
+                writer.Write(e.Key);
+                e.Value.Pack(writer);
+            }
         }
     }
 }

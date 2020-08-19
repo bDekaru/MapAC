@@ -52,7 +52,8 @@ namespace MapAC.DatLoader.FileTypes
 
         public override void Pack(BinaryWriter writer)
         {
-            throw new System.NotSupportedException();
+            writer.Write(Id);
+            CMT.Pack(writer);
         }
 
         public class AttackHeights

@@ -76,7 +76,31 @@ namespace MapAC.DatLoader.FileTypes
 
         public override void Pack(BinaryWriter writer)
         {
-            throw new System.NotSupportedException();
+            writer.Write(Id);
+
+            writer.Write(RegionNumber);
+            writer.Write(Version);
+            writer.WritePString(RegionName);
+            writer.AlignBoundary();
+
+            LandDefs.Pack(writer);
+            GameTime.Pack(writer);
+
+            writer.Write(PartsMask);
+
+            if ((PartsMask & 0x10) != 0)
+                SkyInfo.Pack(writer);
+
+            if ((PartsMask & 0x01) != 0)
+                SoundInfo.Pack(writer);
+
+            if ((PartsMask & 0x02) != 0)
+                SceneInfo.Pack(writer);
+
+            TerrainInfo.Pack(writer);
+
+            if ((PartsMask & 0x0200) != 0)
+                RegionMisc.Pack(writer);
         }
     }
 }

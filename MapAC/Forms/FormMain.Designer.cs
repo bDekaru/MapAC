@@ -41,10 +41,11 @@
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dumpDatContentsToTXTToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.textBoxStatus = new System.Windows.Forms.RichTextBox();
             this.openFileDialog_Dat = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog_Image = new System.Windows.Forms.SaveFileDialog();
-            this.dumpDatContentsToTXTToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.testReadDatToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -58,7 +59,7 @@
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer1.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.splitContainer1.Margin = new System.Windows.Forms.Padding(6);
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -81,7 +82,7 @@
             this.panel1.Controls.Add(this.pictureBox1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 42);
-            this.panel1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.panel1.Margin = new System.Windows.Forms.Padding(6);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1276, 602);
             this.panel1.TabIndex = 8;
@@ -90,7 +91,7 @@
             // 
             this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pictureBox1.Location = new System.Drawing.Point(0, 0);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(6);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(1276, 602);
             this.pictureBox1.TabIndex = 7;
@@ -158,7 +159,8 @@
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.optionsToolStripMenuItem,
             this.exportToolStripMenuItem,
-            this.dumpDatContentsToTXTToolStripMenuItem});
+            this.dumpDatContentsToTXTToolStripMenuItem,
+            this.testReadDatToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(78, 34);
             this.toolsToolStripMenuItem.Text = "&Tools";
@@ -177,11 +179,18 @@
             this.exportToolStripMenuItem.Text = "Export";
             this.exportToolStripMenuItem.Click += new System.EventHandler(this.exportToolStripMenuItem_Click);
             // 
+            // dumpDatContentsToTXTToolStripMenuItem
+            // 
+            this.dumpDatContentsToTXTToolStripMenuItem.Name = "dumpDatContentsToTXTToolStripMenuItem";
+            this.dumpDatContentsToTXTToolStripMenuItem.Size = new System.Drawing.Size(381, 40);
+            this.dumpDatContentsToTXTToolStripMenuItem.Text = "Dump Dat Contents to TXT";
+            this.dumpDatContentsToTXTToolStripMenuItem.Click += new System.EventHandler(this.dumpDatContentsToTXTToolStripMenuItem_Click);
+            // 
             // textBoxStatus
             // 
             this.textBoxStatus.Dock = System.Windows.Forms.DockStyle.Fill;
             this.textBoxStatus.Location = new System.Drawing.Point(0, 0);
-            this.textBoxStatus.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBoxStatus.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxStatus.Name = "textBoxStatus";
             this.textBoxStatus.Size = new System.Drawing.Size(1276, 180);
             this.textBoxStatus.TabIndex = 1;
@@ -196,12 +205,12 @@
             // 
             this.saveFileDialog_Image.Filter = "PNG Files|*.png|All Files|*.*";
             // 
-            // dumpDatContentsToTXTToolStripMenuItem
+            // testReadDatToolStripMenuItem
             // 
-            this.dumpDatContentsToTXTToolStripMenuItem.Name = "dumpDatContentsToTXTToolStripMenuItem";
-            this.dumpDatContentsToTXTToolStripMenuItem.Size = new System.Drawing.Size(381, 40);
-            this.dumpDatContentsToTXTToolStripMenuItem.Text = "Dump Dat Contents to TXT";
-            this.dumpDatContentsToTXTToolStripMenuItem.Click += new System.EventHandler(this.dumpDatContentsToTXTToolStripMenuItem_Click);
+            this.testReadDatToolStripMenuItem.Name = "testReadDatToolStripMenuItem";
+            this.testReadDatToolStripMenuItem.Size = new System.Drawing.Size(381, 40);
+            this.testReadDatToolStripMenuItem.Text = "Test Read Dat";
+            this.testReadDatToolStripMenuItem.Click += new System.EventHandler(this.testReadDatToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -211,7 +220,7 @@
             this.Controls.Add(this.splitContainer1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
-            this.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "Form1";
             this.Text = "AC Mapper";
             this.splitContainer1.Panel1.ResumeLayout(false);
@@ -244,6 +253,7 @@
         private System.Windows.Forms.ToolStripMenuItem loadPortalColorsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exportToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem dumpDatContentsToTXTToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem testReadDatToolStripMenuItem;
     }
 }
 

@@ -1,6 +1,7 @@
 using MapAC.DatLoader.Entity;
 using System.Collections.Generic;
 using System.IO;
+using System.Windows.Forms;
 
 namespace MapAC.DatLoader.FileTypes
 {
@@ -44,7 +45,20 @@ namespace MapAC.DatLoader.FileTypes
 
         public override void Pack(BinaryWriter writer)
         {
-            throw new System.NotSupportedException();
+            writer.Write(Id);
+            writer.Write(MaxCharHeight);
+            writer.Write(MaxCharWidth);
+            writer.Write(NumCharacters);
+
+            for(var i = 0; i < NumCharacters; i++){
+                CharDescs[i].Pack(writer);
+            }
+
+            writer.Write(NumHorizontalBorderPixels);
+            writer.Write(NumVerticalBorderPixels);
+            writer.Write(BaselineOffset);
+            writer.Write(ForegroundSurfaceDataID);
+            writer.Write(BackgroundSurfaceDataID);
         }
     }
 }

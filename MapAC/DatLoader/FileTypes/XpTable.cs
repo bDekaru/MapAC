@@ -59,7 +59,32 @@ namespace MapAC.DatLoader.FileTypes
 
         public override void Pack(BinaryWriter writer)
         {
-            throw new System.NotSupportedException();
+            writer.Write(Id);
+
+            // The counts for each "Table" are at the top of the file.
+            writer.Write(AttributeXpList.Count);
+            writer.Write(VitalXpList.Count);
+            writer.Write(TrainedSkillXpList.Count);
+            writer.Write(SpecializedSkillXpList.Count);
+            writer.Write(CharacterLevelXPList.Count);
+
+            foreach (var val in AttributeXpList)
+                writer.Write(val);
+
+            foreach (var val in VitalXpList)
+                writer.Write(val);
+
+            foreach (var val in TrainedSkillXpList)
+                writer.Write(val);
+
+            foreach (var val in SpecializedSkillXpList)
+                writer.Write(val);
+
+            foreach (var val in CharacterLevelXPList)
+                writer.Write(val);
+
+            foreach (var val in CharacterLevelSkillCreditList)
+                writer.Write(val);
         }
     }
 }

@@ -34,7 +34,10 @@ namespace MapAC.DatLoader.FileTypes
 
         public override void Pack(BinaryWriter writer)
         {
-            throw new System.NotSupportedException();
+            writer.Write(Id);
+            writer.Write(Unknown);
+            writer.Write(UnknownByte);
+            Textures.Pack(writer);
         }
     }
 }

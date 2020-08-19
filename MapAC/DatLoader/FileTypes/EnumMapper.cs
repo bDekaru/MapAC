@@ -25,7 +25,17 @@ namespace MapAC.DatLoader.FileTypes
 
         public override void Pack(BinaryWriter writer)
         {
-            throw new System.NotSupportedException();
+            writer.Write(Id);
+            writer.Write(BaseEnumMap);
+
+            writer.Write((byte)NumberingType);
+
+            writer.WriteCompressedUInt32((uint)IdToStringMap.Count);
+            foreach(var e in IdToStringMap)
+            {
+                writer.Write(e.Key);
+                writer.WritePString(e.Value, 1);
+            }
         }
     }
 }

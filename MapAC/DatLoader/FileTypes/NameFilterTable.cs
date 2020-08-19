@@ -30,7 +30,14 @@ namespace MapAC.DatLoader.FileTypes
 
         public override void Pack(BinaryWriter writer)
         {
-            throw new System.NotSupportedException();
+            writer.Write(Id);
+
+            writer.Write((byte)LanguageData.Count);
+            foreach(var e in LanguageData)
+            {
+                writer.Write(e.Key);
+                e.Value.Pack(writer);
+            }
         }
     }
 }

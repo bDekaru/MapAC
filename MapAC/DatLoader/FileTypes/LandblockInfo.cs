@@ -56,9 +56,21 @@ namespace MapAC.DatLoader.FileTypes
 
             Buildings.Unpack(reader, numBuildings);
 
+            if (DatManager.DatVersion == DatVersionType.ACDM)
+                reader.AlignBoundary();
+
             if ((PackMask & 1) == 1)
                 RestrictionTables.UnpackPackedHashTable(reader);
+
+            if (DatManager.DatVersion == DatVersionType.ACDM)
+                reader.AlignBoundary();
+
+            if (reader.BaseStream.Position != reader.BaseStream.Length)
+            {
+                var notFullyRead = true;
+            }
         }
+
         public override void Pack(BinaryWriter writer)
         {
             writer.Write(Id);
@@ -68,14 +80,39 @@ namespace MapAC.DatLoader.FileTypes
             Objects.Pack(writer);
 
             writer.Write((ushort)Buildings.Count);
-
             writer.Write((ushort)PackMask);
 
-            Buildings.Pack(writer);
+            //Buildings.Pack(writer); // Can't use this, we already wrote the count
+            foreach (var e in Buildings)
+                e.Pack(writer);
 
-            throw new NotImplementedException();
             if ((PackMask & 1) == 1)
-                RestrictionTables.PackHashTable(writer,0);
+                RestrictionTables.PackHashTable(writer, 0x08);
         }
+
+        // Adjust the data of the Landblock to reflect its new position.
+        public void MoveLandblock(int offsetX, int offsetY)
+        {
+            int blockX = (int)(Id >> 24);
+            int blockY = (int)(Id >> 16 & 0xFF);
+
+            // adjust these by our offsets!
+            blockX += offsetX;
+            blockY += offsetY;
+
+            // little sanity check
+            if (blockX > 255 || blockX < 0)
+                throw new System.NotSupportedException();
+            if (blockY > 255 || blockY < 0)
+                throw new System.NotSupportedException();
+
+            // we need to update our Landblock.Id to reflect the new position
+            uint newLandblockId = (uint)((blockX << 24) + (blockY << 16) + 0xFFFE);
+            Id = newLandblockId;
+
+            // We might need to change our landblock.Buildings.Portals other_cell_id, other_portal_Id and StabList
+
+        }
+
     }
 }

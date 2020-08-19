@@ -92,69 +92,34 @@ namespace MapAC.DatLoader.FileTypes
 
         public override void Pack(BinaryWriter writer)
         {
-            throw new System.NotSupportedException();
-        }
+            writer.Write(Id);
+            writer.Write((uint)Flags);
+            writer.Write(Id); // Yes, twice...
 
-        public byte[] Pack()
-        {
-            using(MemoryStream Data = new System.IO.MemoryStream()){
-                using (BinaryWriter Writer = new System.IO.BinaryWriter(Data))
-                {
-                    Writer.Write(Id);
-                    Writer.Write((uint)Flags);
-                    Writer.Write(Id);
+            writer.Write((byte)Surfaces.Count);
+            writer.Write((byte)CellPortals.Count); ;
+            writer.Write((ushort)VisibleCells.Count);
 
-                    Writer.Write((byte)Surfaces.Count);
-                    Writer.Write((byte)CellPortals.Count);
-                    Writer.Write((ushort)VisibleCells.Count);
+            for (var i = 0; i < Surfaces.Count; i++)
+                writer.Write((ushort)(Surfaces[i] & 0xFFFF));
 
-                    for (int i = 0; i < Surfaces.Count; i++)
-                    {
-                        ushort surfaceID = (ushort)(Surfaces[i] & 0xFFFF);
-                        //Writer.Write(surfaceID);
-                        Writer.Write((ushort)0x032a);
-                    }
+            writer.Write((ushort)(EnvironmentId & 0xFFFF));
+            
+            writer.Write(CellStructure);
 
-                    Writer.Write((ushort)(EnvironmentId & 0xFFFF));
-                    Writer.Write(CellStructure);
+            Position.Pack(writer);
 
-                    Writer.Write(Position.Origin.X);
-                    Writer.Write(Position.Origin.Y);
-                    Writer.Write(Position.Origin.Z);
-                    Writer.Write(Position.Orientation.W);
-                    Writer.Write(Position.Orientation.X);
-                    Writer.Write(Position.Orientation.Y);
-                    Writer.Write(Position.Orientation.Z);
+            CellPortals.Pack(writer);
 
-                    for (int i = 0; i < CellPortals.Count; i++)
-                    {
-                        Writer.Write((ushort)CellPortals[i].Flags);
-                        Writer.Write(CellPortals[i].PolygonId);
-                        Writer.Write(CellPortals[i].OtherCellId);
-                        Writer.Write(CellPortals[i].OtherPortalId);
-                    }
+            for (var i = 0; i < VisibleCells.Count; i++)
+                writer.Write(VisibleCells[i]);
 
-                    for (int i = 0; i < VisibleCells.Count; i++)
-                        Writer.Write(VisibleCells[i]);
 
-                    Writer.Write(StaticObjects.Count);
-                    for (int i = 0; i < StaticObjects.Count; i++)
-                    {
-                        Writer.Write(StaticObjects[i].Id);
-                        Writer.Write(StaticObjects[i].Frame.Origin.X);
-                        Writer.Write(StaticObjects[i].Frame.Origin.Y);
-                        Writer.Write(StaticObjects[i].Frame.Origin.Z);
-                        Writer.Write(StaticObjects[i].Frame.Orientation.W);
-                        Writer.Write(StaticObjects[i].Frame.Orientation.X);
-                        Writer.Write(StaticObjects[i].Frame.Orientation.Y);
-                        Writer.Write(StaticObjects[i].Frame.Orientation.Z);
-                    }
+            if ((Flags & EnvCellFlags.HasStaticObjs) != 0)
+                StaticObjects.Pack(writer);
 
-                    if ((Flags & EnvCellFlags.HasRestrictionObj) != 0)
-                        Writer.Write(RestrictionObj);
-                }
-                return Data.ToArray();
-            }
+            if ((Flags & EnvCellFlags.HasRestrictionObj) != 0)
+                writer.Write(RestrictionObj);
         }
     }
 }

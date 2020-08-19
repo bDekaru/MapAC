@@ -16,11 +16,21 @@ namespace MapAC.DatLoader.FileTypes
             Id = reader.ReadUInt32();
             uint strLen = reader.ReadCompressedUInt32();
             if (strLen > 0)
-                CharBuffer = reader.ReadPString(strLen);
+            {
+                byte[] thestring = reader.ReadBytes((int)strLen);
+                CharBuffer = System.Text.Encoding.Default.GetString(thestring);
+            }
         }
 
         public override void Pack(BinaryWriter writer)
         {
+            writer.Write(Id);
+            writer.WriteCompressedUInt32((uint)CharBuffer.Length);
+            if (CharBuffer.Length > 0)
+            {
+                byte[] stringBytes = System.Text.Encoding.Default.GetBytes(CharBuffer);
+                writer.WritePString(CharBuffer);
+            }
             throw new System.NotSupportedException();
         }
     }

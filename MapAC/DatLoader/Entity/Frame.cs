@@ -42,7 +42,7 @@ namespace MapAC.DatLoader.Entity
 
         public void Pack(BinaryWriter writer)
         {
-            writer.WriteVector3(Origin);
+            writer.Write(Origin);
 
             writer.Write(Orientation.W);
             writer.Write(Orientation.X);

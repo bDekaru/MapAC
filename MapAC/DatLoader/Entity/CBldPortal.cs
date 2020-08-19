@@ -49,7 +49,7 @@ namespace MapAC.DatLoader.Entity
 
             writer.Write((ushort)StabList.Count);
             for (var i = 0; i < StabList.Count; i++)
-                writer.Write(StabList[i]);
+                writer.Write((ushort)StabList[i]);
 
             writer.AlignBoundary();
         }

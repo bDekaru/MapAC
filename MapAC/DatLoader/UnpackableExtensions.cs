@@ -374,6 +374,16 @@ namespace MapAC.DatLoader
             }
         }
 
+        public static void Pack<T>(this Dictionary<uint, T> value, BinaryWriter writer) where T : IUnpackable, new()
+        {
+            writer.Write((uint)value.Count);
+            foreach(var e in value)
+            {
+                writer.Write(e.Key);
+                e.Value.Pack(writer);
+            }    
+        }
+
         public static void Unpack<T>(this Dictionary<uint, T> value, BinaryReader reader, uint fixedQuantity) where T : IUnpackable, new()
         {
             for (int i = 0; i < fixedQuantity; i++)
@@ -403,5 +413,16 @@ namespace MapAC.DatLoader
                 value.Add(key, values);
             }
         }
+
+        public static void Pack<T>(this Dictionary<uint, Dictionary<uint, T>> value, BinaryWriter writer) where T : IUnpackable, new()
+        {
+            writer.Write(value.Count);
+            foreach(var e in value)
+            {
+                writer.Write(e.Key);
+                e.Value.Pack(writer);
+            }
+        }
+
     }
 }

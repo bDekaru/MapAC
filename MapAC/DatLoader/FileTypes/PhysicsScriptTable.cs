@@ -22,7 +22,8 @@ namespace MapAC.DatLoader.FileTypes
 
         public override void Pack(BinaryWriter writer)
         {
-            throw new System.NotSupportedException();
+            writer.Write(Id);
+            ScriptTable.Pack(writer);
         }
     }
 }

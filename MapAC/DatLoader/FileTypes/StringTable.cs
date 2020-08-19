@@ -29,7 +29,10 @@ namespace MapAC.DatLoader.FileTypes
 
         public override void Pack(BinaryWriter writer)
         {
-            throw new System.NotSupportedException();
+            writer.Write(Id);
+            writer.Write(Language);
+            writer.Write(Unknown);
+            StringTableData.PackSmartArray(writer);
         }
     }
 }

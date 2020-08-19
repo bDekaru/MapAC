@@ -19,6 +19,7 @@ namespace MapAC.DatLoader.FileTypes
         public override void Unpack(BinaryReader reader)
         {
             Id = reader.ReadUInt32();
+            SkillBaseHash.UnpackPackedHashTable(reader);
         }
 
         public override void Pack(BinaryWriter writer)

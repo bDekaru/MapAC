@@ -21,7 +21,7 @@ namespace MapAC.DatLoader.FileTypes
             Id = reader.ReadUInt32();
 
             var totalObjects = reader.ReadUInt16();
-            reader.ReadUInt16(); // var bucketSize
+            reader.ReadUInt16(); // var bucketSize = 0x0020
             for (int i = 0; i < totalObjects; i++)
             {
                 string key = reader.ReadPString(); reader.AlignBoundary();
@@ -30,7 +30,7 @@ namespace MapAC.DatLoader.FileTypes
             }
 
             var totalEmoteObjects = reader.ReadUInt16();
-            reader.ReadUInt16();// var bucketSize
+            reader.ReadUInt16();// var bucketSize = 0x0020
             for (int i = 0; i < totalEmoteObjects; i++)
             {
                 string key = reader.ReadPString(); reader.AlignBoundary();
@@ -45,26 +45,20 @@ namespace MapAC.DatLoader.FileTypes
             writer.Write(Id);
 
             writer.Write((ushort)ChatPoseHash.Count);
-            throw new System.NotSupportedException();
-            /*
-            reader.ReadUInt16(); // var bucketSize
-            for (int i = 0; i < totalObjects; i++)
+            writer.Write((ushort)0x0020);
+            foreach (var e in ChatPoseHash)
             {
-                string key = reader.ReadPString(); reader.AlignBoundary();
-                string value = reader.ReadPString(); reader.AlignBoundary();
-                ChatPoseHash.Add(key, value);
+                writer.WritePString(e.Key); writer.AlignBoundary();
+                writer.WritePString(e.Value); writer.AlignBoundary();
             }
 
-            var totalEmoteObjects = reader.ReadUInt16();
-            reader.ReadUInt16();// var bucketSize
-            for (int i = 0; i < totalEmoteObjects; i++)
+            writer.Write((ushort)ChatEmoteHash.Count);
+            writer.Write((ushort)0x0020);
+            foreach (var e in ChatEmoteHash)
             {
-                string key = reader.ReadPString(); reader.AlignBoundary();
-                ChatEmoteData value = new ChatEmoteData();
-                value.Unpack(reader);
-                ChatEmoteHash.Add(key, value);
+                writer.WritePString(e.Key); writer.AlignBoundary();
+                e.Value.Pack(writer);
             }
-            */
         }
     }
 }

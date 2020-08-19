@@ -12,6 +12,9 @@ namespace MapAC
     public static class Export
     {
 
+        /// <summary>
+        /// Test the WriteCompressedUInt32 function
+        /// </summary>
         public static void TestBinaryWriter()
         {
             string fileName = @"C:\ACE\PortalTemp\writers\";
@@ -38,6 +41,21 @@ namespace MapAC
                     }
                 }
             }
+        }
+        
+        // Cell 0xnnnnFFFF
+        public static void ExportCellLandblock(uint landblockId, string path, int offsetX = 0, int offsetY = 0)
+        {
+            string fileName;
+            var landblock = DatManager.CellDat.ReadFromDat<LandblockInfo>(landblockId);
+
+            // We are moving this landblock!
+            if(offsetX != 0 || offsetY != 0)
+                landblock.MoveLandblock(offsetX, offsetY);
+
+            fileName = GetExportPath(DatDatabaseType.Cell, path, landblock.Id);
+            using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
+                landblock.Pack(writer);
         }
 
         // 0x01
@@ -219,8 +237,11 @@ namespace MapAC
             string exportFolder;
 
             string prefix = (objectId >> 24).ToString("X2") + "-";
-            if (DatFile.GetFileType(DatDatabaseType.Portal, objectId) != null)
-                exportFolder = Path.Combine(path, prefix + DatFile.GetFileType(DatDatabaseType.Portal, objectId).ToString());
+            if (DatFile.GetFileType(datDatabaseType, objectId) != null)
+                if(datDatabaseType != DatDatabaseType.Cell) 
+                    exportFolder = Path.Combine(path, prefix + DatFile.GetFileType(datDatabaseType, objectId).ToString());
+                else
+                    exportFolder = Path.Combine(path, DatFile.GetFileType(datDatabaseType, objectId).ToString());
             else
                 exportFolder = Path.Combine(path, "UnknownType");
 

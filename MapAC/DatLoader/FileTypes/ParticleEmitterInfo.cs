@@ -47,7 +47,7 @@ namespace MapAC.DatLoader.FileTypes
         {
             Id = reader.ReadUInt32();
 
-            /*uint unknown = */reader.ReadUInt32();
+            /*uint unknown = */reader.ReadUInt32(); // Always 0
 
             EmitterType  =  (EmitterType)reader.ReadInt32();
             ParticleType = (ParticleType)reader.ReadInt32();
@@ -96,7 +96,52 @@ namespace MapAC.DatLoader.FileTypes
 
         public override void Pack(BinaryWriter writer)
         {
-            throw new System.NotSupportedException();
+            writer.Write(Id);
+            writer.Write((int)0);
+
+            writer.Write((uint)EmitterType);
+            writer.Write((uint)ParticleType);
+
+            writer.Write(GfxObjId);
+            writer.Write(HwGfxObjId);
+
+            writer.Write(Birthrate);
+
+            writer.Write(MaxParticles);
+            writer.Write(InitialParticles);
+
+            writer.Write(TotalParticles);
+
+            writer.Write(TotalSeconds);
+
+            writer.Write(Lifespan);
+            writer.Write(LifespanRand);
+
+            writer.Write(OffsetDir);
+            writer.Write(MinOffset);
+            writer.Write(MaxOffset);
+
+            writer.Write(A);
+            writer.Write(MinA);
+            writer.Write(MaxA);
+
+            writer.Write(B);
+            writer.Write(MinB);
+            writer.Write(MaxB);
+
+            writer.Write(C);
+            writer.Write(MinC);
+            writer.Write(MaxC);
+
+            writer.Write(StartScale);
+            writer.Write(FinalScale);
+            writer.Write(ScaleRand);
+
+            writer.Write(StartTrans);
+            writer.Write(FinalTrans);
+            writer.Write(TransRand);
+
+            writer.Write(IsParentLocal);
         }
 
         public override string ToString()

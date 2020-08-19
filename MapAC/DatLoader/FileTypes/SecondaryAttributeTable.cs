@@ -24,7 +24,10 @@ namespace MapAC.DatLoader.FileTypes
 
         public override void Pack(BinaryWriter writer)
         {
-            throw new System.NotSupportedException();
+            writer.Write(Id);
+            MaxHealth.Pack(writer);
+            MaxStamina.Pack(writer);
+            MaxMana.Pack(writer);
         }
     }
 }

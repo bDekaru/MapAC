@@ -24,7 +24,7 @@ namespace MapAC.DatLoader.FileTypes
             // I don't actually know the structure of TabooTableEntries. It could be a Dictionary as I have it defined, or it could be a List where the key is just a variable in TabooTableEntry
             // I was unable to find the unpack code in the client. If someone can point me to it, I can make sure we match what the client is doing. - Mag
 
-            /*var x01 = */reader.ReadByte();
+            /*var x01 =*/ reader.ReadByte();
             var length = reader.ReadByte();
 
             TabooTableEntries.Unpack(reader, length);
@@ -32,7 +32,9 @@ namespace MapAC.DatLoader.FileTypes
 
         public override void Pack(BinaryWriter writer)
         {
-            throw new System.NotSupportedException();
+            writer.Write(Id);
+            writer.Write((byte)1);
+            TabooTableEntries.Pack(writer);
         }
 
         /// <summary>
