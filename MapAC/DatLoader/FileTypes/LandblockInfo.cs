@@ -52,6 +52,7 @@ namespace MapAC.DatLoader.FileTypes
             Objects.Unpack(reader);
 
             ushort numBuildings = reader.ReadUInt16();
+
             PackMask = reader.ReadUInt16();
 
             Buildings.Unpack(reader, numBuildings);
@@ -64,11 +65,6 @@ namespace MapAC.DatLoader.FileTypes
 
             if (DatManager.DatVersion == DatVersionType.ACDM)
                 reader.AlignBoundary();
-
-            if (reader.BaseStream.Position != reader.BaseStream.Length)
-            {
-                var notFullyRead = true;
-            }
         }
 
         public override void Pack(BinaryWriter writer)

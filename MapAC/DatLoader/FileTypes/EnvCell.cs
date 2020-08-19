@@ -109,7 +109,9 @@ namespace MapAC.DatLoader.FileTypes
 
             Position.Pack(writer);
 
-            CellPortals.Pack(writer);
+            // We already wrote our count...
+            foreach (var e in CellPortals)
+                e.Pack(writer);
 
             for (var i = 0; i < VisibleCells.Count; i++)
                 writer.Write(VisibleCells[i]);

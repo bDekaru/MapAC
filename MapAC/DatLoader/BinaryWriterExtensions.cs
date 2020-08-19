@@ -12,10 +12,11 @@ namespace MapAC.DatLoader
         public static void AlignBoundary(this BinaryWriter writer)
         {
             // Aligns the DatReader to the next DWORD boundary.
-            long alignDelta = writer.BaseStream.Position % 4;
+            long alignDelta = writer.BaseStream.Length % 4;
 
-            if (alignDelta != 0)
-                writer.BaseStream.Position += (int)(4 - alignDelta);
+            if(alignDelta > 0)
+                for (var i = 0; i < (4-alignDelta); i++)
+                    writer.Write((byte)0);
         }
 
 

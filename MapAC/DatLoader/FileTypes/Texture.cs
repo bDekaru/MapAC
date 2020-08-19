@@ -30,7 +30,7 @@ namespace MapAC.DatLoader.FileTypes
         ALPHA_ONLY = 11,
         NUM_IMAGE_TYPE = 12,
         // Post TOD Image Formats
-        PFID_R8G8B8 = 20,
+        PFID_R8G8B8 = 20, // Also seen in ACDM 0x06 UI formats
         PFID_A8R8G8B8 = 21,
         PFID_X8R8G8B8 = 22,
         PFID_R5G6B5 = 23,
@@ -291,9 +291,19 @@ namespace MapAC.DatLoader.FileTypes
                         for (uint i = 0; i < Height; i++)
                             for (uint j = 0; j < Width; j++)
                             {
-                                byte b = reader.ReadByte();
-                                byte g = reader.ReadByte();
-                                byte r = reader.ReadByte();
+                                byte r, g, b;
+                                if(DatManager.DatVersion == DatVersionType.ACDM)
+                                {
+                                    r = reader.ReadByte();
+                                    g = reader.ReadByte();
+                                    b = reader.ReadByte();
+                                }
+                                else
+                                {
+                                    b = reader.ReadByte();
+                                    g = reader.ReadByte();
+                                    r = reader.ReadByte();
+                                }
                                 int color = (r << 16) | (g << 8) | b;
                                 colors.Add(color);
                             }

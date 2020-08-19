@@ -126,7 +126,8 @@ namespace WindowsFormsApp1
                     switch (DatManager.CellDat.Blocksize)
                     {
                         case 0x100:
-                            DrawMap();
+                            //DrawMap();
+                            AddStatus("Skipping drawing map while debuggging...");
                             break;
                         default:
                             AddStatus("Dat file is a PORTAL type file.");
@@ -398,37 +399,46 @@ namespace WindowsFormsApp1
 
         private void testReadDatToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            string folder = @"C:\ACE\PortalTemp\";
+
+            var searchFor = 0x03000000;
+
             // Search through the entries for records matching this type...
-            foreach (var f in DatManager.CellDat.AllFiles)
+            if (DatManager.DatType == DatDatabaseType.Portal)
             {
-                try
+                foreach (var f in DatManager.CellDat.AllFiles)
                 {
-                    var check = f.Key & 0xFFFF;
-                    if (check == 0xFFFE)
+                   // try
                     {
-                        var testFile = DatManager.CellDat.ReadFromDat<LandblockInfo>(f.Key);
-                        DatReader dr = DatManager.CellDat.GetReaderForFile(f.Key);
-
-                        using (MemoryStream stream = new MemoryStream())
-                            using (BinaryWriter writer = new BinaryWriter(stream))
+                        if (f.Key > searchFor && f.Key < searchFor + 0x00FFFFFF )
                         {
-                            testFile.Pack(writer);
+                            var testFile = DatManager.CellDat.ReadFromDat<Animation>(f.Key);
 
-                            var streamArray = stream.ToArray();
-                            var drArray = dr.Buffer.ToArray();
-                            if (!streamArray.SequenceEqual(drArray))
+                            DatReader dr = DatManager.CellDat.GetReaderForFile(f.Key);
+
+                            using (MemoryStream stream = new MemoryStream())
+                            using (BinaryWriter writer = new BinaryWriter(stream))
                             {
-                                if(testFile.Buildings.Count > 0)
-                                    AddStatus($"Error matching {f.Key:X8} -- has buildings");
-                                else
-                                    AddStatus($"Error matching {f.Key:X8}");
-                                
-                            }
-                        }
+                                testFile.Pack(writer);
 
+                                var streamArray = stream.ToArray();
+                                var drArray = dr.Buffer.ToArray();
+                                if (!streamArray.SequenceEqual(dr.Buffer))
+                                {
+                                    AddStatus($"Erorr in {f.Key:X8}");
+                                    File.WriteAllBytes(folder + "packed_" + f.Key.ToString("X8") + ".bin", streamArray);
+                                    File.WriteAllBytes(folder + "orig_" + f.Key.ToString("X8") + ".bin", dr.Buffer);
+                                    var test = 1;
+                                }
+                            }
+
+                        }
+                        /*
+                    } catch (Exception ex) {
+                        //var error = ex.Message
+                        AddStatus($"----Error testing {f.Key:X8} -- {ex.Message}");
+                        */
                     }
-                    }catch{
-                    AddStatus($"----Error testing {f.Key:X8}");
                 }
             }
             AddStatus("DONE TEST READ");
