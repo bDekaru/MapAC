@@ -68,7 +68,7 @@ namespace MapAC.DatLoader
                 return (uint)(knownType + (higher | lower));
             }
             */
-            writer.Write(value - knownType);
+            writer.Write((ushort)(value - knownType));
         }
 
         /// <summary>

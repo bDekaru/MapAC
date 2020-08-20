@@ -37,13 +37,14 @@ namespace MapAC.DatLoader.Entity
             writer.Write((byte)Flags);
             writer.AlignBoundary();
 
-            Anims.Pack(writer);
-
+            foreach (var e in Anims)
+                e.Pack(writer);
+            
             if ((Flags & MotionDataFlags.HasVelocity) != 0)
-                writer.WriteVector3(Velocity);
+                writer.Write(Velocity);
 
             if ((Flags & MotionDataFlags.HasOmega) != 0)
-                writer.WriteVector3(Omega);
+                writer.Write(Omega);
         }
 
     }

@@ -12,5 +12,11 @@ namespace MapAC.DatLoader.Entity.AnimationHooks
 
             SoundType = reader.ReadUInt32();
         }
+
+        public override void Pack(BinaryWriter writer)
+        {
+            base.Pack(writer);
+            writer.Write(SoundType);
+        }
     }
 }

@@ -12,5 +12,12 @@ namespace MapAC.DatLoader.Entity.AnimationHooks
 
             AttackCone.Unpack(reader);
         }
+
+        public override void Pack(BinaryWriter writer)
+        {
+            base.Pack(writer);
+            AttackCone.Pack(writer);
+        }
+
     }
 }

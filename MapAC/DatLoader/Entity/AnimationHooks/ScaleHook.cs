@@ -14,5 +14,12 @@ namespace MapAC.DatLoader.Entity.AnimationHooks
             End     = reader.ReadSingle();
             Time    = reader.ReadSingle();
         }
+
+        public override void Pack(BinaryWriter writer)
+        {
+            base.Pack(writer);
+            writer.Write(End);
+            writer.Write(Time);
+        }
     }
 }

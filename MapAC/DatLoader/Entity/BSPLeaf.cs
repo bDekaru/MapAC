@@ -40,6 +40,29 @@ namespace MapAC.DatLoader.Entity
                 for (uint i = 0; i < numPolys; i++)
                     InPolys.Add(reader.ReadUInt16());
             }
+
+            if (DatManager.DatVersion == DatVersionType.ACDM)
+                reader.AlignBoundary();
+        }
+
+        public override void Pack(BinaryWriter writer, BSPType treeType)
+        {
+            byte[] typeBytes = Encoding.ASCII.GetBytes(Type);
+            for (var i = typeBytes.Length - 1; i >= 0; i--)
+                writer.Write(typeBytes[i]);
+
+            writer.Write(LeafIndex);
+
+            if (treeType == BSPType.Physics)
+            {
+                writer.Write(Solid);
+                
+                Sphere.Pack(writer);
+
+                writer.Write(InPolys.Count);
+                foreach (var e in InPolys)
+                    writer.Write(e);
+            }
         }
     }
 }

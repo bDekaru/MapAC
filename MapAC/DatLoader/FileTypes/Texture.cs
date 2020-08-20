@@ -146,6 +146,8 @@ namespace MapAC.DatLoader.FileTypes
                 writer.Write((uint)Format);
                 writer.Write(Length);
                 writer.Write(SourceData);
+                if (DefaultPaletteId != null)
+                    writer.Write((uint)DefaultPaletteId);
             }
             else
             {

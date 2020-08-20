@@ -14,5 +14,13 @@ namespace MapAC.DatLoader.Entity.AnimationHooks
             PES     = reader.ReadUInt32();
             Pause   = reader.ReadSingle();
         }
+
+        public override void Pack(BinaryWriter writer)
+        {
+            base.Pack(writer);
+            writer.Write(PES);
+            writer.Write(Pause);
+        }
+
     }
 }

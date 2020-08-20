@@ -13,5 +13,11 @@ namespace MapAC.DatLoader.Entity.AnimationHooks
 
             Axis = reader.ReadVector3();
         }
+
+        public override void Pack(BinaryWriter writer)
+        {
+            base.Pack(writer);
+            writer.Write(Axis);
+        }
     }
 }

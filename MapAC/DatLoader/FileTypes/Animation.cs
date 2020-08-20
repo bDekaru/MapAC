@@ -42,9 +42,12 @@ namespace MapAC.DatLoader.FileTypes
             writer.Write((uint)Flags);
             writer.Write(NumParts);
             writer.Write(NumFrames);
-            
+
             if ((Flags & AnimationFlags.PosFrames) != 0)
-                PosFrames.Pack(writer);
+            {
+                foreach (var e in PosFrames)
+                    e.Pack(writer);
+            }
 
             for (int i = 0; i < PartFrames.Count; i++)
                 PartFrames[i].Pack(writer);

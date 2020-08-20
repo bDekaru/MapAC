@@ -243,138 +243,11 @@ namespace WindowsFormsApp1
 
         private void exportToolStripMenuItem_Click(object sender, EventArgs eventArgs)
         {
-            string folder = @"C:\ACE\PortalTemp\";
-            string fileName;
-            DatReader dr;
-            uint fileId;
-            uint SetupToExport;
+            string path = @"C:\ACE\Landblocks\";
 
-            Export.ExportCellLandblock(0xA9B4FFFE, folder, -30, -35);
-            AddStatus($"Done Exporting {0xA9B4FFFE:X8}."); ;
-            return;
+            Export.ExportGfxObject(0x01000598, path);
 
-            /*
-            uint gfxObjId = 0x01001F61;
-            Export.ExportGfxObject(gfxObjId, folder);
-            return;
-            */
-            List<uint> SetupsToExport = new List<uint> { 0x02000CA8 };
-            List<uint> WavsToExport = new List<uint> { 0x0A000022, 0x0A000183, 0x0A0003C6, 0x0A000022, 0x0A000183, 0x0A0001FA, 0x0A0001FD, 0x0A00022D, 0x0A0003EE, 0x0A0003F2, 0x0A0003F3, 0x0A00043A, 0x0A00043C, 0x0A000463, };
-            /*
-            for (var i = 0; i < SetupsToExport.Count; i++)
-            {
-                SetupToExport = SetupsToExport[i];
-                try
-                {
-                    Export.ExportSetup(SetupToExport, folder);
-                    AddStatus($"Done Exporting {SetupToExport:X8} and associated files.");
-                }
-                catch (Exception ex)
-                {
-                    AddStatus($"---Error Exporting {SetupToExport:X8} and associated files.");
-                }
-            }
-            */
-            for (var i = 0; i < WavsToExport.Count; i++)
-            {
-                uint WaveToExport = WavsToExport[i];
-                try
-                {
-                    Export.ExportWave(WaveToExport, folder);
-                    AddStatus($"Done Exporting {WaveToExport:X8}.");
-                }
-                catch (Exception ex)
-                {
-                    AddStatus($"---Error Exporting {WaveToExport:X8} and associated files.");
-                }
-            }
-
-            return;
-
-            fileId = 0x100002AE;
-            var cb = DatManager.CellDat.ReadFromDat<ClothingTable>(fileId);
-            dr = DatManager.CellDat.GetReaderForFile(fileId);
-            fileName = @"C:\ACE\PortalTemp\" + fileId.ToString("X8") + "- orig.bin";
-            File.WriteAllBytes(fileName, dr.Buffer);
-            fileName = @"C:\ACE\PortalTemp\" + fileId.ToString("X8") + ".bin";
-            using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
-                cb.Pack(writer);
-
-            fileId = 0x0f00019b;
-            var palSet = DatManager.CellDat.ReadFromDat<PaletteSet>(fileId);
-            dr = DatManager.CellDat.GetReaderForFile(fileId);
-            fileName = @"C:\ACE\PortalTemp\" + fileId.ToString("X8") + "- orig.bin";
-            File.WriteAllBytes(fileName, dr.Buffer);
-            fileName = @"C:\ACE\PortalTemp\" + fileId.ToString("X8") + ".bin";
-            using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
-                palSet.Pack(writer);
-
-            var setup = DatManager.CellDat.ReadFromDat<SetupModel>(0x020009ED);
-            fileName = @"C:\ACE\PortalTemp\020009ED.bin";
-            using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
-                setup.Pack(writer);
-
-            var surfaceThing = DatManager.CellDat.ReadFromDat<Surface>(0x0800047e);
-            fileName = @"C:\ACE\PortalTemp\0800047E.bin";
-            using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
-                surfaceThing.Pack(writer);
-
-
-            fileId = 0x040010B1;
-            var myPal = DatManager.CellDat.ReadFromDat<Palette>(fileId);
-            fileName = @"C:\ACE\PortalTemp\" + fileId.ToString("X8") + ".bin";
-            using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
-                myPal.Pack(writer);
-
-            fileId = 0x010020c2;
-            dr = DatManager.CellDat.GetReaderForFile(fileId);
-            fileName = @"C:\ACE\PortalTemp\" + fileId.ToString("X8") + "- orig.bin";
-            File.WriteAllBytes(fileName, dr.Buffer);
-
-            var gfxObj = DatManager.CellDat.ReadFromDat<GfxObj>(fileId);
-            fileName = @"C:\ACE\PortalTemp\" + fileId.ToString("X8") + ".bin";
-            using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
-                gfxObj.Pack(writer);
-
-            for (var i = 0; i < gfxObj.Surfaces.Count; i++)
-            {
-                var surfaceId = gfxObj.Surfaces[i];
-                var surface = DatManager.CellDat.ReadFromDat<Surface>(surfaceId);
-                fileName = @"C:\ACE\PortalTemp\" + surfaceId.ToString("X8") + ".bin";
-                using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
-                    surface.Pack(writer);
-
-                if (surface.OrigPaletteId > 0)
-                {
-                    var pal = DatManager.CellDat.ReadFromDat<Palette>(surface.OrigPaletteId);
-                    fileName = @"C:\ACE\PortalTemp\" + surface.OrigPaletteId.ToString("X8") + ".bin";
-                    using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
-                        pal.Pack(writer);
-
-                }
-
-                if (surface.OrigTextureId > 0)
-                {
-                    var tex = DatManager.CellDat.ReadFromDat<SurfaceTexture>(surface.OrigTextureId);
-                    fileName = @"C:\ACE\PortalTemp\" + surface.OrigTextureId.ToString("X8") + "-orig.bin";
-                    /*
-                    using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
-                        tex.Pack(writer);
-                    */
-                    dr = DatManager.CellDat.GetReaderForFile(surface.OrigTextureId);
-                    File.WriteAllBytes(fileName, dr.Buffer);
-
-                    var bmp = tex.GetBitmap();
-                    if (bmp != null)
-                    {
-                        fileName = @"C:\ACE\PortalTemp\" + surface.OrigTextureId.ToString("X8") + ".png";
-                        bmp.Save(fileName, ImageFormat.Png);
-                    }
-                }
-
-            }
-
-            AddStatus("Done Exporting Files.");
+            AddStatus("Export complete.");
         }
 
         private void dumpDatContentsToTXTToolStripMenuItem_Click(object sender, EventArgs e)
@@ -401,7 +274,7 @@ namespace WindowsFormsApp1
         {
             string folder = @"C:\ACE\PortalTemp\";
 
-            var searchFor = 0x03000000;
+            var searchFor = 0x01000000;
 
             // Search through the entries for records matching this type...
             if (DatManager.DatType == DatDatabaseType.Portal)
@@ -410,9 +283,9 @@ namespace WindowsFormsApp1
                 {
                    // try
                     {
-                        if (f.Key > searchFor && f.Key < searchFor + 0x00FFFFFF )
+                        if (f.Key >= searchFor && f.Key < searchFor + 0x00FFFFFF )
                         {
-                            var testFile = DatManager.CellDat.ReadFromDat<Animation>(f.Key);
+                            var testFile = DatManager.CellDat.ReadFromDat<GfxObj>(f.Key);
 
                             DatReader dr = DatManager.CellDat.GetReaderForFile(f.Key);
 
@@ -442,6 +315,69 @@ namespace WindowsFormsApp1
                 }
             }
             AddStatus("DONE TEST READ");
+        }
+
+        private void getPortalItemsInCellsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            GetObjectDetailsFromLandblock(0xc4a7FFFF);
+            GetObjectDetailsFromLandblock(0xc4a8FFFF);
+            GetObjectDetailsFromLandblock(0xc4a9FFFF);
+            GetObjectDetailsFromLandblock(0xc4aaFFFF);
+            GetObjectDetailsFromLandblock(0xc4abFFFF);
+            GetObjectDetailsFromLandblock(0xc5a7FFFF);
+            GetObjectDetailsFromLandblock(0xc5a8FFFF);
+            GetObjectDetailsFromLandblock(0xc5a9FFFF);
+            GetObjectDetailsFromLandblock(0xc5aaFFFF);
+            GetObjectDetailsFromLandblock(0xc5abFFFF);
+            GetObjectDetailsFromLandblock(0xc6a7FFFF);
+            GetObjectDetailsFromLandblock(0xc6a8FFFF);
+            GetObjectDetailsFromLandblock(0xc6a9FFFF);
+            GetObjectDetailsFromLandblock(0xc6aaFFFF);
+            GetObjectDetailsFromLandblock(0xc6abFFFF);
+            GetObjectDetailsFromLandblock(0xc7a7FFFF);
+            GetObjectDetailsFromLandblock(0xc7a8FFFF);
+            GetObjectDetailsFromLandblock(0xc7a9FFFF);
+            GetObjectDetailsFromLandblock(0xc7aaFFFF);
+            GetObjectDetailsFromLandblock(0xc7abFFFF);
+            GetObjectDetailsFromLandblock(0xc8a7FFFF);
+            GetObjectDetailsFromLandblock(0xc8a8FFFF);
+            GetObjectDetailsFromLandblock(0xc8a9FFFF);
+            GetObjectDetailsFromLandblock(0xc8aaFFFF);
+            GetObjectDetailsFromLandblock(0xc8abFFFF);
+        }
+
+        private void GetObjectDetailsFromLandblock(uint landblockId)
+        {
+            AddStatus($"Reading {landblockId:X8}");
+            var lbi_id = (landblockId & 0xFFFF0000) + 0xFFFE;
+            var landblockInfo = DatManager.CellDat.ReadFromDat<LandblockInfo>(lbi_id);
+            for(var i = 0; i < landblockInfo.Objects.Count; i++)
+            {
+                AddStatus($" - Object {landblockInfo.Objects[i].Id:X8}");
+            }
+
+            for (var i = 0; i < landblockInfo.Buildings.Count; i++)
+            {
+                AddStatus($" - Building {landblockInfo.Buildings[i].ModelId:X8}");
+            }
+
+            // Search through EnvCells
+            uint baseLb = landblockId >> 24;
+            foreach (var e in DatManager.CellDat.AllFiles)
+            {
+                if ((e.Key >> 24) == baseLb && ((e.Key & 0xFFFF) < 0xFFFE))
+                {
+                    var envCellId = e.Key;
+                    var envCell = DatManager.CellDat.ReadFromDat<EnvCell>(envCellId);
+                    AddStatus($" - EnvCell {envCellId:X8} enviroment - {envCell.EnvironmentId:X8}");
+                    for (var i = 0; i < envCell.StaticObjects.Count; i++)
+                    {
+                        AddStatus($" - EnvCell {envCellId:X8} object - {envCell.StaticObjects[i].Id:X8}");
+                    }
+                }
+            }
+
+
         }
     }
 }

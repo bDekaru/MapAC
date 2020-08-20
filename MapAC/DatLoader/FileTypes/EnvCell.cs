@@ -38,6 +38,8 @@ namespace MapAC.DatLoader.FileTypes
         public List<Stab> StaticObjects { get; } = new List<Stab>();
         public uint RestrictionObj { get; private set; }
 
+        public uint OrigId { get; set; }
+
         public bool SeenOutside => Flags.HasFlag(EnvCellFlags.SeenOutside);
 
         public override void Unpack(BinaryReader reader)
@@ -123,5 +125,30 @@ namespace MapAC.DatLoader.FileTypes
             if ((Flags & EnvCellFlags.HasRestrictionObj) != 0)
                 writer.Write(RestrictionObj);
         }
+
+        // Adjust the data of the Landblock to reflect its new position.
+        public void MoveLandblock(int offsetX, int offsetY)
+        {
+            int blockX = (int)(Id >> 24);
+            int blockY = (int)(Id >> 16 & 0xFF);
+
+            // adjust these by our offsets!
+            blockX += offsetX;
+            blockY += offsetY;
+
+            // little sanity check
+            if (blockX > 255 || blockX < 0)
+                throw new System.ArgumentOutOfRangeException();
+            if (blockY > 255 || blockY < 0)
+                throw new System.ArgumentOutOfRangeException();
+
+            // we need to update our Landblock.Id to reflect the new position
+            uint newLandblockId = (uint)((blockX << 24) + (blockY << 16) + (Id & 0xFFFF));
+            Id = newLandblockId;
+
+            // We might need to change our landblock.Buildings.Portals other_cell_id, other_portal_Id and StabList
+
+        }
+
     }
 }

@@ -16,7 +16,7 @@ namespace MapAC.DatLoader.Entity
 
         public void Pack(BinaryWriter writer)
         {
-            writer.WriteVector3(N);
+            writer.Write(N);
             writer.Write(D);
         }
 

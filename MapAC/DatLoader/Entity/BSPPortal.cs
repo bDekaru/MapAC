@@ -44,6 +44,35 @@ namespace MapAC.DatLoader.Entity
 
                 InPortals.Unpack(reader, numPortals);
             }
+
+            if (DatManager.DatVersion == DatVersionType.ACDM)
+                reader.AlignBoundary();
+        }
+
+        public override void Pack(BinaryWriter writer, BSPType treeType)
+        {
+            byte[] typeBytes = Encoding.ASCII.GetBytes(Type);
+            for (var i = typeBytes.Length - 1; i >= 0; i--)
+                writer.Write(typeBytes[i]);
+
+            SplittingPlane.Pack(writer);
+
+            PosNode.Pack(writer, treeType);
+            NegNode.Pack(writer, treeType);
+
+            if (treeType == BSPType.Drawing)
+            {
+                Sphere.Pack(writer);
+
+                writer.Write(InPolys.Count);
+                writer.Write(InPortals.Count);
+
+                foreach (var e in InPolys)
+                    writer.Write(e);
+
+                foreach (var e in InPortals)
+                    e.Pack(writer);
+            }
         }
     }
 }

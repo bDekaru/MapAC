@@ -98,9 +98,9 @@ namespace MapAC.DatLoader.FileTypes
 
             // little sanity check
             if (blockX > 255 || blockX < 0)
-                throw new System.NotSupportedException();
+                throw new System.ArgumentOutOfRangeException();
             if (blockY > 255 || blockY < 0)
-                throw new System.NotSupportedException();
+                throw new System.ArgumentOutOfRangeException();
 
             // we need to update our Landblock.Id to reflect the new position
             uint newLandblockId = (uint)((blockX << 24) + (blockY << 16) + 0xFFFE);

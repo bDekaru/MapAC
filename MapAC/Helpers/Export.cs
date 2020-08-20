@@ -12,50 +12,85 @@ namespace MapAC
     public static class Export
     {
 
-        /// <summary>
-        /// Test the WriteCompressedUInt32 function
-        /// </summary>
-        public static void TestBinaryWriter()
+        public static void ExportEnvCell(uint envCellId, string path, int offsetX = 0, int offsetY = 0)
         {
-            string fileName = @"C:\ACE\PortalTemp\writers\";
-            for (uint i = 0; i < 300000; i++)
-            {
-                using (MemoryStream stream = new MemoryStream())
-                {
-                    using (BinaryWriter writer = new BinaryWriter(stream))
-                    {
-                        writer.WriteCompressedUInt32(i);
-                        writer.Flush();
+            string fileName;
+            var envCell = DatManager.CellDat.ReadFromDat<EnvCell>(envCellId);
 
-                        using (BinaryReader reader = new BinaryReader(stream))
-                        {
-                            reader.BaseStream.Position = 0;
-                            uint test = reader.ReadCompressedUInt32();
-                            if (test != i)
-                            {
-                                reader.BaseStream.Position = 0;
-                                var raw = reader.ReadUInt32();
-                                var bad = true;
-                            }
-                        }
-                    }
+            if (DatManager.DatVersion == DatVersionType.ACDM)
+                envCell.Id = envCellId;
+
+            // We are moving this landblock!
+            if (offsetX != 0 || offsetY != 0)
+                envCell.MoveLandblock(offsetX, offsetY);
+
+            fileName = GetExportPath(DatDatabaseType.Cell, path, envCell.Id);
+            if (!File.Exists(fileName))
+            {
+                using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
+                    envCell.Pack(writer);
+
+                envCell.Id = envCellId; // Move the envCell back!
+
+                // List any polyId / 0x0D Environment?
+                // List any Setups/GfxObj?
+
+                foreach (var cell in envCell.VisibleCells)
+                {
+                    var cellId = (envCellId & 0xFFFF0000) + cell;
+                    ExportEnvCell(cellId, path, offsetX, offsetY);
                 }
             }
         }
-        
-        // Cell 0xnnnnFFFF
-        public static void ExportCellLandblock(uint landblockId, string path, int offsetX = 0, int offsetY = 0)
+
+
+        // Cell 0xnnnnFFFE
+        public static void ExportLandblockInfo(uint landblockId, string path, int offsetX = 0, int offsetY = 0)
         {
             string fileName;
             var landblock = DatManager.CellDat.ReadFromDat<LandblockInfo>(landblockId);
 
             // We are moving this landblock!
-            if(offsetX != 0 || offsetY != 0)
+            if (offsetX != 0 || offsetY != 0)
                 landblock.MoveLandblock(offsetX, offsetY);
 
             fileName = GetExportPath(DatDatabaseType.Cell, path, landblock.Id);
             using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
                 landblock.Pack(writer);
+
+            landblock.Id = landblockId;// Move the landblock back!
+
+            uint baseLb = landblockId >> 24;
+            foreach(var e in DatManager.CellDat.AllFiles)
+            {
+                if((e.Key >> 24) == baseLb && ((e.Key & 0xFFFF) < 0xFFFE))
+                {
+                    ExportEnvCell(e.Key, path, offsetX, offsetY);
+                }
+            }
+            // export any EnvCells connected to the landscape...
+        }
+
+        // Cell 0xnnnnFFFF
+        public static void ExportCellLandblock(uint landblockId, string path, int offsetX = 0, int offsetY = 0)
+        {
+            string fileName;
+            var landblock = DatManager.CellDat.ReadFromDat<CellLandblock>(landblockId);
+
+            // We are moving this landblock!
+            if (offsetX != 0 || offsetY != 0)
+                landblock.MoveLandblock(offsetX, offsetY);
+
+            fileName = GetExportPath(DatDatabaseType.Cell, path, landblock.Id);
+            using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
+                landblock.Pack(writer);
+
+            landblock.Id = landblockId; // Move the landblock back!
+
+            var lbi = (landblockId & 0xFFFF0000) + 0xFFFE;
+            if (DatManager.CellDat.AllFiles.ContainsKey(lbi)) {             
+                ExportLandblockInfo(lbi, path, offsetX, offsetY);
+            }
         }
 
         // 0x01

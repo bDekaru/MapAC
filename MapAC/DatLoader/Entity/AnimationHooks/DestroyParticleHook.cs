@@ -12,5 +12,12 @@ namespace MapAC.DatLoader.Entity.AnimationHooks
 
             EmitterId = reader.ReadUInt32();
         }
+
+        public override void Pack(BinaryWriter writer)
+        {
+            base.Pack(writer);
+            writer.Write(EmitterId);
+        }
+
     }
 }

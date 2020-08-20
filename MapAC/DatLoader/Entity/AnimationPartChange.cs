@@ -24,12 +24,5 @@ namespace MapAC.DatLoader.Entity
             writer.Write(PartIndex);
             writer.WriteAsDataIDOfKnownType(PartID, 0x01000000);
         }
-
-        public void Pack(BinaryWriter writer, ushort partIndex)
-        {
-            PartIndex = (byte)(partIndex & 255);
-            writer.WriteAsDataIDOfKnownType(PartID, 0x01000000);
-        }
-
     }
 }

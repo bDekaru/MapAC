@@ -18,5 +18,14 @@ namespace MapAC.DatLoader.Entity.AnimationHooks
             Probability = reader.ReadSingle();
             Volume = reader.ReadSingle();
         }
+
+        public override void Pack(BinaryWriter writer)
+        {
+            base.Pack(writer);
+            writer.Write(SoundID);
+            writer.Write(Priority);
+            writer.Write(Probability);
+            writer.Write(Volume);
+        }
     }
 }

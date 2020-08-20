@@ -12,5 +12,11 @@ namespace MapAC.DatLoader.Entity.AnimationHooks
 
             LightsOn = reader.ReadInt32();
         }
+
+        public override void Pack(BinaryWriter writer)
+        {
+            base.Pack(writer);
+            writer.Write(LightsOn);
+        }
     }
 }
