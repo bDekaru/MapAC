@@ -179,7 +179,7 @@ namespace MapAC.DatLoader.FileTypes
         public void SetIdFromSurfaceTexture(uint SurfaceTextureId)
         {
             if (DatManager.DatVersion == DatVersionType.ACTOD) throw new System.NotSupportedException();
-            Id = SurfaceTextureId + 0x01010000;
+            Id = SurfaceTextureId + 0x01000000 + DatManager.ACDM_OFFSET;
         }
 
         /// <summary>
@@ -578,6 +578,27 @@ namespace MapAC.DatLoader.FileTypes
             g /= total;
             b /= total;
             return Color.FromArgb(r, g, b);
+        }
+
+        /// <summary>
+        /// Will convert some pre TOD texture formats to post TOD textures formats
+        /// </summary>
+        private void ConvertTextureFormat()
+        {
+            switch (Format)
+            {
+                case SurfacePixelFormat.INDEX8:
+                    List<byte> colors = new List<byte>(); // We'll store the values here temporarily
+                    using (BinaryReader reader = new BinaryReader(new MemoryStream(SourceData)))
+                    {
+                        for (uint y = 0; y < Height; y++)
+                            for (uint x = 0; x < Width; x++)
+                                colors.Add(reader.ReadByte());
+                    }
+                    Format = SurfacePixelFormat.PFID_INDEX16;
+                    break;
+
+            }
         }
     }
 }

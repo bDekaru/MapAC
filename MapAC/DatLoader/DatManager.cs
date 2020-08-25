@@ -11,6 +11,9 @@ namespace MapAC.DatLoader
 
         private static int count;
 
+        // A padding given to all ACDM portal.dat items exported to avoid any potential conflicts
+        public const uint ACDM_OFFSET = 0x10000;
+
         public static CellDatDatabase CellDat { get; private set; }
         public static DatDatabaseType DatType;
         public static DatVersionType DatVersion;

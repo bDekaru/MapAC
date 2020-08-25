@@ -9,7 +9,7 @@ namespace MapAC.DatLoader.Entity
     /// </summary>
     public class Stab : IUnpackable
     {
-        public uint Id { get; private set; }
+        public uint Id { get; set; }
         public Frame Frame { get; } = new Frame();
 
         public void Unpack(BinaryReader reader)

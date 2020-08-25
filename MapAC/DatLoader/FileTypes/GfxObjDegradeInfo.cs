@@ -24,7 +24,18 @@ namespace MapAC.DatLoader.FileTypes
         public override void Pack(BinaryWriter writer)
         {
             writer.Write(Id);
-            Degrades.Pack(writer);
+            if(DatManager.DatVersion == DatVersionType.ACDM)
+            {
+                writer.Write(Degrades.Count);
+                for (int i = 0; i < Degrades.Count; i++)
+                {
+                    var gfxDegrade = Degrades[i];
+                    gfxDegrade.Id += DatManager.ACDM_OFFSET;
+                    gfxDegrade.Pack(writer);
+                }
+            }
+            else
+                Degrades.Pack(writer);
         }
     }
 }

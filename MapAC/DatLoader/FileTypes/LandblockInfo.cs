@@ -73,6 +73,14 @@ namespace MapAC.DatLoader.FileTypes
 
             writer.Write(NumCells);
 
+            writer.Write(Objects.Count);
+            foreach (var o in Objects)
+            {
+                if (DatManager.DatVersion == DatVersionType.ACDM)
+                    o.Id += DatManager.ACDM_OFFSET;
+                o.Pack(writer);
+            }
+
             Objects.Pack(writer);
 
             writer.Write((ushort)Buildings.Count);
@@ -80,7 +88,11 @@ namespace MapAC.DatLoader.FileTypes
 
             //Buildings.Pack(writer); // Can't use this, we already wrote the count
             foreach (var e in Buildings)
+            {
+                if (DatManager.DatVersion == DatVersionType.ACDM)
+                    e.ModelId += DatManager.ACDM_OFFSET;
                 e.Pack(writer);
+            }
 
             if ((PackMask & 1) == 1)
                 RestrictionTables.PackHashTable(writer, 0x08);

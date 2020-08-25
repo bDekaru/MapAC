@@ -50,7 +50,7 @@ namespace MapAC.DatLoader.FileTypes
             {
                 // image or clipmap
                 if(DatManager.DatVersion == DatVersionType.ACDM)
-                    writer.Write(OrigTextureId + 0x10000);
+                    writer.Write(OrigTextureId + DatManager.ACDM_OFFSET);
                 else
                     writer.Write(OrigTextureId);
                 writer.Write(OrigPaletteId);

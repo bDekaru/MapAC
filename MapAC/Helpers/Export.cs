@@ -18,7 +18,7 @@ namespace MapAC
             var envCell = DatManager.CellDat.ReadFromDat<EnvCell>(envCellId);
 
             if (DatManager.DatVersion == DatVersionType.ACDM)
-                envCell.Id = envCellId;
+                envCell.Id = envCellId; // ACDM doesn't have this field!
 
             // We are moving this landblock!
             if (offsetX != 0 || offsetY != 0)
@@ -98,13 +98,21 @@ namespace MapAC
         {
             string fileName;
             var gfxObj = DatManager.CellDat.ReadFromDat<GfxObj>(gfxObjId);
-            fileName = GetExportPath(DatDatabaseType.Portal, path, gfxObjId);
+
+            var saveGfxObjId = gfxObjId;
+            if (DatManager.DatVersion == DatVersionType.ACDM)
+                saveGfxObjId += DatManager.ACDM_OFFSET;
+
+            fileName = GetExportPath(DatDatabaseType.Portal, path, saveGfxObjId);
             using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
                 gfxObj.Pack(writer);
 
             // Export all the Surfaces
             for (var i = 0; i < gfxObj.Surfaces.Count; i++)
                 ExportSurface(gfxObj.Surfaces[i], path);
+
+            if (gfxObj.DIDDegrade > 0)
+                ExportDegrade(gfxObj.DIDDegrade, path);
         }
 
         /// <summary>
@@ -118,7 +126,12 @@ namespace MapAC
             if (DatManager.CellDat.AllFiles.ContainsKey(setupID))
             {
                 var setup = DatManager.CellDat.ReadFromDat<SetupModel>(setupID);
-                fileName = GetExportPath(DatDatabaseType.Portal, path, setupID);
+
+                var saveSetupId = setupID;
+                if (DatManager.DatVersion == DatVersionType.ACDM)
+                    saveSetupId += DatManager.ACDM_OFFSET;
+
+                fileName = GetExportPath(DatDatabaseType.Portal, path, saveSetupId);
                 using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
                     setup.Pack(writer);
 
@@ -140,12 +153,32 @@ namespace MapAC
                 }
             }
         }
+        
+        // 0x03
+        public static void ExportAnimation(uint animId, string path)
+        {
+            var anim = DatManager.CellDat.ReadFromDat<Animation>(animId);
+
+            var exportId = animId;
+            if (DatManager.DatVersion == DatVersionType.ACDM)
+                exportId += DatManager.ACDM_OFFSET;
+
+            var fileName = GetExportPath(DatDatabaseType.Portal, path, exportId);
+            using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
+                anim.Pack(writer);
+        }
+
 
         // 0x04
         public static void ExportPalette(uint palId, string path)
         {
             var pal = DatManager.CellDat.ReadFromDat<Palette>(palId);
-            var fileName = GetExportPath(DatDatabaseType.Portal, path, palId);
+
+            var exportId = palId;
+            if (DatManager.DatVersion == DatVersionType.ACDM)
+                exportId += DatManager.ACDM_OFFSET;
+
+            var fileName = GetExportPath(DatDatabaseType.Portal, path, exportId);
             using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
                 pal.Pack(writer);
         }
@@ -193,7 +226,7 @@ namespace MapAC
         {
             var surface = DatManager.CellDat.ReadFromDat<Surface>(surfaceId);
             if (DatManager.DatVersion == DatVersionType.ACDM)
-                surfaceId += 0x10000;
+                surfaceId += DatManager.ACDM_OFFSET;
             var fileName = GetExportPath(DatDatabaseType.Portal, path, surfaceId);
             using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
                 surface.Pack(writer);
@@ -265,6 +298,15 @@ namespace MapAC
                     ExportPalSet(cloSubPal.PaletteSet, path);
                 }
             }
+        }
+
+        // 0x11
+        public static void ExportDegrade(uint degradeId, string path)
+        {
+            var degrade = DatManager.CellDat.ReadFromDat<GfxObjDegradeInfo>(degradeId);
+            var fileName = GetExportPath(DatDatabaseType.Portal, path, degradeId);
+            using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
+                degrade.Pack(writer);
         }
 
         private static string GetExportPath(DatDatabaseType datDatabaseType, string path, uint objectId)

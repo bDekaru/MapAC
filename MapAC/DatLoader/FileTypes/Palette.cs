@@ -23,7 +23,11 @@ namespace MapAC.DatLoader.FileTypes
 
         public override void Pack(BinaryWriter writer)
         {
-            writer.Write(Id);
+            if (DatManager.DatVersion == DatVersionType.ACDM)
+                writer.Write(Id + DatManager.ACDM_OFFSET);
+            else
+                writer.Write(Id);
+
             Colors.Pack(writer);
         }
     }

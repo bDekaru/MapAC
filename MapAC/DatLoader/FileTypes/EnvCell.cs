@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-
+using System.Security.Principal;
 using MapAC.DatLoader.Entity;
 
 namespace MapAC.DatLoader.FileTypes
@@ -103,10 +103,16 @@ namespace MapAC.DatLoader.FileTypes
             writer.Write((ushort)VisibleCells.Count);
 
             for (var i = 0; i < Surfaces.Count; i++)
-                writer.Write((ushort)(Surfaces[i] & 0xFFFF));
+                if (DatManager.DatVersion == DatVersionType.ACDM)
+                    writer.Write((ushort)((Surfaces[i] + DatManager.ACDM_OFFSET) & 0xFFFF));
+                else
+                    writer.Write((ushort)(Surfaces[i] & 0xFFFF));
 
-            writer.Write((ushort)(EnvironmentId & 0xFFFF));
-            
+            if (DatManager.DatVersion == DatVersionType.ACDM)
+                writer.Write((ushort)((EnvironmentId + DatManager.ACDM_OFFSET) & 0xFFFF));
+            else
+                writer.Write((ushort)(EnvironmentId & 0xFFFF));
+
             writer.Write(CellStructure);
 
             Position.Pack(writer);
@@ -118,9 +124,22 @@ namespace MapAC.DatLoader.FileTypes
             for (var i = 0; i < VisibleCells.Count; i++)
                 writer.Write(VisibleCells[i]);
 
-
             if ((Flags & EnvCellFlags.HasStaticObjs) != 0)
-                StaticObjects.Pack(writer);
+            {
+                if (DatManager.DatVersion == DatVersionType.ACDM)
+                {
+                    // Rewrite some of the objIds
+                    writer.Write(StaticObjects.Count);
+                    for (int i = 0; i < StaticObjects.Count; i++)
+                    {
+                        Stab thisStab = StaticObjects[i];
+                        thisStab.Id += DatManager.ACDM_OFFSET;
+                        thisStab.Pack(writer);
+                    }
+                }
+                else
+                    StaticObjects.Pack(writer);
+            }
 
             if ((Flags & EnvCellFlags.HasRestrictionObj) != 0)
                 writer.Write(RestrictionObj);
