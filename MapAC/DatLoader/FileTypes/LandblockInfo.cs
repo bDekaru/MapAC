@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 
 using MapAC.DatLoader.Entity;
+using MapAC.DatLoader.Enum;
 
 namespace MapAC.DatLoader.FileTypes
 {
@@ -77,7 +78,12 @@ namespace MapAC.DatLoader.FileTypes
             foreach (var o in Objects)
             {
                 if (DatManager.DatVersion == DatVersionType.ACDM)
-                    o.Id += DatManager.ACDM_OFFSET;
+                {
+                    if (o.Id <= 0x01FFFFFF)
+                        o.Id += (uint)ACDMOffset.GfxObj;
+                    else // Setup
+                        o.Id += (uint)ACDMOffset.Setup;
+                }
                 o.Pack(writer);
             }
 
@@ -90,7 +96,13 @@ namespace MapAC.DatLoader.FileTypes
             foreach (var e in Buildings)
             {
                 if (DatManager.DatVersion == DatVersionType.ACDM)
-                    e.ModelId += DatManager.ACDM_OFFSET;
+                {
+                    if (e.ModelId <= 0x01FFFFFF)
+                        e.ModelId += (uint)ACDMOffset.GfxObj;
+                    else // Setup
+                        e.ModelId += (uint)ACDMOffset.Setup;
+
+                }
                 e.Pack(writer);
             }
 

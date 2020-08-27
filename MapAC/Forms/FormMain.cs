@@ -243,9 +243,11 @@ namespace WindowsFormsApp1
 
         private void exportToolStripMenuItem_Click(object sender, EventArgs eventArgs)
         {
-            string path = @"C:\ACE\Landblocks\";
+            string path = @"C:\ACE\PortalTemp\TARDIS\";
 
-            Export.ExportGfxObject(0x01000598, path);
+            Export.ExportSetup(0x020009ED, path); // TARDIS
+
+            //Export.ExportGfxObject(0x01000598, path);
 
             AddStatus("Export complete.");
         }

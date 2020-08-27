@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Security.Principal;
 using MapAC.DatLoader.Entity;
+using MapAC.DatLoader.Enum;
 
 namespace MapAC.DatLoader.FileTypes
 {
@@ -104,12 +105,12 @@ namespace MapAC.DatLoader.FileTypes
 
             for (var i = 0; i < Surfaces.Count; i++)
                 if (DatManager.DatVersion == DatVersionType.ACDM)
-                    writer.Write((ushort)((Surfaces[i] + DatManager.ACDM_OFFSET) & 0xFFFF));
+                    writer.Write((ushort)((Surfaces[i] + (uint)ACDMOffset.Surface) & 0xFFFF));
                 else
                     writer.Write((ushort)(Surfaces[i] & 0xFFFF));
 
             if (DatManager.DatVersion == DatVersionType.ACDM)
-                writer.Write((ushort)((EnvironmentId + DatManager.ACDM_OFFSET) & 0xFFFF));
+                writer.Write((ushort)((EnvironmentId + (uint)ACDMOffset.Environment) & 0xFFFF));
             else
                 writer.Write((ushort)(EnvironmentId & 0xFFFF));
 
@@ -133,7 +134,10 @@ namespace MapAC.DatLoader.FileTypes
                     for (int i = 0; i < StaticObjects.Count; i++)
                     {
                         Stab thisStab = StaticObjects[i];
-                        thisStab.Id += DatManager.ACDM_OFFSET;
+                        if(thisStab.Id <= 0x01FFFFFF)
+                            thisStab.Id += (uint)ACDMOffset.GfxObj;
+                        else
+                            thisStab.Id += (uint)ACDMOffset.Setup;
                         thisStab.Pack(writer);
                     }
                 }

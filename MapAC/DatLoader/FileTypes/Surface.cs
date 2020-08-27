@@ -49,8 +49,9 @@ namespace MapAC.DatLoader.FileTypes
             if (Type.HasFlag(SurfaceType.Base1Image) || Type.HasFlag(SurfaceType.Base1ClipMap))
             {
                 // image or clipmap
+                //TODO -- Does this need an offset for ACDM?
                 if(DatManager.DatVersion == DatVersionType.ACDM)
-                    writer.Write(OrigTextureId + DatManager.ACDM_OFFSET);
+                    writer.Write(OrigTextureId + (uint)ACDMOffset.SurfaceTexture);
                 else
                     writer.Write(OrigTextureId);
                 writer.Write(OrigPaletteId);

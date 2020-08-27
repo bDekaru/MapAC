@@ -1,3 +1,4 @@
+using MapAC.DatLoader.Enum;
 using System.Collections.Generic;
 using System.IO;
 
@@ -20,7 +21,12 @@ namespace MapAC.DatLoader.Entity
         public void Pack(BinaryWriter writer)
         {
             writer.Write(Index);
-            writer.Write(ModelId);
+
+            if (DatManager.DatVersion == DatVersionType.ACDM)
+                writer.Write(ModelId + (uint)ACDMOffset.Setup);
+            else
+                writer.Write(ModelId);
+            
 
             CloTextureEffects.Pack(writer);
         }

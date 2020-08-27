@@ -1,4 +1,5 @@
 ﻿using MapAC.DatLoader;
+using MapAC.DatLoader.Enum;
 using MapAC.DatLoader.FileTypes;
 using System;
 using System.Collections.Generic;
@@ -101,7 +102,7 @@ namespace MapAC
 
             var saveGfxObjId = gfxObjId;
             if (DatManager.DatVersion == DatVersionType.ACDM)
-                saveGfxObjId += DatManager.ACDM_OFFSET;
+                saveGfxObjId += (uint)ACDMOffset.GfxObj;
 
             fileName = GetExportPath(DatDatabaseType.Portal, path, saveGfxObjId);
             using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
@@ -129,7 +130,7 @@ namespace MapAC
 
                 var saveSetupId = setupID;
                 if (DatManager.DatVersion == DatVersionType.ACDM)
-                    saveSetupId += DatManager.ACDM_OFFSET;
+                    saveSetupId += (uint)ACDMOffset.Setup;
 
                 fileName = GetExportPath(DatDatabaseType.Portal, path, saveSetupId);
                 using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
@@ -161,7 +162,7 @@ namespace MapAC
 
             var exportId = animId;
             if (DatManager.DatVersion == DatVersionType.ACDM)
-                exportId += DatManager.ACDM_OFFSET;
+                exportId += (uint)ACDMOffset.Animation;
 
             var fileName = GetExportPath(DatDatabaseType.Portal, path, exportId);
             using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
@@ -176,7 +177,7 @@ namespace MapAC
 
             var exportId = palId;
             if (DatManager.DatVersion == DatVersionType.ACDM)
-                exportId += DatManager.ACDM_OFFSET;
+                exportId += (uint)ACDMOffset.Palette;
 
             var fileName = GetExportPath(DatDatabaseType.Portal, path, exportId);
             using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
@@ -226,7 +227,7 @@ namespace MapAC
         {
             var surface = DatManager.CellDat.ReadFromDat<Surface>(surfaceId);
             if (DatManager.DatVersion == DatVersionType.ACDM)
-                surfaceId += DatManager.ACDM_OFFSET;
+                surfaceId += (uint)ACDMOffset.Surface;
             var fileName = GetExportPath(DatDatabaseType.Portal, path, surfaceId);
             using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
                 surface.Pack(writer);
@@ -255,7 +256,12 @@ namespace MapAC
         public static void ExportPalSet(uint palSetId, string path)
         {
             var palSet = DatManager.CellDat.ReadFromDat<PaletteSet>(palSetId);
-            var fileName = GetExportPath(DatDatabaseType.Portal, path, palSetId);
+
+            var saveId = palSetId;
+            if (DatManager.DatVersion == DatVersionType.ACDM)
+                saveId += (uint)ACDMOffset.PaletteSet;
+            var fileName = GetExportPath(DatDatabaseType.Portal, path, saveId);
+
             using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
                 palSet.Pack(writer);
 
@@ -266,7 +272,12 @@ namespace MapAC
         public static void ExportClothingTable(uint clothingTableId, string path)
         {
             var cb = DatManager.CellDat.ReadFromDat<ClothingTable>(clothingTableId);
-            var fileName = GetExportPath(DatDatabaseType.Portal, path, clothingTableId);
+
+            var saveClothingTableId = clothingTableId;
+            if (DatManager.DatVersion == DatVersionType.ACDM)
+                saveClothingTableId += (uint)ACDMOffset.ClothingTable;
+            var fileName = GetExportPath(DatDatabaseType.Portal, path, saveClothingTableId);
+
             using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
                 cb.Pack(writer);
 

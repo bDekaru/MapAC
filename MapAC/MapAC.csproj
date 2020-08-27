@@ -190,6 +190,7 @@
     <Compile Include="DatLoader\Entity\TimeOfDay.cs" />
     <Compile Include="DatLoader\Entity\TMTerrainDesc.cs" />
     <Compile Include="DatLoader\Entity\Vec2Duv.cs" />
+    <Compile Include="DatLoader\Enum\ACDMOffset.cs" />
     <Compile Include="DatLoader\Enum\AnimationFlags.cs" />
     <Compile Include="DatLoader\Enum\AnimationHookDir.cs" />
     <Compile Include="DatLoader\Enum\AnimationHookType.cs" />

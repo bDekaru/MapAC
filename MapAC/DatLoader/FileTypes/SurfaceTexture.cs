@@ -1,4 +1,5 @@
 using MapAC.DatLoader.Entity;
+using MapAC.DatLoader.Enum;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -70,7 +71,7 @@ namespace MapAC.DatLoader.FileTypes
                     break;
                 case DatVersionType.ACDM:
                     // The max value in the end-of-retail Client_portal.dat was 05003358. We will add 0x00010000 to this to ensure a unique value.
-                    var newId = Id + DatManager.ACDM_OFFSET;
+                    var newId = Id + (uint)ACDMOffset.SurfaceTexture;
                     writer.Write(newId);
                     writer.Write(Unknown); // Always 0?
                     writer.Write(UnknownByte); // Always 2?
@@ -92,14 +93,14 @@ namespace MapAC.DatLoader.FileTypes
                 return Id;
 
             // Mark all ACDM "SurfaceTextures" as a unique ID above 0x05010000;
-            return Id + DatManager.ACDM_OFFSET;
+            return Id + (uint)ACDMOffset.SurfaceTexture;
         }
 
         public uint GetTextureId()
         {
             if (DatManager.DatVersion == DatVersionType.ACTOD) throw new System.NotSupportedException();
-            // Mark all ACDM SurfaceTextures converted to Textures as a unique ID above 0x06010000;
-            return Id + 0x01000000 + DatManager.ACDM_OFFSET;
+            // Mark all ACDM SurfaceTextures converted to Textures as a unique ID above 0x0600000 + Offset;
+            return Id + 0x01000000 + (uint)ACDMOffset.Texture;
         }
 
         /// <summary>

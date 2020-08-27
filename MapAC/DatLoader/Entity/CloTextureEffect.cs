@@ -1,3 +1,4 @@
+using MapAC.DatLoader.Enum;
 using System.IO;
 
 namespace MapAC.DatLoader.Entity
@@ -22,8 +23,16 @@ namespace MapAC.DatLoader.Entity
 
         public void Pack(BinaryWriter writer)
         {
-            writer.Write(OldTexture);
-            writer.Write(NewTexture);
+            if(DatManager.DatVersion == DatVersionType.ACDM)
+            {
+                writer.Write(OldTexture + (uint)ACDMOffset.Texture);
+                writer.Write(NewTexture + (uint)ACDMOffset.Texture);
+            }
+            else
+            {
+                writer.Write(OldTexture);
+                writer.Write(NewTexture);
+            }
         }
 
     }

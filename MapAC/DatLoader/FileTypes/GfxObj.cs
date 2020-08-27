@@ -63,7 +63,7 @@ namespace MapAC.DatLoader.FileTypes
         public override void Pack(BinaryWriter writer)
         {
             if(DatManager.DatVersion == DatVersionType.ACDM)
-                writer.Write(Id + DatManager.ACDM_OFFSET);
+                writer.Write(Id + (uint)ACDMOffset.GfxObj);
             else
                 writer.Write(Id);
 
@@ -74,7 +74,7 @@ namespace MapAC.DatLoader.FileTypes
                 // We need to adjust the IDs of these to unique TOD values
                 List<uint> adjustedSurfaces = new List<uint>();
                 for(var i = 0; i < Surfaces.Count; i++)
-                    adjustedSurfaces.Add(Surfaces[i] + DatManager.ACDM_OFFSET);
+                    adjustedSurfaces.Add(Surfaces[i] + (uint)ACDMOffset.Surface);
 
                 adjustedSurfaces.PackSmartArray(writer);
             }
@@ -104,7 +104,7 @@ namespace MapAC.DatLoader.FileTypes
 
             if ((Flags & GfxObjFlags.HasDIDDegrade) != 0)
                 if (DatManager.DatVersion == DatVersionType.ACDM)
-                    writer.Write(DIDDegrade + DatManager.ACDM_OFFSET);
+                    writer.Write(DIDDegrade + (uint)ACDMOffset.DIDDegrade);
                 else
                     writer.Write(DIDDegrade);
         }

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 
 using MapAC.DatLoader.Entity;
+using MapAC.DatLoader.Enum;
 
 namespace MapAC.DatLoader.FileTypes
 {
@@ -30,7 +31,7 @@ namespace MapAC.DatLoader.FileTypes
                 for (int i = 0; i < Degrades.Count; i++)
                 {
                     var gfxDegrade = Degrades[i];
-                    gfxDegrade.Id += DatManager.ACDM_OFFSET;
+                    gfxDegrade.Id += (uint)ACDMOffset.DIDDegrade;
                     gfxDegrade.Pack(writer);
                 }
             }

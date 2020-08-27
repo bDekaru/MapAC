@@ -104,7 +104,7 @@ namespace MapAC.DatLoader.FileTypes
         public override void Pack(BinaryWriter writer)
         {
             if (DatManager.DatVersion == DatVersionType.ACDM)
-                writer.Write(Id + DatManager.ACDM_OFFSET);
+                writer.Write(Id + (uint)ACDMOffset.Setup);
             else
                 writer.Write(Id);
             writer.Write((uint)Flags);
@@ -113,7 +113,7 @@ namespace MapAC.DatLoader.FileTypes
             writer.Write(Parts.Count); //numParts
             for (int i = 0; i < Parts.Count; i++)
                 if (DatManager.DatVersion == DatVersionType.ACDM)
-                    writer.Write(Parts[i] + DatManager.ACDM_OFFSET);
+                    writer.Write(Parts[i] + (uint)ACDMOffset.GfxObj);
                 else
                     writer.Write(Parts[i]);
 

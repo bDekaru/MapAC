@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Drawing;
 using System.Drawing.Imaging;
+using MapAC.DatLoader.Enum;
 
 namespace MapAC.DatLoader.FileTypes
 {
@@ -179,7 +180,7 @@ namespace MapAC.DatLoader.FileTypes
         public void SetIdFromSurfaceTexture(uint SurfaceTextureId)
         {
             if (DatManager.DatVersion == DatVersionType.ACTOD) throw new System.NotSupportedException();
-            Id = SurfaceTextureId + 0x01000000 + DatManager.ACDM_OFFSET;
+            Id = SurfaceTextureId + 0x01000000 + (uint)ACDMOffset.Texture;
         }
 
         /// <summary>
