@@ -1,4 +1,5 @@
 using MapAC.DatLoader.Entity;
+using MapAC.DatLoader.Enum;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -31,7 +32,10 @@ namespace MapAC.DatLoader.FileTypes
 
         public override void Pack(BinaryWriter writer)
         {
-            writer.Write(Id);
+            if(DatManager.DatVersion == DatVersionType.ACDM)
+                writer.Write(Id + (uint)ACDMOffset.SoundTable);
+            else
+                writer.Write(Id);
             writer.Write(Unknown);
             SoundHash.Pack(writer);
             Data.PackHashTable(writer, 0);

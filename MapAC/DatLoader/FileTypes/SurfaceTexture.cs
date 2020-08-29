@@ -76,7 +76,7 @@ namespace MapAC.DatLoader.FileTypes
                     writer.Write(Unknown); // Always 0?
                     writer.Write(UnknownByte); // Always 2?
                     Textures.Clear();
-                    uint newTextureId = newId + 0x01000000; // Generates a unique 0x06 range TextureId
+                    uint newTextureId = GetTextureId(); // Generates a unique 0x06 range TextureId
                     Textures.Add(newTextureId);
                     Textures.Pack(writer);
                     break;
@@ -129,14 +129,14 @@ namespace MapAC.DatLoader.FileTypes
             switch (Format)
             {
                 case SurfacePixelFormat.INDEX8:
-                    tex.DefaultPaletteId = DefaultPaletteId;
-                    tex.DefaultPaletteId = 0x040010b1;
+                    tex.DefaultPaletteId = DefaultPaletteId + (uint)ACDMOffset.Palette;
                     tex.Length = Width * Height * 8 - 4;
                     break;
                 case SurfacePixelFormat.COLOR_SEP:
                     tex.Length = Width * Height * 3;
                     break;
             }
+            tex.ConvertTextureFormat();
             return tex;
         }
 

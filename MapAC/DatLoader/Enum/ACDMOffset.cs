@@ -31,6 +31,7 @@
         MotionTable = 0x1000,
         // 0x0A, max is 0x05B5
         Sound = 0x1000,
+        Wave = 0x1000, // alt name
         // 0x0D, max is 0x063F
         Environment = 0x1000,
         // 0x0F, max is 0x0B6B
@@ -39,6 +40,9 @@
         ClothingTable = 0x1000,
         // 0x11, max is 0x10BF
         DIDDegrade = 0x2000,
+
+        // 0x, max is 0x00DA
+        SoundTable = 0x0100,
 
         // 0x30, max is 0x004D
         CombatTable = 0x0100,

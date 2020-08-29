@@ -1,3 +1,4 @@
+using MapAC.DatLoader.Enum;
 using System.Collections.Generic;
 using System.IO;
 
@@ -25,7 +26,10 @@ namespace MapAC.DatLoader.Entity
         {
             Ranges.Pack(writer);
 
-            writer.Write(PaletteSet);
+            if(DatManager.DatVersion == DatVersionType.ACDM)
+                writer.Write(PaletteSet + (uint)ACDMOffset.PaletteSet);
+            else
+                writer.Write(PaletteSet);
         }
 
     }

@@ -36,13 +36,28 @@ namespace MapAC.DatLoader.FileTypes
 
         public override void Pack(BinaryWriter writer)
         {
-            if(DatManager.DatVersion == DatVersionType.ACDM)
+            if (DatManager.DatVersion == DatVersionType.ACDM)
+            {
                 writer.Write(Id + (uint)ACDMOffset.ClothingTable);
-            else
-                writer.Write(Id);
 
-            ClothingBaseEffects.PackHashTable(writer, 0x8); //bucket size = 8
-            ClothingSubPalEffects.PackHashTable(writer, 0x20); //bucket size = 0x20
+                // ClothingBaseEffects
+                writer.Write((ushort)ClothingBaseEffects.Count);
+                writer.Write((ushort)0x8); // Bucket Size
+                foreach (var e in ClothingBaseEffects)
+                {
+                    writer.Write(e.Key + (uint)ACDMOffset.Setup);
+                    e.Value.Pack(writer);
+                }
+
+                ClothingSubPalEffects.PackHashTable(writer, 0x20); //bucket size = 0x20
+            }
+            else
+            {
+                writer.Write(Id);
+                ClothingBaseEffects.PackHashTable(writer, 0x8); //bucket size = 8
+                ClothingSubPalEffects.PackHashTable(writer, 0x20); //bucket size = 0x20
+            }
+
         }
 
 

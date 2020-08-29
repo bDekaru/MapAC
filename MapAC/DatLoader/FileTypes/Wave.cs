@@ -1,3 +1,4 @@
+using MapAC.DatLoader.Enum;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -26,7 +27,11 @@ namespace MapAC.DatLoader.FileTypes
 
         public override void Pack(BinaryWriter writer)
         {
-            writer.Write(Id);
+            if (DatManager.DatVersion == DatVersionType.ACDM)
+                writer.Write(Id + (uint)ACDMOffset.Wave);
+            else
+                writer.Write(Id);
+
             writer.Write(Header.Length);
             writer.Write(Data.Length);
             writer.Write(Header);

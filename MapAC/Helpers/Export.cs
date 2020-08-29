@@ -152,6 +152,17 @@ namespace MapAC
                             ExportClothingTable(e.Key, path);
                     }
                 }
+
+                if (setup.DefaultAnimation > 0)
+                    ExportAnimation(setup.DefaultAnimation, path);
+                if (setup.DefaultScript > 0)
+                    ExportPhysicsScript(setup.DefaultScript, path);
+                if (setup.DefaultMotionTable > 0)
+                    ExportMotionTable(setup.DefaultMotionTable, path);
+                if (setup.DefaultSoundTable > 0)
+                    ExportSoundTable(setup.DefaultSoundTable, path);
+                if (setup.DefaultScriptTable > 0)
+                    ExportPhysicsScriptTable(setup.DefaultScriptTable, path);
             }
         }
         
@@ -168,7 +179,6 @@ namespace MapAC
             using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
                 anim.Pack(writer);
         }
-
 
         // 0x04
         public static void ExportPalette(uint palId, string path)
@@ -239,13 +249,37 @@ namespace MapAC
                 ExportPalette(surface.OrigPaletteId, path);
         }
 
+        // 0x09
+        public static void ExportMotionTable(uint motionId, string path)
+        {
+            var motion = DatManager.CellDat.ReadFromDat<MotionTable>(motionId);
+            if (DatManager.DatVersion == DatVersionType.ACDM)
+                motionId += (uint)ACDMOffset.MotionTable;
+            var fileName = GetExportPath(DatDatabaseType.Portal, path, motionId);
+            using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
+                motion.Pack(writer);
+
+            foreach(var link in motion.Links)
+                foreach(var motionData in link.Value)
+                    foreach(var anim in motionData.Value.Anims)
+                    {
+                        ExportAnimation(anim.AnimId, path);
+                    }
+            
+        }
+
         // 0xA
         public static void ExportWave(uint waveID, string path)
         {
             if (DatManager.CellDat.AllFiles.ContainsKey(waveID))
             {
                 var wav = DatManager.CellDat.ReadFromDat<Wave>(waveID);
-                var fileName = GetExportPath(DatDatabaseType.Portal, path, waveID);
+
+                var exportId = waveID;
+                if (DatManager.DatVersion == DatVersionType.ACDM)
+                    exportId += (uint)ACDMOffset.Wave;
+                var fileName = GetExportPath(DatDatabaseType.Portal, path, exportId);
+
                 wav.ExportWave(Path.GetDirectoryName(fileName));
                 using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
                     wav.Pack(writer);
@@ -266,6 +300,8 @@ namespace MapAC
                 palSet.Pack(writer);
 
             // Export all Palettes in the set, too
+            foreach (var p in palSet.PaletteList)
+                ExportPalette(p, path);
         }
 
         // 0x10
@@ -315,9 +351,70 @@ namespace MapAC
         public static void ExportDegrade(uint degradeId, string path)
         {
             var degrade = DatManager.CellDat.ReadFromDat<GfxObjDegradeInfo>(degradeId);
-            var fileName = GetExportPath(DatDatabaseType.Portal, path, degradeId);
+
+            var saveDegradeId = degradeId;
+            if (DatManager.DatVersion == DatVersionType.ACDM)
+                saveDegradeId += (uint)ACDMOffset.DIDDegrade;
+            var fileName = GetExportPath(DatDatabaseType.Portal, path, saveDegradeId);
+
             using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
                 degrade.Pack(writer);
+        }
+
+        // 0x20
+        public static void ExportSoundTable(uint stableId, string path)
+        {
+            var stable = DatManager.CellDat.ReadFromDat<SoundTable>(stableId);
+
+            var saveId = stableId;
+            if (DatManager.DatVersion == DatVersionType.ACDM)
+                saveId += (uint)ACDMOffset.SoundTable;
+            var fileName = GetExportPath(DatDatabaseType.Portal, path, saveId);
+
+            using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
+                stable.Pack(writer);
+
+            foreach(var d in stable.Data)
+            {
+                for(var i = 0; i < d.Value.Data.Count; i++)
+                    ExportWave(d.Value.Data[i].SoundId, path);
+            }
+        }
+
+        // 0x33
+        public static void ExportPhysicsScript(uint physicsScriptId, string path)
+        {
+            var physScript = DatManager.CellDat.ReadFromDat<PhysicsScript>(physicsScriptId);
+
+            var saveId = physicsScriptId;
+            if (DatManager.DatVersion == DatVersionType.ACDM)
+                saveId += (uint)ACDMOffset.PhysicsScript;
+            var fileName = GetExportPath(DatDatabaseType.Portal, path, saveId);
+
+            using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
+                physScript.Pack(writer);
+        }
+
+        // 0x34
+        public static void ExportPhysicsScriptTable(uint physicsScriptTableId, string path)
+        {
+            var physScriptTable = DatManager.CellDat.ReadFromDat<PhysicsScriptTable>(physicsScriptTableId);
+
+            var saveId = physicsScriptTableId;
+            if (DatManager.DatVersion == DatVersionType.ACDM)
+                saveId += (uint)ACDMOffset.PhysicsScriptTable;
+            var fileName = GetExportPath(DatDatabaseType.Portal, path, saveId);
+
+            using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
+                physScriptTable.Pack(writer);
+
+            foreach(var script in physScriptTable.ScriptTable)
+            {
+                foreach(var mod in script.Value.Scripts)
+                {
+                    ExportPhysicsScript(mod.ScriptId, path);
+                }
+            }
         }
 
         private static string GetExportPath(DatDatabaseType datDatabaseType, string path, uint objectId)

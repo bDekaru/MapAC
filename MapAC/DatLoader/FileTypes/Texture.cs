@@ -158,16 +158,10 @@ namespace MapAC.DatLoader.FileTypes
                 writer.Write(Height);
                 writer.Write((uint)Format);
                 Length = SourceData.Length;
-                switch (Format)
-                {
-                    case SurfacePixelFormat.INDEX8:
-                        // Remove 4 from the length which is the DefaultPaletteId.
-                        // This is already part of the SourceData, so just back up the length...
-                        Length -= 4;
-                        break;
-                }
                 writer.Write(Length);
                 writer.Write(SourceData);
+                if (DefaultPaletteId != null)
+                    writer.Write((uint)DefaultPaletteId);
             }
         }
 
@@ -584,18 +578,32 @@ namespace MapAC.DatLoader.FileTypes
         /// <summary>
         /// Will convert some pre TOD texture formats to post TOD textures formats
         /// </summary>
-        private void ConvertTextureFormat()
+        public void ConvertTextureFormat()
         {
             switch (Format)
             {
                 case SurfacePixelFormat.INDEX8:
-                    List<byte> colors = new List<byte>(); // We'll store the values here temporarily
+                    List<byte> indexes = new List<byte>(); // We'll store the values here temporarily
                     using (BinaryReader reader = new BinaryReader(new MemoryStream(SourceData)))
                     {
                         for (uint y = 0; y < Height; y++)
                             for (uint x = 0; x < Width; x++)
-                                colors.Add(reader.ReadByte());
+                                indexes.Add(reader.ReadByte());
                     }
+
+                    // Write the colors back as 16bit values
+                    using (var stream = new MemoryStream())
+                    using (var writer = new BinaryWriter(stream))
+                    {
+                        foreach (var idx in indexes)
+                        {
+
+                            writer.Write((ushort)idx);
+                        }
+
+                        SourceData = stream.GetBuffer();
+                    }
+
                     Format = SurfacePixelFormat.PFID_INDEX16;
                     break;
 

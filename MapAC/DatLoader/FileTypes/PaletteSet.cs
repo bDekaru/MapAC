@@ -24,10 +24,19 @@ namespace MapAC.DatLoader.FileTypes
         public override void Pack(BinaryWriter writer)
         {
             if (DatManager.DatVersion == DatVersionType.ACDM)
+            {
                 writer.Write(Id + (uint)ACDMOffset.PaletteSet);
+
+                // PaletteList
+                writer.Write(PaletteList.Count);
+                foreach (var p in PaletteList)
+                    writer.Write(p + (uint)ACDMOffset.Palette);
+            }
             else
+            {
                 writer.Write(Id);
-            PaletteList.Pack(writer);
+                PaletteList.Pack(writer);
+            }
         }
 
         /// <summary>

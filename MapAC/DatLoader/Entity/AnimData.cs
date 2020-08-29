@@ -1,3 +1,4 @@
+using MapAC.DatLoader.Enum;
 using System.IO;
 
 namespace MapAC.DatLoader.Entity
@@ -22,7 +23,11 @@ namespace MapAC.DatLoader.Entity
 
         public void Pack(BinaryWriter writer)
         {
-            writer.Write(AnimId);
+            if (DatManager.DatVersion == DatVersionType.ACDM)
+                writer.Write(AnimId + (uint)ACDMOffset.Animation);
+            else
+                writer.Write(AnimId);
+
             writer.Write(LowFrame);
             writer.Write(HighFrame);
             writer.Write(Framerate);

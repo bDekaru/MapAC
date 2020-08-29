@@ -1,3 +1,4 @@
+using MapAC.DatLoader.Enum;
 using System.IO;
 
 namespace MapAC.DatLoader.Entity
@@ -16,7 +17,10 @@ namespace MapAC.DatLoader.Entity
         public void Pack(BinaryWriter writer)
         {
             writer.Write(Mod);
-            writer.Write(ScriptId);
+            if(DatManager.DatVersion == DatVersionType.ACDM)
+                writer.Write(ScriptId + (uint)ACDMOffset.PhysicsScript);
+            else
+                writer.Write(ScriptId);
         }
 
     }

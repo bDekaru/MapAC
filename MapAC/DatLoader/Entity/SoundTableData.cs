@@ -1,3 +1,4 @@
+using MapAC.DatLoader.Enum;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -22,7 +23,10 @@ namespace MapAC.DatLoader.Entity
 
         public void Pack(BinaryWriter writer)
         {
-            writer.Write(SoundId);
+            if (DatManager.DatVersion == DatVersionType.ACDM)
+                writer.Write(SoundId + (uint)ACDMOffset.Wave);
+            else
+                writer.Write(SoundId);
             writer.Write(Priority);
             writer.Write(Probability);
             writer.Write(Volume);
