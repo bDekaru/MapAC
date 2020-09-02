@@ -598,7 +598,7 @@ namespace MapAC.DatLoader.FileTypes
                         foreach (var idx in indexes)
                         {
 
-                            writer.Write((ushort)idx);
+                            writer.Write((ushort)(idx*8)); // times 8 to account of changing palette from 256 to 2048
                         }
 
                         SourceData = stream.GetBuffer();

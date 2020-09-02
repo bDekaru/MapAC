@@ -25,11 +25,23 @@ namespace MapAC.DatLoader.FileTypes
         public override void Pack(BinaryWriter writer)
         {
             if (DatManager.DatVersion == DatVersionType.ACDM)
+            {
                 writer.Write(Id + (uint)ACDMOffset.Palette);
+                if (Colors.Count == 256)
+                {
+                    writer.Write(2048); // Size of Colors
+                    for (int i = 0; i < Colors.Count; i++)
+                        for(int j = 0; j < 8; j++) // Write this 8 times!
+                            writer.Write(Colors[i]);
+                }
+                else
+                    Colors.Pack(writer);
+            }
             else
+            {
                 writer.Write(Id);
-
-            Colors.Pack(writer);
+                Colors.Pack(writer);
+            }
         }
     }
 }

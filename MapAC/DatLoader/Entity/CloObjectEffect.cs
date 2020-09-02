@@ -23,7 +23,7 @@ namespace MapAC.DatLoader.Entity
             writer.Write(Index);
 
             if (DatManager.DatVersion == DatVersionType.ACDM)
-                writer.Write(ModelId + (uint)ACDMOffset.Setup);
+                writer.Write(ModelId + (uint)ACDMOffset.GfxObj);
             else
                 writer.Write(ModelId);
             

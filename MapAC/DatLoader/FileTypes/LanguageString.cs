@@ -29,7 +29,7 @@ namespace MapAC.DatLoader.FileTypes
             if (CharBuffer.Length > 0)
             {
                 byte[] stringBytes = System.Text.Encoding.Default.GetBytes(CharBuffer);
-                writer.WritePString(CharBuffer);
+                writer.Write(stringBytes);
             }
             throw new System.NotSupportedException();
         }

@@ -15,8 +15,16 @@ namespace MapAC.DatLoader.Entity
 
         public void Pack(BinaryWriter writer)
         {
-            writer.Write(Offset);
-            writer.Write(NumColors);
+            if(DatManager.DatVersion == DatVersionType.ACDM)
+            {
+                writer.Write(Offset * 8);
+                writer.Write(NumColors * 8);
+            }
+            else
+            {
+                writer.Write(Offset);
+                writer.Write(NumColors);
+            }
         }
 
     }
