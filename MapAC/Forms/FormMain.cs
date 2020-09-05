@@ -243,13 +243,95 @@ namespace WindowsFormsApp1
 
         private void exportToolStripMenuItem_Click(object sender, EventArgs eventArgs)
         {
-            string path = @"C:\ACE\PortalTemp\TARDIS\";
+            string path = @"C:\ACE\PortalTemp\SuperDat\";
 
-            Export.ExportSetup(0x020009ED, path); // TARDIS
-
+            //Export.ExportSetup(0x020009ED, path); // TARDIS
+            //Export.ExportTexture(0x06001F99, path); // QuestionMark ICON
             //Export.ExportGfxObject(0x01000598, path);
+            List<uint> PortalList = new List<uint>();
+            PortalList.Add(0x31000020);
+            PortalList.Add(0x31000022);
+            PortalList.Add(0x32000028);
+            PortalList.Add(0x3200011D);
+            PortalList.Add(0x3200011F);
+            PortalList.Add(0x320003C1);
+            PortalList.Add(0x320003DC);
+            PortalList.Add(0x32000439);
+            PortalList.Add(0x3200045E);
+            PortalList.Add(0x3200045F);
+            PortalList.Add(0x32000460);
+            PortalList.Add(0x32000475);
+            PortalList.Add(0x32000498);
+            PortalList.Add(0x32000499);
+            PortalList.Add(0x320004B4);
+            PortalList.Add(0x3200050B);
+            PortalList.Add(0x3200050E);
+            PortalList.Add(0x3200050F);
+            PortalList.Add(0x32000514);
+            PortalList.Add(0x32000515);
+            PortalList.Add(0x32000516);
+            PortalList.Add(0x32000517);
+            PortalList.Add(0x32000519);
+            PortalList.Add(0x3200051A);
+            PortalList.Add(0x32000538);
+            PortalList.Add(0x32000539);
+            PortalList.Add(0x3200053B);
+            PortalList.Add(0x32000552);
+            PortalList.Add(0x320005C0);
+            PortalList.Add(0x32000611);
+            PortalList.Add(0x32000641);
+            PortalList.Add(0x320006CC);
+            PortalList.Add(0x320006CD);
+            PortalList.Add(0x320006CE);
+            PortalList.Add(0x320006CF);
+            PortalList.Add(0x320007BE);
+            PortalList.Add(0x320007BF);
+            PortalList.Add(0x3300001E);
+            PortalList.Add(0x3300072E);
+            PortalList.Add(0x330007D2);
+            PortalList.Add(0x3300081C);
+            PortalList.Add(0x33000842);
+            PortalList.Add(0x3300085E);
+            PortalList.Add(0x3300085F);
+            PortalList.Add(0x330008A2);
+            PortalList.Add(0x33000932);
+            PortalList.Add(0x33000935);
+            PortalList.Add(0x33000936);
+            PortalList.Add(0x33000946);
+            PortalList.Add(0x33000948);
+            PortalList.Add(0x33000949);
+            PortalList.Add(0x3300094A);
+            PortalList.Add(0x3300094D);
+            PortalList.Add(0x330009FE);
+            PortalList.Add(0x33000A3E);
+            PortalList.Add(0x33000A84);
+            PortalList.Add(0x33000A86);
+            PortalList.Add(0x33000BB6);
+            PortalList.Add(0x34000078);
+            PortalList.Add(0x3400008A);
+            PortalList.Add(0x340000A7);
+            PortalList.Add(0x3300072D);
+            PortalList.Add(0x3300094C);
+            PortalList.Add(0x04000E60);
+            PortalList.Add(0x040013B2);
+            PortalList.Add(0x0500213E);
+            PortalList.Add(0x06001990);
+            PortalList.Add(0x08001C21);
+            PortalList.Add(0x1100120D);
+            PortalList.Add(0x110024E8);
 
+            ExportPortalItems(PortalList, path);
             AddStatus("Export complete.");
+        }
+
+        private void ExportPortalItems(List<uint> items, string path)
+        {
+            foreach(var item in items)
+            {
+                var result = Export.ExportPortalFile(item, path);
+                if (result == false)
+                    AddStatus($"Error export {item:X8} -- Not Found");
+            }
         }
 
         private void dumpDatContentsToTXTToolStripMenuItem_Click(object sender, EventArgs e)
@@ -380,6 +462,20 @@ namespace WindowsFormsApp1
             }
 
 
+        }
+
+        private void dumpIconsToolStripMenuItem_Click(object sender, EventArgs evt)
+        {
+            foreach (var e in DatManager.CellDat.AllFiles)
+            {
+                if (e.Key > 0x06000000 && e.Key < 0x06FFFFFF)
+                {
+                    var texId = e.Key;
+                    var texture = DatManager.CellDat.ReadFromDat<Texture>(texId);
+                    if(texture.Height >= 240 && texture.Width >= 320)
+                        texture.ExportTexture(@"C:\ACE\Icons\");
+                }
+            }
         }
     }
 }

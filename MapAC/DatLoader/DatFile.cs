@@ -229,6 +229,8 @@ namespace MapAC.DatLoader
                     return DatFileType.DualDidMapper;
                 case 0x30:
                     return DatFileType.CombatTable;
+                case 0x31:
+                    return DatFileType.String;
                 case 0x32:
                     return DatFileType.ParticleEmitter;
                 case 0x33:

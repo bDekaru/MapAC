@@ -1,3 +1,4 @@
+using MapAC.DatLoader.Enum;
 using System.IO;
 
 namespace MapAC.DatLoader.FileTypes
@@ -24,14 +25,16 @@ namespace MapAC.DatLoader.FileTypes
 
         public override void Pack(BinaryWriter writer)
         {
-            writer.Write(Id);
+            if(DatManager.DatVersion == DatVersionType.ACDM)
+                writer.Write(Id + (uint)ACDMOffset.String);
+            else
+                writer.Write(Id);
             writer.WriteCompressedUInt32((uint)CharBuffer.Length);
             if (CharBuffer.Length > 0)
             {
                 byte[] stringBytes = System.Text.Encoding.Default.GetBytes(CharBuffer);
                 writer.Write(stringBytes);
             }
-            throw new System.NotSupportedException();
         }
     }
 }

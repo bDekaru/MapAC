@@ -40,12 +40,16 @@
         ClothingTable = 0x1000,
         // 0x11, max is 0x10BF
         DIDDegrade = 0x2000,
+        // 0x12, max is 0x02C6
+        Scene = 0x1000,
 
-        // 0x, max is 0x00DA
+        // 0x20, max is 0x00DA
         SoundTable = 0x0100,
 
         // 0x30, max is 0x004D
         CombatTable = 0x0100,
+        // 0x31, max is 0x0025
+        String = 0x0100,
         // 0x32, max is 0x0A83
         EmitterInfo = 0x1000,
         // 0x33, max is 0x139F

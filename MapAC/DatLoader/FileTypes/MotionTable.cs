@@ -36,7 +36,7 @@ namespace MapAC.DatLoader.FileTypes
         public override void Pack(BinaryWriter writer)
         {
             if (DatManager.DatVersion == DatVersionType.ACDM)
-                writer.Write(Id + (uint)ACDMOffset.SoundTable);
+                writer.Write(Id + (uint)ACDMOffset.MotionTable);
             else
                 writer.Write(Id);
 

@@ -43,10 +43,11 @@
             this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dumpDatContentsToTXTToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.testReadDatToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.getPortalItemsInCellsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.textBoxStatus = new System.Windows.Forms.RichTextBox();
             this.openFileDialog_Dat = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog_Image = new System.Windows.Forms.SaveFileDialog();
-            this.getPortalItemsInCellsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dumpIconsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -60,7 +61,7 @@
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer1.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.splitContainer1.Margin = new System.Windows.Forms.Padding(6);
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -83,7 +84,7 @@
             this.panel1.Controls.Add(this.pictureBox1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 42);
-            this.panel1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.panel1.Margin = new System.Windows.Forms.Padding(6);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1373, 640);
             this.panel1.TabIndex = 8;
@@ -92,7 +93,7 @@
             // 
             this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pictureBox1.Location = new System.Drawing.Point(0, 0);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(6);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(1373, 640);
             this.pictureBox1.TabIndex = 7;
@@ -162,7 +163,8 @@
             this.exportToolStripMenuItem,
             this.dumpDatContentsToTXTToolStripMenuItem,
             this.testReadDatToolStripMenuItem,
-            this.getPortalItemsInCellsToolStripMenuItem});
+            this.getPortalItemsInCellsToolStripMenuItem,
+            this.dumpIconsToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(78, 34);
             this.toolsToolStripMenuItem.Text = "&Tools";
@@ -195,11 +197,18 @@
             this.testReadDatToolStripMenuItem.Text = "Test Read Dat";
             this.testReadDatToolStripMenuItem.Click += new System.EventHandler(this.testReadDatToolStripMenuItem_Click);
             // 
+            // getPortalItemsInCellsToolStripMenuItem
+            // 
+            this.getPortalItemsInCellsToolStripMenuItem.Name = "getPortalItemsInCellsToolStripMenuItem";
+            this.getPortalItemsInCellsToolStripMenuItem.Size = new System.Drawing.Size(381, 40);
+            this.getPortalItemsInCellsToolStripMenuItem.Text = "Get Portal Items in Cells";
+            this.getPortalItemsInCellsToolStripMenuItem.Click += new System.EventHandler(this.getPortalItemsInCellsToolStripMenuItem_Click);
+            // 
             // textBoxStatus
             // 
             this.textBoxStatus.Dock = System.Windows.Forms.DockStyle.Fill;
             this.textBoxStatus.Location = new System.Drawing.Point(0, 0);
-            this.textBoxStatus.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBoxStatus.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxStatus.Name = "textBoxStatus";
             this.textBoxStatus.Size = new System.Drawing.Size(1373, 193);
             this.textBoxStatus.TabIndex = 1;
@@ -214,12 +223,12 @@
             // 
             this.saveFileDialog_Image.Filter = "PNG Files|*.png|All Files|*.*";
             // 
-            // getPortalItemsInCellsToolStripMenuItem
+            // dumpIconsToolStripMenuItem
             // 
-            this.getPortalItemsInCellsToolStripMenuItem.Name = "getPortalItemsInCellsToolStripMenuItem";
-            this.getPortalItemsInCellsToolStripMenuItem.Size = new System.Drawing.Size(381, 40);
-            this.getPortalItemsInCellsToolStripMenuItem.Text = "Get Portal Items in Cells";
-            this.getPortalItemsInCellsToolStripMenuItem.Click += new System.EventHandler(this.getPortalItemsInCellsToolStripMenuItem_Click);
+            this.dumpIconsToolStripMenuItem.Name = "dumpIconsToolStripMenuItem";
+            this.dumpIconsToolStripMenuItem.Size = new System.Drawing.Size(381, 40);
+            this.dumpIconsToolStripMenuItem.Text = "Dump Icons";
+            this.dumpIconsToolStripMenuItem.Click += new System.EventHandler(this.dumpIconsToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -229,7 +238,7 @@
             this.Controls.Add(this.splitContainer1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
-            this.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "Form1";
             this.Text = "AC Mapper";
             this.splitContainer1.Panel1.ResumeLayout(false);
@@ -264,6 +273,7 @@
         private System.Windows.Forms.ToolStripMenuItem dumpDatContentsToTXTToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem testReadDatToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem getPortalItemsInCellsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem dumpIconsToolStripMenuItem;
     }
 }
 
