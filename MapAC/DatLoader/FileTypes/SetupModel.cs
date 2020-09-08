@@ -155,41 +155,30 @@ namespace MapAC.DatLoader.FileTypes
 
             Lights.Pack(writer);
 
-            if(DatManager.DatVersion == DatVersionType.ACDM)
-            {
-                if(DefaultAnimation > 0)
-                    writer.Write(DefaultAnimation + (uint)ACDMOffset.Animation);
-                else
-                    writer.Write(DefaultAnimation);
-
-                if (DefaultScript > 0)
-                    writer.Write(DefaultScript + (uint)ACDMOffset.PhysicsScript);
-                else
-                    writer.Write(DefaultScript);
-
-                if (DefaultMotionTable > 0)
-                    writer.Write(DefaultMotionTable + (uint)ACDMOffset.MotionTable);
-                else
-                    writer.Write(DefaultMotionTable);
-
-                if (DefaultSoundTable > 0)
-                    writer.Write(DefaultSoundTable + (uint)ACDMOffset.SoundTable);
-                else
-                    writer.Write(DefaultSoundTable);
-
-                if (DefaultScriptTable > 0)
-                    writer.Write(DefaultScriptTable + (uint)ACDMOffset.PhysicsScriptTable);
-                else
-                    writer.Write(DefaultScriptTable);
-            }
+            if (DefaultAnimation > 0)
+                writer.WriteOffset(DefaultAnimation, ACDMOffset.Animation);
             else
-            {
-                writer.Write(DefaultAnimation);
-                writer.Write(DefaultScript);
-                writer.Write(DefaultMotionTable);
-                writer.Write(DefaultSoundTable);
-                writer.Write(DefaultScriptTable);
-            }
+                writer.Write(0);
+
+            if (DefaultScript > 0)
+                writer.WriteOffset(DefaultScript, ACDMOffset.PhysicsScript);
+            else
+                writer.Write(0);
+
+            if (DefaultMotionTable > 0)
+                writer.WriteOffset(DefaultMotionTable, ACDMOffset.MotionTable);
+            else
+                writer.Write(0);
+
+            if (DefaultSoundTable > 0)
+                writer.WriteOffset(DefaultSoundTable, ACDMOffset.SoundTable);
+            else
+                writer.Write(0);
+
+            if (DefaultScriptTable > 0)
+                writer.WriteOffset(DefaultScriptTable, ACDMOffset.PhysicsScriptTable);
+            else
+                writer.Write(0);
         }
 
         public static SetupModel CreateSimpleSetup()

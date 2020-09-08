@@ -13,13 +13,32 @@ namespace MapAC.DatLoader.FileTypes
         /// <summary>
         /// Color data is stored in ARGB format
         /// </summary>
-        public List<uint> Colors { get; } = new List<uint>();
+        public List<uint> Colors { get; private set; } = new List<uint>();
 
         public override void Unpack(BinaryReader reader)
         {
             Id = reader.ReadUInt32();
 
             Colors.Unpack(reader);
+        }
+
+        /// <summary>
+        /// Updates color palette to 2048 bytes as TOD uses, so we can load properly generate texture bitmaps
+        /// </summary>
+        public void ConvertColorsToTOD()
+        {
+            if (DatManager.DatVersion == DatVersionType.ACDM) 
+            { 
+                if (Colors.Count == 256)
+                {
+                    List<uint> temp = new List<uint>();
+                    for (int i = 0; i < Colors.Count; i++)
+                        for (int j = 0; j < 8; j++) // Write this 8 times!
+                            temp.Add(Colors[i]);
+
+                    Colors = temp;
+                }
+            }
         }
 
         public override void Pack(BinaryWriter writer)

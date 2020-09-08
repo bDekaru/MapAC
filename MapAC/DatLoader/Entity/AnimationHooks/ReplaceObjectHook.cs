@@ -1,3 +1,4 @@
+using MapAC.DatLoader.Enum;
 using System;
 using System.IO;
 using System.Windows.Forms;
@@ -29,7 +30,10 @@ namespace MapAC.DatLoader.Entity.AnimationHooks
             base.Pack(writer);
             writer.Write(APChange.PartIndex);
             writer.Write(Unknown);
-            writer.WriteAsDataIDOfKnownType(APChange.PartID, 0x01000000);
+            if (DatManager.DatVersion == DatVersionType.ACDM)
+                writer.WriteAsDataIDOfKnownType(APChange.PartID + (uint)ACDMOffset.GfxObj, 0x01000000);
+            else
+                writer.WriteAsDataIDOfKnownType(APChange.PartID, 0x01000000);
         }
     }
 }

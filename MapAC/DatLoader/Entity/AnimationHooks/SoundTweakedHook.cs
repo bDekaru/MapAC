@@ -1,3 +1,4 @@
+using MapAC.DatLoader.Enum;
 using System.IO;
 
 namespace MapAC.DatLoader.Entity.AnimationHooks
@@ -22,7 +23,7 @@ namespace MapAC.DatLoader.Entity.AnimationHooks
         public override void Pack(BinaryWriter writer)
         {
             base.Pack(writer);
-            writer.Write(SoundID);
+            writer.WriteOffset(SoundID, ACDMOffset.Wave);
             writer.Write(Priority);
             writer.Write(Probability);
             writer.Write(Volume);

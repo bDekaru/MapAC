@@ -23,11 +23,7 @@ namespace MapAC.DatLoader.Entity
 
         public void Pack(BinaryWriter writer)
         {
-            if (DatManager.DatVersion == DatVersionType.ACDM)
-                writer.Write(AnimId + (uint)ACDMOffset.Animation);
-            else
-                writer.Write(AnimId);
-
+            writer.WriteOffset(AnimId, ACDMOffset.Animation);
             writer.Write(LowFrame);
             writer.Write(HighFrame);
             writer.Write(Framerate);

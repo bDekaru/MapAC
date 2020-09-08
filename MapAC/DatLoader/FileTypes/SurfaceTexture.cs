@@ -73,10 +73,10 @@ namespace MapAC.DatLoader.FileTypes
                     // The max value in the end-of-retail Client_portal.dat was 05003358. We will add 0x00010000 to this to ensure a unique value.
                     var newId = Id + (uint)ACDMOffset.SurfaceTexture;
                     writer.Write(newId);
-                    writer.Write(Unknown); // Always 0?
-                    writer.Write(UnknownByte); // Always 2?
+                    writer.Write(0); // Always 0?
+                    writer.Write((byte)2); // Always 2?
                     Textures.Clear();
-                    uint newTextureId = GetTextureId(); // Generates a unique 0x06 range TextureId
+                    uint newTextureId = GetTextureId() + (uint)ACDMOffset.Texture; // Generates a unique 0x06 range TextureId
                     Textures.Add(newTextureId);
                     Textures.Pack(writer);
                     break;
@@ -100,7 +100,7 @@ namespace MapAC.DatLoader.FileTypes
         {
             if (DatManager.DatVersion == DatVersionType.ACTOD) throw new System.NotSupportedException();
             // Mark all ACDM SurfaceTextures converted to Textures as a unique ID above 0x0600000 + Offset;
-            return Id + 0x01000000 + (uint)ACDMOffset.Texture;
+            return Id + 0x01000000;
         }
 
         /// <summary>
@@ -119,7 +119,15 @@ namespace MapAC.DatLoader.FileTypes
             tex.Pack(writer);
         }
 
-        public Texture ConvertToTexture()
+        public void ExportTexture(string directory)
+        {
+            if (DatManager.DatVersion == DatVersionType.ACTOD) throw new System.NotSupportedException();
+            Texture tex = ConvertToTexture(false);
+            tex.SetIdFromSurfaceTexture(Id);
+            tex.ExportTexture(directory);
+        }
+
+        public Texture ConvertToTexture(bool forPack = true)
         {
             Texture tex = new Texture();
             tex.Width = Width;
@@ -129,7 +137,10 @@ namespace MapAC.DatLoader.FileTypes
             switch (Format)
             {
                 case SurfacePixelFormat.INDEX8:
-                    tex.DefaultPaletteId = DefaultPaletteId + (uint)ACDMOffset.Palette;
+                    if (forPack)
+                        tex.DefaultPaletteId = DefaultPaletteId + (uint)ACDMOffset.Palette;
+                    else
+                        tex.DefaultPaletteId = DefaultPaletteId;
                     tex.Length = Width * Height * 8 - 4;
                     break;
                 case SurfacePixelFormat.COLOR_SEP:
@@ -147,7 +158,7 @@ namespace MapAC.DatLoader.FileTypes
                 return null;
             }
             /// Just copy this into a Texture type, since that already does all this image work for us...
-            Texture tex = ConvertToTexture();
+            Texture tex = ConvertToTexture(false);
             return tex.GetBitmap();
         }
 

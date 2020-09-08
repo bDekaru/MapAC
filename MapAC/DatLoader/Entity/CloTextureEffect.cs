@@ -23,16 +23,8 @@ namespace MapAC.DatLoader.Entity
 
         public void Pack(BinaryWriter writer)
         {
-            if(DatManager.DatVersion == DatVersionType.ACDM)
-            {
-                writer.Write(OldTexture + (uint)ACDMOffset.Texture);
-                writer.Write(NewTexture + (uint)ACDMOffset.Texture);
-            }
-            else
-            {
-                writer.Write(OldTexture);
-                writer.Write(NewTexture);
-            }
+            writer.WriteOffset(OldTexture, ACDMOffset.Texture);
+            writer.WriteOffset(NewTexture, ACDMOffset.Texture);
         }
 
     }

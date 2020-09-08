@@ -17,10 +17,7 @@ namespace MapAC.DatLoader.Entity
         public void Pack(BinaryWriter writer)
         {
             writer.Write(Mod);
-            if(DatManager.DatVersion == DatVersionType.ACDM)
-                writer.Write(ScriptId + (uint)ACDMOffset.PhysicsScript);
-            else
-                writer.Write(ScriptId);
+            writer.WriteOffset(ScriptId, ACDMOffset.PhysicsScript);
         }
 
     }

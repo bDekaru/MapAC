@@ -444,6 +444,7 @@ namespace MapAC.DatLoader.FileTypes
                 case SurfacePixelFormat.PFID_INDEX16:
                 case SurfacePixelFormat.PFID_P8:
                     Palette pal = DatManager.CellDat.ReadFromDat<Palette>((uint)DefaultPaletteId);
+                    pal.ConvertColorsToTOD(); // If this isn't neccessary, it does nothing
 
                     // Apply any custom palette colors, if any, to our loaded palette (note, this may be all of them!)
                     if (CustomPaletteColors.Count > 0)
@@ -582,6 +583,12 @@ namespace MapAC.DatLoader.FileTypes
         {
             switch (Format)
             {
+                case SurfacePixelFormat.RGB565:
+                    Format = SurfacePixelFormat.PFID_R5G6B5;
+                    break;
+                case SurfacePixelFormat.ARGB4444:
+                    Format = SurfacePixelFormat.PFID_A4R4G4B4;
+                    break;
                 case SurfacePixelFormat.INDEX8:
                     List<byte> indexes = new List<byte>(); // We'll store the values here temporarily
                     using (BinaryReader reader = new BinaryReader(new MemoryStream(SourceData)))

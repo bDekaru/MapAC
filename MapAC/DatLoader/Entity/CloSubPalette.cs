@@ -25,11 +25,7 @@ namespace MapAC.DatLoader.Entity
         public void Pack(BinaryWriter writer)
         {
             Ranges.Pack(writer);
-
-            if(DatManager.DatVersion == DatVersionType.ACDM)
-                writer.Write(PaletteSet + (uint)ACDMOffset.PaletteSet);
-            else
-                writer.Write(PaletteSet);
+            writer.WriteOffset(PaletteSet, ACDMOffset.PaletteSet);
         }
 
     }

@@ -96,14 +96,21 @@ namespace MapAC.DatLoader.FileTypes
 
         public override void Pack(BinaryWriter writer)
         {
-            writer.Write(Id);
+            writer.WriteOffset(Id, ACDMOffset.EmitterInfo);
             writer.Write((int)0);
 
             writer.Write((uint)EmitterType);
             writer.Write((uint)ParticleType);
 
-            writer.Write(GfxObjId);
-            writer.Write(HwGfxObjId);
+            if (GfxObjId > 0)
+                writer.WriteOffset(GfxObjId, ACDMOffset.GfxObj);
+            else
+                writer.Write(0);
+
+            if (HwGfxObjId > 0)
+                writer.WriteOffset(HwGfxObjId, ACDMOffset.GfxObj);
+            else
+                writer.Write(0);
 
             writer.Write(Birthrate);
 

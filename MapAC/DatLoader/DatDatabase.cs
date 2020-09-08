@@ -12,7 +12,11 @@ namespace MapAC.DatLoader
         private static readonly uint DAT_HEADER_OFFSET_TOD = 0x140;
         private static readonly uint DAT_HEADER_OFFSET_ACDM = 0x12C;
         public uint DatHeaderOffset;
-        
+
+        /// <summary>
+        /// Contains a List of FileIds of all Exported files. Used to determine if we need to re-export an item.
+        /// </summary>
+        public List<uint> ExportedFiles = new List<uint>();
         public string FilePath { get; }
 
         private FileStream stream { get; }
@@ -146,6 +150,17 @@ namespace MapAC.DatLoader
 
                 File.WriteAllBytes(thisFile, dr.Buffer);
             }
+        }
+
+        public bool IsExported(uint objectId)
+        {
+            if (ExportedFiles.IndexOf(objectId) == -1)
+            {
+                ExportedFiles.Add(objectId);
+                return false;
+            }
+
+            return true;
         }
     }
 }

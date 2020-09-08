@@ -23,10 +23,7 @@ namespace MapAC.DatLoader.Entity
 
         public void Pack(BinaryWriter writer)
         {
-            if (DatManager.DatVersion == DatVersionType.ACDM)
-                writer.Write(SoundId + (uint)ACDMOffset.Wave);
-            else
-                writer.Write(SoundId);
+            writer.WriteOffset(SoundId, ACDMOffset.Wave);
             writer.Write(Priority);
             writer.Write(Probability);
             writer.Write(Volume);

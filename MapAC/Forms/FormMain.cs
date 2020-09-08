@@ -243,11 +243,20 @@ namespace WindowsFormsApp1
 
         private void exportToolStripMenuItem_Click(object sender, EventArgs eventArgs)
         {
-            string path = @"C:\ACE\PortalTemp\SuperDat\";
+            string path = @"C:\ace\PortalTemp\Spire\";
+            // Export.ExportPortalFile(0x020002EE, path); // Lifestone
+            //Export.ExportPortalFile(0x02000002, path); // Tusker
+            //Export.ExportPortalFile(0x0200049C, path); // Early Chittick
+            //Export.ExportPortalFile(0x02000055, path); // OG GOlems
+            //Export.ExportPortalFile(0x02000980, path); // Burrowing Shadow Spire
+            
+            Export.ExportPortalFile(0x02000034, path); // DRUDGE
 
-            //Export.ExportSetup(0x020009ED, path); // TARDIS
-            //Export.ExportTexture(0x06001F99, path); // QuestionMark ICON
+            //Export.ExportPortalFile(0x020009ED, path); // TARDIS
+            //Export.ExportPortalFile(0x06001F99, path); // QuestionMark ICON
             //Export.ExportGfxObject(0x01000598, path);
+            AddStatus("Export complete.");
+            return;
             List<uint> PortalList = new List<uint>();
             PortalList.Add(0x31000020);
             PortalList.Add(0x31000022);
@@ -476,6 +485,14 @@ namespace WindowsFormsApp1
                         texture.ExportTexture(@"C:\ACE\Icons\");
                 }
             }
+        }
+
+        private void exportCellDatStuffsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AddStatus("NOT YET IMPLEMENTED");
+            return;
+            string path = @"C:\ace\CellTemp\";
+            Export.ExportPortalFile(0x02000980, path); // Burrowing Shadow Spire
         }
     }
 }

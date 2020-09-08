@@ -1,4 +1,5 @@
 ﻿using MapAC.DatLoader;
+using MapAC.DatLoader.Entity.AnimationHooks;
 using MapAC.DatLoader.Enum;
 using MapAC.DatLoader.FileTypes;
 using System;
@@ -15,10 +16,13 @@ namespace MapAC
     {
         public static bool ExportPortalFile(uint exportId, string path)
         {
+            // Quit if this has already been handled!
+            if (DatManager.CellDat.IsExported(exportId)) return true;
+
             if (DatManager.CellDat.AllFiles.ContainsKey(exportId))
             {
-                string filename = GetExportPath(DatDatabaseType.Portal, path, exportId);
-                if (!File.Exists(filename))
+                //string filename = GetExportPath(DatDatabaseType.Portal, path, exportId);
+                //if (!File.Exists(filename))
                 {
                     var datFileType = DatFile.GetFileType(DatDatabaseType.Portal, exportId);
                     switch (datFileType)
@@ -140,23 +144,16 @@ namespace MapAC
             string fileName;
             var gfxObj = DatManager.CellDat.ReadFromDat<GfxObj>(gfxObjId);
 
-            var saveGfxObjId = gfxObjId;
-            if (DatManager.DatVersion == DatVersionType.ACDM)
-                saveGfxObjId += (uint)ACDMOffset.GfxObj;
+            fileName = GetExportPath(DatDatabaseType.Portal, path, gfxObjId);
+            using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
+                gfxObj.Pack(writer);
 
-            fileName = GetExportPath(DatDatabaseType.Portal, path, saveGfxObjId);
-            if (!File.Exists(fileName))
-            {
-                using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
-                    gfxObj.Pack(writer);
+            // Export all the Surfaces
+            for (var i = 0; i < gfxObj.Surfaces.Count; i++)
+                ExportPortalFile(gfxObj.Surfaces[i], path);
 
-                // Export all the Surfaces
-                for (var i = 0; i < gfxObj.Surfaces.Count; i++)
-                    ExportSurface(gfxObj.Surfaces[i], path);
-
-                if (gfxObj.DIDDegrade > 0)
-                    ExportDegrade(gfxObj.DIDDegrade, path);
-            }
+            if (gfxObj.DIDDegrade > 0)
+                ExportPortalFile(gfxObj.DIDDegrade, path);
         }
 
         /// <summary>
@@ -171,44 +168,37 @@ namespace MapAC
             {
                 var setup = DatManager.CellDat.ReadFromDat<SetupModel>(setupID);
 
-                var saveSetupId = setupID;
-                if (DatManager.DatVersion == DatVersionType.ACDM)
-                    saveSetupId += (uint)ACDMOffset.Setup;
+                fileName = GetExportPath(DatDatabaseType.Portal, path, setupID);
+                using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
+                    setup.Pack(writer);
 
-                fileName = GetExportPath(DatDatabaseType.Portal, path, saveSetupId);
-                if (!File.Exists(fileName))
+                // Get all the GfxObjs in the Setup
+                for (var i = 0; i < setup.Parts.Count; i++)
+                    ExportPortalFile(setup.Parts[i], path);
+
+                // Search through the ClothingTable entries for records with this Setup
+                foreach (var e in DatManager.CellDat.AllFiles)
                 {
-                    using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
-                        setup.Pack(writer);
-
-                    // Get all the GfxObjs in the Setup
-                    for (var i = 0; i < setup.Parts.Count; i++)
-                        ExportGfxObject(setup.Parts[i], path);
-
-                    // Search through the ClothingTable entries for records with this Setup
-                    foreach (var e in DatManager.CellDat.AllFiles)
+                    // Just get the ClothingTable entries...
+                    if (e.Key > 0x10000000 && e.Key < 0x10FFFFFF)
                     {
-                        // Just get the ClothingTable entries...
-                        if (e.Key > 0x10000000 && e.Key < 0x10FFFFFF)
-                        {
-                            var cb = DatManager.CellDat.ReadFromDat<ClothingTable>(e.Key);
-                            // Search the cb for our setupId
-                            if (cb.ClothingBaseEffects.ContainsKey(setupID))
-                                ExportClothingTable(e.Key, path);
-                        }
+                        var cb = DatManager.CellDat.ReadFromDat<ClothingTable>(e.Key);
+                        // Search the cb for our setupId
+                        if (cb.ClothingBaseEffects.ContainsKey(setupID))
+                            ExportPortalFile(e.Key, path);
                     }
-
-                    if (setup.DefaultAnimation > 0)
-                        ExportAnimation(setup.DefaultAnimation, path);
-                    if (setup.DefaultScript > 0)
-                        ExportPhysicsScript(setup.DefaultScript, path);
-                    if (setup.DefaultMotionTable > 0)
-                        ExportMotionTable(setup.DefaultMotionTable, path);
-                    if (setup.DefaultSoundTable > 0)
-                        ExportSoundTable(setup.DefaultSoundTable, path);
-                    if (setup.DefaultScriptTable > 0)
-                        ExportPhysicsScriptTable(setup.DefaultScriptTable, path);
                 }
+
+                if (setup.DefaultAnimation > 0)
+                    ExportPortalFile(setup.DefaultAnimation, path);
+                if (setup.DefaultScript > 0)
+                    ExportPortalFile(setup.DefaultScript, path);
+                if (setup.DefaultMotionTable > 0)
+                    ExportPortalFile(setup.DefaultMotionTable, path);
+                if (setup.DefaultSoundTable > 0)
+                    ExportPortalFile(setup.DefaultSoundTable, path);
+                if (setup.DefaultScriptTable > 0)
+                    ExportPortalFile(setup.DefaultScriptTable, path);
             }
         }
         
@@ -217,11 +207,7 @@ namespace MapAC
         {
             var anim = DatManager.CellDat.ReadFromDat<Animation>(animId);
 
-            var exportId = animId;
-            if (DatManager.DatVersion == DatVersionType.ACDM)
-                exportId += (uint)ACDMOffset.Animation;
-
-            var fileName = GetExportPath(DatDatabaseType.Portal, path, exportId);
+            var fileName = GetExportPath(DatDatabaseType.Portal, path, animId);
             using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
                 anim.Pack(writer);
         }
@@ -231,11 +217,7 @@ namespace MapAC
         {
             var pal = DatManager.CellDat.ReadFromDat<Palette>(palId);
 
-            var exportId = palId;
-            if (DatManager.DatVersion == DatVersionType.ACDM)
-                exportId += (uint)ACDMOffset.Palette;
-
-            var fileName = GetExportPath(DatDatabaseType.Portal, path, exportId);
+            var fileName = GetExportPath(DatDatabaseType.Portal, path, palId);
             using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
                 pal.Pack(writer);
         }
@@ -244,8 +226,7 @@ namespace MapAC
         public static void ExportSurfaceTexture(uint surfaceTexId, string path)
         {
             var surfTex = DatManager.CellDat.ReadFromDat<SurfaceTexture>(surfaceTexId);
-            uint exportSurfTexId = surfTex.GetId(); // Handles any conversion from ACDM to ACTOD
-            var fileName = GetExportPath(DatDatabaseType.Portal, path, exportSurfTexId);
+            var fileName = GetExportPath(DatDatabaseType.Portal, path, surfaceTexId);
             using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
                 surfTex.Pack(writer);
 
@@ -256,12 +237,14 @@ namespace MapAC
                 fileName = GetExportPath(DatDatabaseType.Portal, path, texId);
                 using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
                     surfTex.PackAsTexture(writer);
+
+                surfTex.ExportTexture(Path.GetDirectoryName(fileName));
             }
             else
             {
                 // Export all the Textures associated with the SurfaceTexture
                 for(var i = 0; i < surfTex.Textures.Count; i++)
-                    ExportTexture(surfTex.Textures[i], path);
+                    ExportPortalFile(surfTex.Textures[i], path);
             }
         }
 
@@ -270,14 +253,12 @@ namespace MapAC
         {
             var texture = DatManager.CellDat.ReadFromDat<Texture>(texId);
             var fileName = GetExportPath(DatDatabaseType.Portal, path, texId);
-            if (!File.Exists(fileName))
-            {
-                using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
-                    texture.Pack(writer);
+            using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
+                texture.Pack(writer);
+            texture.ExportTexture(Path.GetDirectoryName(fileName));
 
-                if (texture.DefaultPaletteId != null)
-                    ExportPalette((uint)texture.DefaultPaletteId, path);
-            }
+            if (texture.DefaultPaletteId != null)
+                ExportPortalFile((uint)texture.DefaultPaletteId, path);
 
         }
 
@@ -285,25 +266,21 @@ namespace MapAC
         public static void ExportSurface(uint surfaceId, string path)
         {
             var surface = DatManager.CellDat.ReadFromDat<Surface>(surfaceId);
-            if (DatManager.DatVersion == DatVersionType.ACDM)
-                surfaceId += (uint)ACDMOffset.Surface;
             var fileName = GetExportPath(DatDatabaseType.Portal, path, surfaceId);
             using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
                 surface.Pack(writer);
 
             if (surface.OrigTextureId > 0)
-                ExportSurfaceTexture(surface.OrigTextureId, path);
+                ExportPortalFile(surface.OrigTextureId, path);
 
             if (surface.OrigPaletteId > 0)
-                ExportPalette(surface.OrigPaletteId, path);
+                ExportPortalFile(surface.OrigPaletteId, path);
         }
 
         // 0x09
         public static void ExportMotionTable(uint motionId, string path)
         {
             var motion = DatManager.CellDat.ReadFromDat<MotionTable>(motionId);
-            if (DatManager.DatVersion == DatVersionType.ACDM)
-                motionId += (uint)ACDMOffset.MotionTable;
             var fileName = GetExportPath(DatDatabaseType.Portal, path, motionId);
             using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
                 motion.Pack(writer);
@@ -312,7 +289,7 @@ namespace MapAC
                 foreach(var motionData in link.Value)
                     foreach(var anim in motionData.Value.Anims)
                     {
-                        ExportAnimation(anim.AnimId, path);
+                        ExportPortalFile(anim.AnimId, path);
                     }
             
         }
@@ -324,10 +301,7 @@ namespace MapAC
             {
                 var wav = DatManager.CellDat.ReadFromDat<Wave>(waveID);
 
-                var exportId = waveID;
-                if (DatManager.DatVersion == DatVersionType.ACDM)
-                    exportId += (uint)ACDMOffset.Wave;
-                var fileName = GetExportPath(DatDatabaseType.Portal, path, exportId);
+                var fileName = GetExportPath(DatDatabaseType.Portal, path, waveID);
 
                 wav.ExportWave(Path.GetDirectoryName(fileName));
                 using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
@@ -342,11 +316,7 @@ namespace MapAC
             if (DatManager.CellDat.AllFiles.ContainsKey(envID))
             {
                 var env = DatManager.CellDat.ReadFromDat<DatLoader.FileTypes.Environment>(envID);
-
-                var exportId = envID;
-                if (DatManager.DatVersion == DatVersionType.ACDM)
-                    exportId += (uint)ACDMOffset.Environment;
-                var fileName = GetExportPath(DatDatabaseType.Portal, path, exportId);
+                var fileName = GetExportPath(DatDatabaseType.Portal, path, envID);
                 using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
                     env.Pack(writer);
 
@@ -357,29 +327,21 @@ namespace MapAC
         public static void ExportPalSet(uint palSetId, string path)
         {
             var palSet = DatManager.CellDat.ReadFromDat<PaletteSet>(palSetId);
-
-            var saveId = palSetId;
-            if (DatManager.DatVersion == DatVersionType.ACDM)
-                saveId += (uint)ACDMOffset.PaletteSet;
-            var fileName = GetExportPath(DatDatabaseType.Portal, path, saveId);
+            var fileName = GetExportPath(DatDatabaseType.Portal, path, palSetId);
 
             using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
                 palSet.Pack(writer);
 
             // Export all Palettes in the set, too
             foreach (var p in palSet.PaletteList)
-                ExportPalette(p, path);
+                ExportPortalFile(p, path);
         }
 
         // 0x10
         public static void ExportClothingTable(uint clothingTableId, string path)
         {
             var cb = DatManager.CellDat.ReadFromDat<ClothingTable>(clothingTableId);
-
-            var saveClothingTableId = clothingTableId;
-            if (DatManager.DatVersion == DatVersionType.ACDM)
-                saveClothingTableId += (uint)ACDMOffset.ClothingTable;
-            var fileName = GetExportPath(DatDatabaseType.Portal, path, saveClothingTableId);
+            var fileName = GetExportPath(DatDatabaseType.Portal, path, clothingTableId);
 
             using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
                 cb.Pack(writer);
@@ -387,16 +349,19 @@ namespace MapAC
             // Export and GfxObj swaps and SurfaceTexture swaps...
             foreach (var cloBaseEffect in cb.ClothingBaseEffects)
             {
+                uint setupId = cloBaseEffect.Key;
+                ExportPortalFile(setupId, path);
+
                 for (var i = 0; i < cloBaseEffect.Value.CloObjectEffects.Count; i++)
                 {
                     var cloObjEffect = cloBaseEffect.Value.CloObjectEffects[i];
                     // Export all the gfxObj's associated with this ClothingTable
                     uint gfxObjId = cloObjEffect.ModelId;
-                    ExportGfxObject(gfxObjId, path);
+                    ExportPortalFile(gfxObjId, path);
 
                     // Just export the "NewTexture"...the old one is being replaced, so we don't need it
                     for(var j = 0; j < cloObjEffect.CloTextureEffects.Count; j++)
-                        ExportSurfaceTexture(cloObjEffect.CloTextureEffects[j].NewTexture, path);
+                        ExportPortalFile(cloObjEffect.CloTextureEffects[j].NewTexture, path);
                 }
             }
 
@@ -404,12 +369,12 @@ namespace MapAC
             foreach(var subPalEffect in cb.ClothingSubPalEffects)
             {
                 if (subPalEffect.Value.Icon > 0)
-                    ExportTexture(subPalEffect.Value.Icon, path);
+                    ExportPortalFile(subPalEffect.Value.Icon, path);
 
                 for(var i = 0; i < subPalEffect.Value.CloSubPalettes.Count; i++)
                 {
                     var cloSubPal = subPalEffect.Value.CloSubPalettes[i];
-                    ExportPalSet(cloSubPal.PaletteSet, path);
+                    ExportPortalFile(cloSubPal.PaletteSet, path);
                 }
             }
         }
@@ -419,10 +384,7 @@ namespace MapAC
         {
             var degrade = DatManager.CellDat.ReadFromDat<GfxObjDegradeInfo>(degradeId);
 
-            var saveDegradeId = degradeId;
-            if (DatManager.DatVersion == DatVersionType.ACDM)
-                saveDegradeId += (uint)ACDMOffset.DIDDegrade;
-            var fileName = GetExportPath(DatDatabaseType.Portal, path, saveDegradeId);
+            var fileName = GetExportPath(DatDatabaseType.Portal, path, degradeId);
 
             using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
                 degrade.Pack(writer);
@@ -433,10 +395,7 @@ namespace MapAC
         {
             var scene = DatManager.CellDat.ReadFromDat<Scene>(sceneId);
 
-            var saveId = sceneId;
-            if (DatManager.DatVersion == DatVersionType.ACDM)
-                saveId += (uint)ACDMOffset.Scene;
-            var fileName = GetExportPath(DatDatabaseType.Portal, path, saveId);
+            var fileName = GetExportPath(DatDatabaseType.Portal, path, sceneId);
 
             using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
                 scene.Pack(writer);
@@ -446,11 +405,7 @@ namespace MapAC
         public static void ExportSoundTable(uint stableId, string path)
         {
             var stable = DatManager.CellDat.ReadFromDat<SoundTable>(stableId);
-
-            var saveId = stableId;
-            if (DatManager.DatVersion == DatVersionType.ACDM)
-                saveId += (uint)ACDMOffset.SoundTable;
-            var fileName = GetExportPath(DatDatabaseType.Portal, path, saveId);
+            var fileName = GetExportPath(DatDatabaseType.Portal, path, stableId);
 
             using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
                 stable.Pack(writer);
@@ -458,7 +413,7 @@ namespace MapAC
             foreach(var d in stable.Data)
             {
                 for(var i = 0; i < d.Value.Data.Count; i++)
-                    ExportWave(d.Value.Data[i].SoundId, path);
+                    ExportPortalFile(d.Value.Data[i].SoundId, path);
             }
         }
 
@@ -466,11 +421,7 @@ namespace MapAC
         public static void ExportCombatTable(uint cmtId, string path)
         {
             var cmt = DatManager.CellDat.ReadFromDat<CombatManeuverTable>(cmtId);
-
-            var saveId = cmtId;
-            if (DatManager.DatVersion == DatVersionType.ACDM)
-                saveId += (uint)ACDMOffset.CombatTable;
-            var fileName = GetExportPath(DatDatabaseType.Portal, path, saveId);
+            var fileName = GetExportPath(DatDatabaseType.Portal, path, cmtId);
 
             using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
                 cmt.Pack(writer);
@@ -480,11 +431,7 @@ namespace MapAC
         public static void ExportString(uint objId, string path)
         {
             var obj = DatManager.CellDat.ReadFromDat<LanguageString>(objId);
-
-            var saveId = objId;
-            if (DatManager.DatVersion == DatVersionType.ACDM)
-                saveId += (uint)ACDMOffset.String;
-            var fileName = GetExportPath(DatDatabaseType.Portal, path, saveId);
+            var fileName = GetExportPath(DatDatabaseType.Portal, path, objId);
 
             using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
                 obj.Pack(writer);
@@ -494,39 +441,56 @@ namespace MapAC
         public static void ExportParticleEmitter(uint partEmitterId, string path)
         {
             var particle = DatManager.CellDat.ReadFromDat<ParticleEmitterInfo>(partEmitterId);
-
-            var saveId = partEmitterId;
-            if (DatManager.DatVersion == DatVersionType.ACDM)
-                saveId += (uint)ACDMOffset.EmitterInfo;
-            var fileName = GetExportPath(DatDatabaseType.Portal, path, saveId);
+            var fileName = GetExportPath(DatDatabaseType.Portal, path, partEmitterId);
 
             using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
                 particle.Pack(writer);
+
+            if (particle.GfxObjId > 0)
+                ExportPortalFile(particle.GfxObjId, path);
+            if (particle.HwGfxObjId > 0)
+                ExportPortalFile(particle.HwGfxObjId, path);
         }
 
         // 0x33
         public static void ExportPhysicsScript(uint physicsScriptId, string path)
         {
             var physScript = DatManager.CellDat.ReadFromDat<PhysicsScript>(physicsScriptId);
-
-            var saveId = physicsScriptId;
-            if (DatManager.DatVersion == DatVersionType.ACDM)
-                saveId += (uint)ACDMOffset.PhysicsScript;
-            var fileName = GetExportPath(DatDatabaseType.Portal, path, saveId);
+            var fileName = GetExportPath(DatDatabaseType.Portal, path, physicsScriptId);
 
             using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
                 physScript.Pack(writer);
+
+            foreach(var sd in physScript.ScriptData)
+            {
+                switch (sd.Hook.HookType)
+                {
+                    case AnimationHookType.CallPES:
+                        var callPESHook = (CallPESHook)sd.Hook;
+                        ExportPortalFile(callPESHook.PES, path);
+                        break;
+                    case AnimationHookType.CreateParticle:
+                        var createParticleHook = (CreateParticleHook)sd.Hook;
+                        ExportPortalFile(createParticleHook.EmitterInfoId, path);
+                        break;
+                    case AnimationHookType.DestroyParticle:
+                        var destroyHook = (DestroyParticleHook)sd.Hook;
+                        ExportPortalFile(destroyHook.EmitterId, path);
+                        break;
+                    case AnimationHookType.SoundTweaked:
+                        var soundTweakedHook = (SoundTweakedHook)sd.Hook;
+                        ExportPortalFile(soundTweakedHook.SoundID, path);
+                        break;
+                }
+            }
+
         }
 
         // 0x34
         public static void ExportPhysicsScriptTable(uint physicsScriptTableId, string path)
         {
             var physScriptTable = DatManager.CellDat.ReadFromDat<PhysicsScriptTable>(physicsScriptTableId);
-
-            var saveId = physicsScriptTableId;
-            if (DatManager.DatVersion == DatVersionType.ACDM)
-                saveId += (uint)ACDMOffset.PhysicsScriptTable;
-            var fileName = GetExportPath(DatDatabaseType.Portal, path, saveId);
+            var fileName = GetExportPath(DatDatabaseType.Portal, path, physicsScriptTableId);
 
             using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
                 physScriptTable.Pack(writer);
@@ -535,7 +499,7 @@ namespace MapAC
             {
                 foreach(var mod in script.Value.Scripts)
                 {
-                    ExportPhysicsScript(mod.ScriptId, path);
+                    ExportPortalFile(mod.ScriptId, path);
                 }
             }
         }
@@ -543,7 +507,7 @@ namespace MapAC
         private static string GetExportPath(DatDatabaseType datDatabaseType, string path, uint objectId)
         {
             string exportFolder;
-
+            objectId = GetFileWithACDMOffset(objectId);
             string prefix = (objectId >> 24).ToString("X2") + "-";
             if (DatFile.GetFileType(datDatabaseType, objectId) != null)
                 if(datDatabaseType != DatDatabaseType.Cell) 
@@ -559,6 +523,40 @@ namespace MapAC
 
             string fileName = Path.Combine(exportFolder, objectId.ToString("X8") + ".bin");
             return fileName;
+        }
+
+        private static uint GetFileWithACDMOffset(uint objectId)
+        {
+            // Do nothing!
+            if (DatManager.DatVersion != DatVersionType.ACDM) return objectId;
+
+            var datFileType = DatFile.GetFileType(DatDatabaseType.Portal, objectId);
+            switch (datFileType)
+            {
+                case DatFileType.GraphicsObject: return objectId + (uint)ACDMOffset.GfxObj;
+                case DatFileType.Setup: return objectId + (uint)ACDMOffset.Setup;
+                case DatFileType.Animation: return objectId + (uint)ACDMOffset.Animation;
+                case DatFileType.Palette: return objectId + (uint)ACDMOffset.Palette;
+                case DatFileType.SurfaceTexture: return objectId + (uint)ACDMOffset.SurfaceTexture;
+                case DatFileType.Texture: return objectId + (uint)ACDMOffset.Texture;
+                case DatFileType.Surface: return objectId + (uint)ACDMOffset.Surface;
+                case DatFileType.MotionTable: return objectId + (uint)ACDMOffset.MotionTable;
+                case DatFileType.Wave: return objectId + (uint)ACDMOffset.Wave;
+                case DatFileType.Environment: return objectId + (uint)ACDMOffset.Environment;
+                case DatFileType.PaletteSet: return objectId + (uint)ACDMOffset.PaletteSet;
+                case DatFileType.Clothing: return objectId + (uint)ACDMOffset.ClothingTable;
+                case DatFileType.DegradeInfo: return objectId + (uint)ACDMOffset.DIDDegrade;
+                case DatFileType.Scene: return objectId + (uint)ACDMOffset.Scene;
+                case DatFileType.CombatTable: return objectId + (uint)ACDMOffset.CombatTable;
+                case DatFileType.String: return objectId + (uint)ACDMOffset.String;
+                case DatFileType.SoundTable: return objectId + (uint)ACDMOffset.SoundTable;
+                case DatFileType.ParticleEmitter: return objectId + (uint)ACDMOffset.EmitterInfo;
+                case DatFileType.PhysicsScript: return objectId + (uint)ACDMOffset.PhysicsScript;
+                case DatFileType.PhysicsScriptTable: return objectId + (uint)ACDMOffset.PhysicsScriptTable;
+                default:
+                    throw new NotImplementedException();
+            }
+            return 0;
         }
     }
 }

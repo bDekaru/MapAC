@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MapAC.DatLoader.Enum;
+using System;
 using System.IO;
 using System.Numerics;
 
@@ -120,6 +121,17 @@ namespace MapAC.DatLoader
             writer.Write(vector.X);
             writer.Write(vector.Y);
             writer.Write(vector.Z);
+        }
+
+        /// <summary>
+        /// Writes the value to the file, and if neccessary, adds the offset value to it for ACDM era dat files
+        /// </summary>
+        public static void WriteOffset(this BinaryWriter writer, uint value, ACDMOffset offset)
+        {
+            if(DatManager.DatVersion == DatVersionType.ACDM)
+                writer.Write(value + (uint)offset);
+            else
+                writer.Write(value);
         }
 
     }

@@ -21,12 +21,7 @@ namespace MapAC.DatLoader.Entity
         public void Pack(BinaryWriter writer)
         {
             writer.Write(Index);
-
-            if (DatManager.DatVersion == DatVersionType.ACDM)
-                writer.Write(ModelId + (uint)ACDMOffset.GfxObj);
-            else
-                writer.Write(ModelId);
-            
+            writer.WriteOffset(ModelId, ACDMOffset.GfxObj);
 
             CloTextureEffects.Pack(writer);
         }
