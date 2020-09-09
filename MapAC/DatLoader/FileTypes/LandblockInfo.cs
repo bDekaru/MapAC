@@ -87,7 +87,7 @@ namespace MapAC.DatLoader.FileTypes
                 o.Pack(writer);
             }
 
-            Objects.Pack(writer);
+            // Objects.Pack(writer);
 
             writer.Write((ushort)Buildings.Count);
             writer.Write((ushort)PackMask);

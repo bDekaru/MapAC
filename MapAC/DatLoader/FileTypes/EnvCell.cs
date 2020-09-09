@@ -104,12 +104,15 @@ namespace MapAC.DatLoader.FileTypes
             writer.Write((ushort)VisibleCells.Count);
 
             for (var i = 0; i < Surfaces.Count; i++)
-                if (DatManager.DatVersion == DatVersionType.ACDM)
-                    writer.Write((ushort)((Surfaces[i] + (uint)ACDMOffset.Surface) & 0xFFFF));
+                if (DatManager.DatVersion == DatVersionType.ACDM && !DatManager.CellDat.IsRetailDatFile(Surfaces[i]))
+                {
+                    uint val = (Surfaces[i] + (uint)ACDMOffset.Surface);
+                    writer.Write((ushort)(val & 0xFFFF));
+                }
                 else
                     writer.Write((ushort)(Surfaces[i] & 0xFFFF));
 
-            if (DatManager.DatVersion == DatVersionType.ACDM)
+            if (DatManager.DatVersion == DatVersionType.ACDM && !DatManager.CellDat.IsRetailDatFile(EnvironmentId))
                 writer.Write((ushort)((EnvironmentId + (uint)ACDMOffset.Environment) & 0xFFFF));
             else
                 writer.Write((ushort)(EnvironmentId & 0xFFFF));
@@ -134,10 +137,13 @@ namespace MapAC.DatLoader.FileTypes
                     for (int i = 0; i < StaticObjects.Count; i++)
                     {
                         Stab thisStab = StaticObjects[i];
-                        if(thisStab.Id <= 0x01FFFFFF)
-                            thisStab.Id += (uint)ACDMOffset.GfxObj;
-                        else
-                            thisStab.Id += (uint)ACDMOffset.Setup;
+                        if (!DatManager.CellDat.IsRetailDatFile(thisStab.Id))
+                        {
+                            if (thisStab.Id <= 0x01FFFFFF)
+                                thisStab.Id += (uint)ACDMOffset.GfxObj;
+                            else
+                                thisStab.Id += (uint)ACDMOffset.Setup;
+                        }
                         thisStab.Pack(writer);
                     }
                 }

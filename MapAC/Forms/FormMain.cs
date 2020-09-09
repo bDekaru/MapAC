@@ -243,14 +243,348 @@ namespace WindowsFormsApp1
 
         private void exportToolStripMenuItem_Click(object sender, EventArgs eventArgs)
         {
-            string path = @"C:\ace\PortalTemp\Spire\";
+            string path = @"C:\ace\PortalTemp\OldArwic\";
+            Export.ExportPortalFile(0x0100022B, path);
+            Export.ExportPortalFile(0x0100029A, path);
+            Export.ExportPortalFile(0x0100029D, path);
+            Export.ExportPortalFile(0x010002CC, path);
+            Export.ExportPortalFile(0x010002E9, path);
+            Export.ExportPortalFile(0x010002F0, path);
+            Export.ExportPortalFile(0x010002FB, path);
+            Export.ExportPortalFile(0x01000305, path);
+            Export.ExportPortalFile(0x01000307, path);
+            Export.ExportPortalFile(0x0100048C, path);
+            Export.ExportPortalFile(0x01000567, path);
+            Export.ExportPortalFile(0x0100058F, path);
+            Export.ExportPortalFile(0x01000592, path);
+            Export.ExportPortalFile(0x01000598, path);
+            Export.ExportPortalFile(0x01000647, path);
+            Export.ExportPortalFile(0x0100065D, path);
+            Export.ExportPortalFile(0x0100069A, path);
+            Export.ExportPortalFile(0x010006B7, path);
+            Export.ExportPortalFile(0x010007C4, path);
+            Export.ExportPortalFile(0x010007C8, path);
+            Export.ExportPortalFile(0x0100081A, path);
+            Export.ExportPortalFile(0x0100081C, path);
+            Export.ExportPortalFile(0x01000827, path);
+            Export.ExportPortalFile(0x0100082E, path);
+            Export.ExportPortalFile(0x01000830, path);
+            Export.ExportPortalFile(0x0100093B, path);
+            Export.ExportPortalFile(0x01000A2B, path);
+            Export.ExportPortalFile(0x01000A2F, path);
+            Export.ExportPortalFile(0x01000A44, path);
+            Export.ExportPortalFile(0x01000A6A, path);
+            Export.ExportPortalFile(0x01000AB8, path);
+            Export.ExportPortalFile(0x01000ADA, path);
+            Export.ExportPortalFile(0x01000AEF, path);
+            Export.ExportPortalFile(0x01000B53, path);
+            Export.ExportPortalFile(0x01000BC3, path);
+            Export.ExportPortalFile(0x01000BC6, path);
+            Export.ExportPortalFile(0x01000BC7, path);
+            Export.ExportPortalFile(0x01000BC8, path);
+            Export.ExportPortalFile(0x01000BC9, path);
+            Export.ExportPortalFile(0x01000C00, path);
+            Export.ExportPortalFile(0x01000C16, path);
+            Export.ExportPortalFile(0x01000C17, path);
+            Export.ExportPortalFile(0x01000C1E, path);
+            Export.ExportPortalFile(0x01000C20, path);
+            Export.ExportPortalFile(0x01000DBE, path);
+            Export.ExportPortalFile(0x01000DF0, path);
+            Export.ExportPortalFile(0x01000E2A, path);
+            Export.ExportPortalFile(0x01000E5F, path);
+            Export.ExportPortalFile(0x01000FDE, path);
+            Export.ExportPortalFile(0x0100104C, path);
+            Export.ExportPortalFile(0x01001050, path);
+            Export.ExportPortalFile(0x0100113C, path);
+            Export.ExportPortalFile(0x010011C4, path);
+            Export.ExportPortalFile(0x010017B7, path);
+            Export.ExportPortalFile(0x010017F6, path);
+            Export.ExportPortalFile(0x0200004F, path);
+            Export.ExportPortalFile(0x02000065, path);
+            Export.ExportPortalFile(0x02000081, path);
+            Export.ExportPortalFile(0x020000A4, path);
+            Export.ExportPortalFile(0x020000A5, path);
+            Export.ExportPortalFile(0x020000A6, path);
+            Export.ExportPortalFile(0x020000A7, path);
+            Export.ExportPortalFile(0x020000A8, path);
+            Export.ExportPortalFile(0x020000AA, path);
+            Export.ExportPortalFile(0x020000AB, path);
+            Export.ExportPortalFile(0x020000AC, path);
+            Export.ExportPortalFile(0x020000E6, path);
+            Export.ExportPortalFile(0x020000E7, path);
+            Export.ExportPortalFile(0x020000E9, path);
+            Export.ExportPortalFile(0x020000EA, path);
+            Export.ExportPortalFile(0x020000EB, path);
+            Export.ExportPortalFile(0x020000EC, path);
+            Export.ExportPortalFile(0x020000ED, path);
+            Export.ExportPortalFile(0x020000F0, path);
+            Export.ExportPortalFile(0x020000F2, path);
+            Export.ExportPortalFile(0x020000F3, path);
+            Export.ExportPortalFile(0x020000F5, path);
+            Export.ExportPortalFile(0x020000F6, path);
+            Export.ExportPortalFile(0x020000F8, path);
+            Export.ExportPortalFile(0x020000FB, path);
+            Export.ExportPortalFile(0x020000FD, path);
+            Export.ExportPortalFile(0x02000102, path);
+            Export.ExportPortalFile(0x02000103, path);
+            Export.ExportPortalFile(0x02000105, path);
+            Export.ExportPortalFile(0x02000106, path);
+            Export.ExportPortalFile(0x02000107, path);
+            Export.ExportPortalFile(0x0200010A, path);
+            Export.ExportPortalFile(0x02000110, path);
+            Export.ExportPortalFile(0x02000111, path);
+            Export.ExportPortalFile(0x0200011E, path);
+            Export.ExportPortalFile(0x0200011F, path);
+            Export.ExportPortalFile(0x02000120, path);
+            Export.ExportPortalFile(0x02000121, path);
+            Export.ExportPortalFile(0x02000123, path);
+            Export.ExportPortalFile(0x02000124, path);
+            Export.ExportPortalFile(0x02000125, path);
+            Export.ExportPortalFile(0x02000126, path);
+            Export.ExportPortalFile(0x02000127, path);
+            Export.ExportPortalFile(0x02000128, path);
+            Export.ExportPortalFile(0x02000129, path);
+            Export.ExportPortalFile(0x0200012A, path);
+            Export.ExportPortalFile(0x0200012F, path);
+            Export.ExportPortalFile(0x02000131, path);
+            Export.ExportPortalFile(0x02000132, path);
+            Export.ExportPortalFile(0x02000134, path);
+            Export.ExportPortalFile(0x02000136, path);
+            Export.ExportPortalFile(0x02000139, path);
+            Export.ExportPortalFile(0x0200013A, path);
+            Export.ExportPortalFile(0x0200013B, path);
+            Export.ExportPortalFile(0x0200013C, path);
+            Export.ExportPortalFile(0x02000140, path);
+            Export.ExportPortalFile(0x02000141, path);
+            Export.ExportPortalFile(0x02000146, path);
+            Export.ExportPortalFile(0x02000148, path);
+            Export.ExportPortalFile(0x0200014B, path);
+            Export.ExportPortalFile(0x02000150, path);
+            Export.ExportPortalFile(0x02000153, path);
+            Export.ExportPortalFile(0x02000154, path);
+            Export.ExportPortalFile(0x02000162, path);
+            Export.ExportPortalFile(0x02000164, path);
+            Export.ExportPortalFile(0x0200016C, path);
+            Export.ExportPortalFile(0x0200016D, path);
+            Export.ExportPortalFile(0x0200016E, path);
+            Export.ExportPortalFile(0x0200016F, path);
+            Export.ExportPortalFile(0x02000175, path);
+            Export.ExportPortalFile(0x02000176, path);
+            Export.ExportPortalFile(0x02000177, path);
+            Export.ExportPortalFile(0x0200017D, path);
+            Export.ExportPortalFile(0x02000180, path);
+            Export.ExportPortalFile(0x02000183, path);
+            Export.ExportPortalFile(0x02000185, path);
+            Export.ExportPortalFile(0x02000186, path);
+            Export.ExportPortalFile(0x02000188, path);
+            Export.ExportPortalFile(0x0200018E, path);
+            Export.ExportPortalFile(0x0200018F, path);
+            Export.ExportPortalFile(0x02000190, path);
+            Export.ExportPortalFile(0x020001B4, path);
+            Export.ExportPortalFile(0x020001BC, path);
+            Export.ExportPortalFile(0x020001BD, path);
+            Export.ExportPortalFile(0x020001BE, path);
+            Export.ExportPortalFile(0x020001BF, path);
+            Export.ExportPortalFile(0x020001C0, path);
+            Export.ExportPortalFile(0x020001C7, path);
+            Export.ExportPortalFile(0x020001DB, path);
+            Export.ExportPortalFile(0x020001E5, path);
+            Export.ExportPortalFile(0x020001F1, path);
+            Export.ExportPortalFile(0x0200020E, path);
+            Export.ExportPortalFile(0x02000211, path);
+            Export.ExportPortalFile(0x02000227, path);
+            Export.ExportPortalFile(0x0200022C, path);
+            Export.ExportPortalFile(0x0200022D, path);
+            Export.ExportPortalFile(0x02000240, path);
+            Export.ExportPortalFile(0x02000248, path);
+            Export.ExportPortalFile(0x0200024B, path);
+            Export.ExportPortalFile(0x0200024C, path);
+            Export.ExportPortalFile(0x02000253, path);
+            Export.ExportPortalFile(0x02000254, path);
+            Export.ExportPortalFile(0x02000266, path);
+            Export.ExportPortalFile(0x02000267, path);
+            Export.ExportPortalFile(0x02000268, path);
+            Export.ExportPortalFile(0x02000270, path);
+            Export.ExportPortalFile(0x02000272, path);
+            Export.ExportPortalFile(0x02000278, path);
+            Export.ExportPortalFile(0x02000279, path);
+            Export.ExportPortalFile(0x0200027E, path);
+            Export.ExportPortalFile(0x02000294, path);
+            Export.ExportPortalFile(0x02000295, path);
+            Export.ExportPortalFile(0x020002D7, path);
+            Export.ExportPortalFile(0x020002F2, path);
+            Export.ExportPortalFile(0x020002F9, path);
+            Export.ExportPortalFile(0x020002FA, path);
+            Export.ExportPortalFile(0x020002FB, path);
+            Export.ExportPortalFile(0x020002FC, path);
+            Export.ExportPortalFile(0x020002FD, path);
+            Export.ExportPortalFile(0x02000303, path);
+            Export.ExportPortalFile(0x02000309, path);
+            Export.ExportPortalFile(0x0200030B, path);
+            Export.ExportPortalFile(0x02000339, path);
+            Export.ExportPortalFile(0x02000351, path);
+            Export.ExportPortalFile(0x02000354, path);
+            Export.ExportPortalFile(0x02000362, path);
+            Export.ExportPortalFile(0x02000363, path);
+            Export.ExportPortalFile(0x02000374, path);
+            Export.ExportPortalFile(0x02000375, path);
+            Export.ExportPortalFile(0x02000377, path);
+            Export.ExportPortalFile(0x0200037A, path);
+            Export.ExportPortalFile(0x0200037C, path);
+            Export.ExportPortalFile(0x020003B4, path);
+            Export.ExportPortalFile(0x020003B5, path);
+            Export.ExportPortalFile(0x020003BA, path);
+            Export.ExportPortalFile(0x020003C4, path);
+            Export.ExportPortalFile(0x020003C7, path);
+            Export.ExportPortalFile(0x020003CC, path);
+            Export.ExportPortalFile(0x020003CD, path);
+            Export.ExportPortalFile(0x020003DE, path);
+            Export.ExportPortalFile(0x020003DF, path);
+            Export.ExportPortalFile(0x020003E0, path);
+            Export.ExportPortalFile(0x020003EC, path);
+            Export.ExportPortalFile(0x020003F5, path);
+            Export.ExportPortalFile(0x020003FF, path);
+            Export.ExportPortalFile(0x0200043B, path);
+            Export.ExportPortalFile(0x02000469, path);
+            Export.ExportPortalFile(0x02000485, path);
+            Export.ExportPortalFile(0x020004B9, path);
+            Export.ExportPortalFile(0x020004C8, path);
+            Export.ExportPortalFile(0x020004C9, path);
+            Export.ExportPortalFile(0x020004CA, path);
+            Export.ExportPortalFile(0x020005A8, path);
+            Export.ExportPortalFile(0x020005AE, path);
+            Export.ExportPortalFile(0x020005B3, path);
+            Export.ExportPortalFile(0x020005BB, path);
+            Export.ExportPortalFile(0x020005C0, path);
+            Export.ExportPortalFile(0x020005C3, path);
+            Export.ExportPortalFile(0x020005C9, path);
+            Export.ExportPortalFile(0x0200067C, path);
+            Export.ExportPortalFile(0x0200068C, path);
+            Export.ExportPortalFile(0x020006A1, path);
+            Export.ExportPortalFile(0x020006CC, path);
+            Export.ExportPortalFile(0x08000077, path);
+            Export.ExportPortalFile(0x080000CB, path);
+            Export.ExportPortalFile(0x080002D8, path);
+            Export.ExportPortalFile(0x0800047E, path);
+            Export.ExportPortalFile(0x08000533, path);
+            Export.ExportPortalFile(0x0800054C, path);
+            Export.ExportPortalFile(0x08000551, path);
+            Export.ExportPortalFile(0x08000554, path);
+            Export.ExportPortalFile(0x08000555, path);
+            Export.ExportPortalFile(0x08000557, path);
+            Export.ExportPortalFile(0x0800055B, path);
+            Export.ExportPortalFile(0x08000585, path);
+            Export.ExportPortalFile(0x0800058B, path);
+            Export.ExportPortalFile(0x080005EC, path);
+            Export.ExportPortalFile(0x08000602, path);
+            Export.ExportPortalFile(0x08000607, path);
+            Export.ExportPortalFile(0x08000623, path);
+            Export.ExportPortalFile(0x0800062E, path);
+            Export.ExportPortalFile(0x0800062F, path);
+            Export.ExportPortalFile(0x08000630, path);
+            Export.ExportPortalFile(0x08000658, path);
+            Export.ExportPortalFile(0x0800065A, path);
+            Export.ExportPortalFile(0x08000660, path);
+            Export.ExportPortalFile(0x08000661, path);
+            Export.ExportPortalFile(0x0800068F, path);
+            Export.ExportPortalFile(0x08000691, path);
+            Export.ExportPortalFile(0x0800069B, path);
+            Export.ExportPortalFile(0x080007F9, path);
+            Export.ExportPortalFile(0x080007FC, path);
+            Export.ExportPortalFile(0x080007FE, path);
+            Export.ExportPortalFile(0x0800080C, path);
+            Export.ExportPortalFile(0x0800080D, path);
+            Export.ExportPortalFile(0x0800080E, path);
+            Export.ExportPortalFile(0x08000810, path);
+            Export.ExportPortalFile(0x08000812, path);
+            Export.ExportPortalFile(0x08000825, path);
+            Export.ExportPortalFile(0x0800083E, path);
+            Export.ExportPortalFile(0x0800085E, path);
+            Export.ExportPortalFile(0x080008C4, path);
+            Export.ExportPortalFile(0x080008C6, path);
+            Export.ExportPortalFile(0x08000974, path);
+            Export.ExportPortalFile(0x080009C4, path);
+            Export.ExportPortalFile(0x080009C5, path);
+            Export.ExportPortalFile(0x080009C6, path);
+            Export.ExportPortalFile(0x080009EB, path);
+            Export.ExportPortalFile(0x08000A25, path);
+            Export.ExportPortalFile(0x08000A2B, path);
+            Export.ExportPortalFile(0x08000A2C, path);
+            Export.ExportPortalFile(0x08000AC1, path);
+            Export.ExportPortalFile(0x08000AD3, path);
+            Export.ExportPortalFile(0x08000AD4, path);
+            Export.ExportPortalFile(0x08000AD5, path);
+            Export.ExportPortalFile(0x08000B73, path);
+            Export.ExportPortalFile(0x08000C17, path);
+            Export.ExportPortalFile(0x08000C37, path);
+            Export.ExportPortalFile(0x08000C38, path);
+            Export.ExportPortalFile(0x08000C3B, path);
+            Export.ExportPortalFile(0x08000C3C, path);
+            Export.ExportPortalFile(0x08000C3D, path);
+            Export.ExportPortalFile(0x08000C3E, path);
+            Export.ExportPortalFile(0x08000C3F, path);
+            Export.ExportPortalFile(0x08000C51, path);
+            Export.ExportPortalFile(0x08000C52, path);
+            Export.ExportPortalFile(0x08000C57, path);
+            Export.ExportPortalFile(0x08000C58, path);
+            Export.ExportPortalFile(0x08000D27, path);
+            Export.ExportPortalFile(0x08000D2B, path);
+            Export.ExportPortalFile(0x08000D53, path);
+            Export.ExportPortalFile(0x08000D54, path);
+            Export.ExportPortalFile(0x08000D5B, path);
+            Export.ExportPortalFile(0x08000D5C, path);
+            Export.ExportPortalFile(0x08000DA2, path);
+            Export.ExportPortalFile(0x08000DB9, path);
+            Export.ExportPortalFile(0x08000DBB, path);
+            Export.ExportPortalFile(0x08000DEA, path);
+            Export.ExportPortalFile(0x08000DED, path);
+            Export.ExportPortalFile(0x08000DEE, path);
+            Export.ExportPortalFile(0x08000DF3, path);
+            Export.ExportPortalFile(0x08000DF8, path);
+            Export.ExportPortalFile(0x08000DF9, path);
+            Export.ExportPortalFile(0x08000E02, path);
+            Export.ExportPortalFile(0x08000E4C, path);
+            Export.ExportPortalFile(0x08000E4E, path);
+            Export.ExportPortalFile(0x08000E52, path);
+            Export.ExportPortalFile(0x08000E53, path);
+            Export.ExportPortalFile(0x08000E54, path);
+            Export.ExportPortalFile(0x08000E55, path);
+            Export.ExportPortalFile(0x08000EBC, path);
+            Export.ExportPortalFile(0x0800102E, path);
+            Export.ExportPortalFile(0x08001079, path);
+            Export.ExportPortalFile(0x0800107A, path);
+            Export.ExportPortalFile(0x0D0002F8, path);
+            Export.ExportPortalFile(0x0D0002F9, path);
+            Export.ExportPortalFile(0x0D0002FA, path);
+            Export.ExportPortalFile(0x0D0002FB, path);
+            Export.ExportPortalFile(0x0D000333, path);
+            Export.ExportPortalFile(0x0D00033D, path);
+            Export.ExportPortalFile(0x0D000348, path);
+            Export.ExportPortalFile(0x0D00034E, path);
+            Export.ExportPortalFile(0x0D00034F, path);
+            Export.ExportPortalFile(0x0D000366, path);
+            Export.ExportPortalFile(0x0D00036A, path);
+            Export.ExportPortalFile(0x0D0003D3, path);
+            Export.ExportPortalFile(0x0D0003D4, path);
+            Export.ExportPortalFile(0x0D0003D6, path);
+            Export.ExportPortalFile(0x0D0003DE, path);
+            Export.ExportPortalFile(0x0D0003DF, path);
+            Export.ExportPortalFile(0x0D0003E2, path);
+            Export.ExportPortalFile(0x0D0003E3, path);
+            Export.ExportPortalFile(0x0D0003E4, path);
+            Export.ExportPortalFile(0x0D0003F2, path);
+            Export.ExportPortalFile(0x0D0003F4, path);
+            Export.ExportPortalFile(0x0D0003F5, path);
+            Export.ExportPortalFile(0x0D000402, path);
+            Export.ExportPortalFile(0x0D000405, path);
+
             // Export.ExportPortalFile(0x020002EE, path); // Lifestone
             //Export.ExportPortalFile(0x02000002, path); // Tusker
-            //Export.ExportPortalFile(0x0200049C, path); // Early Chittick
             //Export.ExportPortalFile(0x02000055, path); // OG GOlems
+            //Export.ExportPortalFile(0x0200049C, path); // Early Chittick
             //Export.ExportPortalFile(0x02000980, path); // Burrowing Shadow Spire
-            
-            Export.ExportPortalFile(0x02000034, path); // DRUDGE
+            //Export.ExportPortalFile(0x01000FDE, path); // clear_cell.id = 0x01000FDE, defined in RegionDesc
+            //Export.ExportPortalFile(0x02000034, path); // DRUDGE
 
             //Export.ExportPortalFile(0x020009ED, path); // TARDIS
             //Export.ExportPortalFile(0x06001F99, path); // QuestionMark ICON
@@ -410,8 +744,11 @@ namespace WindowsFormsApp1
             AddStatus("DONE TEST READ");
         }
 
+        // Key is ObjectId, Value is count
+        Dictionary<uint, uint> ObjectsInLandblocks;
         private void getPortalItemsInCellsToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            ObjectsInLandblocks = new Dictionary<uint, uint>();
             GetObjectDetailsFromLandblock(0xc4a7FFFF);
             GetObjectDetailsFromLandblock(0xc4a8FFFF);
             GetObjectDetailsFromLandblock(0xc4a9FFFF);
@@ -437,6 +774,14 @@ namespace WindowsFormsApp1
             GetObjectDetailsFromLandblock(0xc8a9FFFF);
             GetObjectDetailsFromLandblock(0xc8aaFFFF);
             GetObjectDetailsFromLandblock(0xc8abFFFF);
+
+            var list = ObjectsInLandblocks.Keys.ToList();
+            list.Sort();
+            foreach(var objectId in list)
+            {
+                AddStatus($"0x{objectId:X8}");
+            }
+            AddStatus("DONE");
         }
 
         private void GetObjectDetailsFromLandblock(uint landblockId)
@@ -446,12 +791,14 @@ namespace WindowsFormsApp1
             var landblockInfo = DatManager.CellDat.ReadFromDat<LandblockInfo>(lbi_id);
             for(var i = 0; i < landblockInfo.Objects.Count; i++)
             {
-                AddStatus($" - Object {landblockInfo.Objects[i].Id:X8}");
+                AddLandblockItem(landblockInfo.Objects[i].Id);
+                //AddStatus($" - Object {landblockInfo.Objects[i].Id:X8}");
             }
 
             for (var i = 0; i < landblockInfo.Buildings.Count; i++)
             {
-                AddStatus($" - Building {landblockInfo.Buildings[i].ModelId:X8}");
+                AddLandblockItem(landblockInfo.Buildings[i].ModelId);
+                //AddStatus($" - Building {landblockInfo.Buildings[i].ModelId:X8}");
             }
 
             // Search through EnvCells
@@ -462,15 +809,31 @@ namespace WindowsFormsApp1
                 {
                     var envCellId = e.Key;
                     var envCell = DatManager.CellDat.ReadFromDat<EnvCell>(envCellId);
-                    AddStatus($" - EnvCell {envCellId:X8} enviroment - {envCell.EnvironmentId:X8}");
+
+                    AddLandblockItem(envCell.EnvironmentId);
+
+                    for(var i =0; i < envCell.Surfaces.Count; i++)
+                    {
+                        AddLandblockItem(envCell.Surfaces[i]);
+                    }
+                    //AddStatus($" - EnvCell {envCellId:X8} enviroment - {envCell.EnvironmentId:X8}");
                     for (var i = 0; i < envCell.StaticObjects.Count; i++)
                     {
-                        AddStatus($" - EnvCell {envCellId:X8} object - {envCell.StaticObjects[i].Id:X8}");
+                        AddLandblockItem(envCell.StaticObjects[i].Id);
+                        //AddStatus($" - EnvCell {envCellId:X8} object - {envCell.StaticObjects[i].Id:X8}");
                     }
                 }
             }
 
 
+        }
+
+        private void AddLandblockItem(uint objectId)
+        {
+            if (ObjectsInLandblocks.ContainsKey(objectId))
+                ObjectsInLandblocks[objectId]++;
+            else
+                ObjectsInLandblocks.Add(objectId, 1);
         }
 
         private void dumpIconsToolStripMenuItem_Click(object sender, EventArgs evt)
@@ -489,10 +852,36 @@ namespace WindowsFormsApp1
 
         private void exportCellDatStuffsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            AddStatus("NOT YET IMPLEMENTED");
+            int offsetX = 41;
+            int offsetY = 63;
+            string path = @"C:\ace\Landblocks\OldArwic\";
+            Export.ExportCellLandblock(0xc4a7FFFF, path, offsetX, offsetY);
+            Export.ExportCellLandblock(0xc4a8FFFF, path, offsetX, offsetY);
+            Export.ExportCellLandblock(0xc4a9FFFF, path, offsetX, offsetY);
+            Export.ExportCellLandblock(0xc4aaFFFF, path, offsetX, offsetY);
+            Export.ExportCellLandblock(0xc4abFFFF, path, offsetX, offsetY);
+            Export.ExportCellLandblock(0xc5a7FFFF, path, offsetX, offsetY);
+            Export.ExportCellLandblock(0xc5a8FFFF, path, offsetX, offsetY);
+            Export.ExportCellLandblock(0xc5a9FFFF, path, offsetX, offsetY);
+            Export.ExportCellLandblock(0xc5aaFFFF, path, offsetX, offsetY);
+            Export.ExportCellLandblock(0xc5abFFFF, path, offsetX, offsetY);
+            Export.ExportCellLandblock(0xc6a7FFFF, path, offsetX, offsetY);
+            Export.ExportCellLandblock(0xc6a8FFFF, path, offsetX, offsetY);
+            Export.ExportCellLandblock(0xc6a9FFFF, path, offsetX, offsetY);
+            Export.ExportCellLandblock(0xc6aaFFFF, path, offsetX, offsetY);
+            Export.ExportCellLandblock(0xc6abFFFF, path, offsetX, offsetY);
+            Export.ExportCellLandblock(0xc7a7FFFF, path, offsetX, offsetY);
+            Export.ExportCellLandblock(0xc7a8FFFF, path, offsetX, offsetY);
+            Export.ExportCellLandblock(0xc7a9FFFF, path, offsetX, offsetY);
+            Export.ExportCellLandblock(0xc7aaFFFF, path, offsetX, offsetY);
+            Export.ExportCellLandblock(0xc7abFFFF, path, offsetX, offsetY);
+            Export.ExportCellLandblock(0xc8a7FFFF, path, offsetX, offsetY);
+            Export.ExportCellLandblock(0xc8a8FFFF, path, offsetX, offsetY);
+            Export.ExportCellLandblock(0xc8a9FFFF, path, offsetX, offsetY);
+            Export.ExportCellLandblock(0xc8aaFFFF, path, offsetX, offsetY);
+            Export.ExportCellLandblock(0xc8abFFFF, path, offsetX, offsetY);
+            AddStatus("Export Complete");
             return;
-            string path = @"C:\ace\CellTemp\";
-            Export.ExportPortalFile(0x02000980, path); // Burrowing Shadow Spire
         }
     }
 }

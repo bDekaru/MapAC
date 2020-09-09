@@ -38,7 +38,10 @@ namespace MapAC.DatLoader.Entity
 
         public void Pack(BinaryWriter writer)
         {
-            writer.Write(ModelId);
+            if(ModelId < 0x02000000)
+                writer.WriteOffset(ModelId, Enum.ACDMOffset.GfxObj);
+            else
+                writer.WriteOffset(ModelId, Enum.ACDMOffset.Setup);
 
             Frame.Pack(writer);
 

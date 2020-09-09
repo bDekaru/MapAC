@@ -128,7 +128,7 @@ namespace MapAC.DatLoader
         /// </summary>
         public static void WriteOffset(this BinaryWriter writer, uint value, ACDMOffset offset)
         {
-            if(DatManager.DatVersion == DatVersionType.ACDM)
+            if(DatManager.DatVersion == DatVersionType.ACDM && !DatManager.CellDat.IsRetailDatFile(value))
                 writer.Write(value + (uint)offset);
             else
                 writer.Write(value);

@@ -17,6 +17,12 @@ namespace MapAC.DatLoader
         /// Contains a List of FileIds of all Exported files. Used to determine if we need to re-export an item.
         /// </summary>
         public List<uint> ExportedFiles = new List<uint>();
+
+        /// <summary>
+        /// Contains all the objectsIDs of files found in the client_portal.dat at end of retail
+        /// </summary>
+        public List<uint> RetailPortalFiles = new List<uint>();
+
         public string FilePath { get; }
 
         private FileStream stream { get; }
@@ -79,6 +85,8 @@ namespace MapAC.DatLoader
                 stream.Dispose();
                 stream = null;
             }
+
+            LoadRetailPortalDatFiles();
         }
 
         /// <summary>
@@ -162,5 +170,41 @@ namespace MapAC.DatLoader
 
             return true;
         }
+
+        /// <summary>
+        /// Loads the list of client_portal.dat files from end of retail so we can reference later to not dubplicate.
+        /// </summary>
+        private void LoadRetailPortalDatFiles()
+        {
+            if (RetailPortalFiles.Count != 0) return; // Already done!
+
+            var contents = File.ReadAllLines(@"PortalContents.txt");
+            foreach(var item in contents)
+            {
+                try
+                {
+                    uint dec = UInt32.Parse(item, System.Globalization.NumberStyles.HexNumber);
+                    RetailPortalFiles.Add(dec);
+                }
+                catch(Exception E)
+                {
+                    // Do nothing
+                }
+            }
+        }
+
+        /// <summary>
+        /// Check if the file exists in the retail portal dat
+        /// Note that Surface, SurfaceTexture, and Texture are not here--re-export all of these
+        /// </summary>
+        public bool IsRetailDatFile (uint objectId)
+        {
+            //return false;
+            if (RetailPortalFiles.IndexOf(objectId) == -1)
+                return false;
+            else
+                return true;
+        }
+
     }
 }

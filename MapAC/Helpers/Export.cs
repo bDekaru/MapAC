@@ -17,7 +17,7 @@ namespace MapAC
         public static bool ExportPortalFile(uint exportId, string path)
         {
             // Quit if this has already been handled!
-            if (DatManager.CellDat.IsExported(exportId)) return true;
+            if (DatManager.CellDat.IsExported(exportId) || DatManager.CellDat.IsRetailDatFile(exportId)) return true;
 
             if (DatManager.CellDat.AllFiles.ContainsKey(exportId))
             {
@@ -59,6 +59,7 @@ namespace MapAC
 
         public static void ExportEnvCell(uint envCellId, string path, int offsetX = 0, int offsetY = 0)
         {
+            if (DatManager.CellDat.IsExported(envCellId)) return;
             string fileName;
             var envCell = DatManager.CellDat.ReadFromDat<EnvCell>(envCellId);
 
@@ -70,21 +71,19 @@ namespace MapAC
                 envCell.MoveLandblock(offsetX, offsetY);
 
             fileName = GetExportPath(DatDatabaseType.Cell, path, envCell.Id);
-            if (!File.Exists(fileName))
+
+            using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
+                envCell.Pack(writer);
+
+            envCell.Id = envCellId; // Move the envCell back!
+
+            // List any polyId / 0x0D Environment?
+            // List any Setups/GfxObj?
+
+            foreach (var cell in envCell.VisibleCells)
             {
-                using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
-                    envCell.Pack(writer);
-
-                envCell.Id = envCellId; // Move the envCell back!
-
-                // List any polyId / 0x0D Environment?
-                // List any Setups/GfxObj?
-
-                foreach (var cell in envCell.VisibleCells)
-                {
-                    var cellId = (envCellId & 0xFFFF0000) + cell;
-                    ExportEnvCell(cellId, path, offsetX, offsetY);
-                }
+                var cellId = (envCellId & 0xFFFF0000) + cell;
+                ExportEnvCell(cellId, path, offsetX, offsetY);
             }
         }
 
@@ -177,6 +176,7 @@ namespace MapAC
                     ExportPortalFile(setup.Parts[i], path);
 
                 // Search through the ClothingTable entries for records with this Setup
+                /*
                 foreach (var e in DatManager.CellDat.AllFiles)
                 {
                     // Just get the ClothingTable entries...
@@ -188,6 +188,7 @@ namespace MapAC
                             ExportPortalFile(e.Key, path);
                     }
                 }
+                */
 
                 if (setup.DefaultAnimation > 0)
                     ExportPortalFile(setup.DefaultAnimation, path);
@@ -507,7 +508,9 @@ namespace MapAC
         private static string GetExportPath(DatDatabaseType datDatabaseType, string path, uint objectId)
         {
             string exportFolder;
-            objectId = GetFileWithACDMOffset(objectId);
+            if(datDatabaseType == DatDatabaseType.Portal)
+                objectId = GetFileWithACDMOffset(objectId);
+
             string prefix = (objectId >> 24).ToString("X2") + "-";
             if (DatFile.GetFileType(datDatabaseType, objectId) != null)
                 if(datDatabaseType != DatDatabaseType.Cell) 
