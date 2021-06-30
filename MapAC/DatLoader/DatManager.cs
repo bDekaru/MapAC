@@ -35,6 +35,17 @@ namespace MapAC.DatLoader
 
         public static void ReadDatFile()
         {
+            System.Collections.Generic.List<uint> temp = new System.Collections.Generic.List<uint>();
+            using (FileStream stream = new FileStream(DatFile, FileMode.Open, FileAccess.Read))
+            {
+                using (var reader = new BinaryReader(stream, System.Text.Encoding.Default, true)) {
+                for (var i = 0; i < 512; i++)
+                {
+                    temp.Add(reader.ReadUInt32());
+                }
+            }
+            }
+
             CellDat = new CellDatDatabase(DatFile, false);
             count = CellDat.AllFiles.Count;
 

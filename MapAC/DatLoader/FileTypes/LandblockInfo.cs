@@ -77,7 +77,7 @@ namespace MapAC.DatLoader.FileTypes
             writer.Write(Objects.Count);
             foreach (var o in Objects)
             {
-                if (DatManager.DatVersion == DatVersionType.ACDM)
+                if (DatManager.DatVersion == DatVersionType.ACDM && !DatManager.CellDat.IsRetailDatFile(o.Id))
                 {
                     if (o.Id <= 0x01FFFFFF)
                         o.Id += (uint)ACDMOffset.GfxObj;
@@ -94,17 +94,7 @@ namespace MapAC.DatLoader.FileTypes
 
             //Buildings.Pack(writer); // Can't use this, we already wrote the count
             foreach (var e in Buildings)
-            {
-                if (DatManager.DatVersion == DatVersionType.ACDM)
-                {
-                    if (e.ModelId <= 0x01FFFFFF)
-                        e.ModelId += (uint)ACDMOffset.GfxObj;
-                    else // Setup
-                        e.ModelId += (uint)ACDMOffset.Setup;
-
-                }
                 e.Pack(writer);
-            }
 
             if ((PackMask & 1) == 1)
                 RestrictionTables.PackHashTable(writer, 0x08);

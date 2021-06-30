@@ -95,6 +95,11 @@ namespace MapAC.DatLoader.FileTypes
 
         public override void Pack(BinaryWriter writer)
         {
+            if ((Flags & EnvCellFlags.HasStaticObjs) != 0)
+            {
+                Flags -= EnvCellFlags.HasStaticObjs;
+            }
+
             writer.Write(Id);
             writer.Write((uint)Flags);
             writer.Write(Id); // Yes, twice...
@@ -107,6 +112,30 @@ namespace MapAC.DatLoader.FileTypes
                 if (DatManager.DatVersion == DatVersionType.ACDM && !DatManager.CellDat.IsRetailDatFile(Surfaces[i]))
                 {
                     uint val = (Surfaces[i] + (uint)ACDMOffset.Surface);
+                    switch (val & 0xFFFF)
+                    {
+                        case 0x2661:
+                            val = 0x074C;
+                            break;
+                        case 0x2623:
+                            val = 0x0034;
+                            break;
+                        case 0x262f:
+                            val = 0x06FC;
+                            break;
+                        case 0x254c:
+                            val = 0x0371;
+                            break;
+                        case 0x268f:
+                            val = 0x032A;
+                            break;
+                        case 0x2555:
+                            val = 0x074E;
+                            break;
+                        case 0x2602:
+                            val = 0x0372;
+                            break;
+                    }
                     writer.Write((ushort)(val & 0xFFFF));
                 }
                 else

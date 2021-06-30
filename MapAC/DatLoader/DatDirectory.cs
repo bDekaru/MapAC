@@ -27,16 +27,23 @@ namespace MapAC.DatLoader
 
             using (var memoryStream = new MemoryStream(headerReader.Buffer))
             using (var reader = new BinaryReader(memoryStream))
+            {
+                DatDirectoryHeader.BlockSize = blockSize;
                 DatDirectoryHeader.Unpack(reader);
+            }
 
             // directory is allowed to have files + 1 subdirectories
-            if (DatDirectoryHeader.Branches[0] != 0)
+            //if (DatDirectoryHeader.Branches[2] != 0)
             {
-                for (int i = 0; i < DatDirectoryHeader.EntryCount + 1; i++)
+                //for (int i = 1; i < DatDirectoryHeader.EntryCount + 1; i++)
+                for (int i = 0; i < DatDirectoryHeader.Branches.Length; i++)
                 {
-                    var directory = new DatDirectory(DatDirectoryHeader.Branches[i], blockSize);
-                    directory.Read(stream);
-                    Directories.Add(directory);
+                    if (DatDirectoryHeader.Branches[i] != 0 && DatDirectoryHeader.Branches[i] != 0xcdcdcdcd)
+                    {
+                        var directory = new DatDirectory(DatDirectoryHeader.Branches[i], blockSize);
+                        directory.Read(stream);
+                        Directories.Add(directory);
+                    }
                 }
             }
         }

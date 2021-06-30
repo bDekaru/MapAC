@@ -452,6 +452,14 @@ namespace MapAC.DatLoader.FileTypes
                             if (entry.Key <= pal.Colors.Count)
                                 pal.Colors[entry.Key] = entry.Value;
 
+                    if(pal.Colors.Count == 0)
+                    {
+                        for(var i = 0; i < 2048; i++)
+                        {
+                            pal.Colors.Add(0xFFFFFFFF);
+                        }
+                    }
+                    
                     for (int i = 0; i < Height; i++)
                         for (int j = 0; j < Width; j++)
                         {

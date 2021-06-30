@@ -123,7 +123,8 @@ namespace MapAC.DatLoader.FileTypes
         {
             if (DatManager.DatVersion == DatVersionType.ACTOD) throw new System.NotSupportedException();
             Texture tex = ConvertToTexture(false);
-            tex.SetIdFromSurfaceTexture(Id);
+            //tex.SetIdFromSurfaceTexture(Id);
+            tex.Id = Id;
             tex.ExportTexture(directory);
         }
 
@@ -137,7 +138,7 @@ namespace MapAC.DatLoader.FileTypes
             switch (Format)
             {
                 case SurfacePixelFormat.INDEX8:
-                    if (forPack)
+                    if (forPack && !DatManager.CellDat.IsRetailDatFile((uint)DefaultPaletteId))
                         tex.DefaultPaletteId = DefaultPaletteId + (uint)ACDMOffset.Palette;
                     else
                         tex.DefaultPaletteId = DefaultPaletteId;

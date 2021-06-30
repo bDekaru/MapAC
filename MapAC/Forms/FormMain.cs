@@ -131,6 +131,16 @@ namespace WindowsFormsApp1
                             break;
                         default:
                             AddStatus("Dat file is a PORTAL type file.");
+
+                            byte[] pattern = new byte[] { 0x39, 0x0C, 0x00, 0x02 };
+                            // Searching for 02000C39
+                            foreach (var myDatFile in DatManager.CellDat.AllFiles)
+                            {
+                                DatReader dr = DatManager.CellDat.GetReaderForFile(myDatFile.Key);
+                                var test = SearchByte(dr.Buffer, pattern);
+                                if (test == true)
+                                    AddStatus(" - Found in " + myDatFile.Key.ToString("X8"));
+                            }
                             PortalHelper ph = new PortalHelper();
                             var contactSheet = ph.BuildIconContactSheet();
                             pictureBox1.Image = contactSheet;
@@ -244,6 +254,23 @@ namespace WindowsFormsApp1
         private void exportToolStripMenuItem_Click(object sender, EventArgs eventArgs)
         {
             string path = @"C:\ace\PortalTemp\OldArwic\";
+            //Export.ExportPortalFile(0x01000830, path);
+
+            Export.ExportPortalFile(0x0D0002F8, path);
+            Export.ExportPortalFile(0x0D0002F9, path);
+            Export.ExportPortalFile(0x0D0002FA, path);
+            Export.ExportPortalFile(0x0D0002FB, path);
+            Export.ExportPortalFile(0x0D00033D, path);
+            Export.ExportPortalFile(0x0D000348, path);
+            Export.ExportPortalFile(0x0D00034E, path);
+            Export.ExportPortalFile(0x0D00034F, path);
+            Export.ExportPortalFile(0x0D0003D6, path);
+            Export.ExportPortalFile(0x0D0003DE, path);
+            Export.ExportPortalFile(0x0D0003F2, path);
+
+            AddStatus("DONE");
+            return;
+
             Export.ExportPortalFile(0x0100022B, path);
             Export.ExportPortalFile(0x0100029A, path);
             Export.ExportPortalFile(0x0100029D, path);
@@ -749,31 +776,8 @@ namespace WindowsFormsApp1
         private void getPortalItemsInCellsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ObjectsInLandblocks = new Dictionary<uint, uint>();
-            GetObjectDetailsFromLandblock(0xc4a7FFFF);
-            GetObjectDetailsFromLandblock(0xc4a8FFFF);
-            GetObjectDetailsFromLandblock(0xc4a9FFFF);
-            GetObjectDetailsFromLandblock(0xc4aaFFFF);
-            GetObjectDetailsFromLandblock(0xc4abFFFF);
-            GetObjectDetailsFromLandblock(0xc5a7FFFF);
-            GetObjectDetailsFromLandblock(0xc5a8FFFF);
-            GetObjectDetailsFromLandblock(0xc5a9FFFF);
-            GetObjectDetailsFromLandblock(0xc5aaFFFF);
-            GetObjectDetailsFromLandblock(0xc5abFFFF);
-            GetObjectDetailsFromLandblock(0xc6a7FFFF);
-            GetObjectDetailsFromLandblock(0xc6a8FFFF);
             GetObjectDetailsFromLandblock(0xc6a9FFFF);
-            GetObjectDetailsFromLandblock(0xc6aaFFFF);
-            GetObjectDetailsFromLandblock(0xc6abFFFF);
-            GetObjectDetailsFromLandblock(0xc7a7FFFF);
-            GetObjectDetailsFromLandblock(0xc7a8FFFF);
-            GetObjectDetailsFromLandblock(0xc7a9FFFF);
-            GetObjectDetailsFromLandblock(0xc7aaFFFF);
-            GetObjectDetailsFromLandblock(0xc7abFFFF);
-            GetObjectDetailsFromLandblock(0xc8a7FFFF);
-            GetObjectDetailsFromLandblock(0xc8a8FFFF);
-            GetObjectDetailsFromLandblock(0xc8a9FFFF);
-            GetObjectDetailsFromLandblock(0xc8aaFFFF);
-            GetObjectDetailsFromLandblock(0xc8abFFFF);
+
 
             var list = ObjectsInLandblocks.Keys.ToList();
             list.Sort();
@@ -855,6 +859,10 @@ namespace WindowsFormsApp1
             int offsetX = 41;
             int offsetY = 63;
             string path = @"C:\ace\Landblocks\OldArwic\";
+            //Export.ExportLandblockInfo(0xc6a9FFFE, path, offsetX, offsetY);
+            Export.ExportCellLandblock(0xc6a9FFFF, path, offsetX, offsetY);
+            AddStatus("DONE");
+            return;
             Export.ExportCellLandblock(0xc4a7FFFF, path, offsetX, offsetY);
             Export.ExportCellLandblock(0xc4a8FFFF, path, offsetX, offsetY);
             Export.ExportCellLandblock(0xc4a9FFFF, path, offsetX, offsetY);
@@ -882,6 +890,58 @@ namespace WindowsFormsApp1
             Export.ExportCellLandblock(0xc8abFFFF, path, offsetX, offsetY);
             AddStatus("Export Complete");
             return;
+        }
+
+        bool SearchByte(byte[] src, byte[] pattern)
+        {
+            int c = src.Length - pattern.Length + 1;
+            int j;
+            for (int i = 0; i < c; i++)
+            {
+                if (src[i] != pattern[0]) continue;
+                for (j = pattern.Length - 1; j >= 1 && src[i + j] == pattern[j]; j--) ;
+                if (j == 0) return true;
+            }
+            return false;
+        }
+
+        private void exportImagesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string exportDir = "D:\\ACE\\portal_beta_0\\images\\";
+
+            if (DatManager.CellDat.AllFiles.ContainsKey(0x06000261))
+            {
+                var image = DatManager.CellDat.ReadFromDat<Texture>(0x06000261);
+                image.ExportTexture(exportDir);
+                AddStatus("0x06000261 Complete");
+            }
+            if (DatManager.CellDat.AllFiles.ContainsKey(0x06000086))
+            {
+                var image = DatManager.CellDat.ReadFromDat<Texture>(0x06000086);
+                image.ExportTexture(exportDir);
+                AddStatus("0x06000086 Complete");
+            }
+            //return;
+
+            foreach (KeyValuePair<uint, DatFile> entry in DatManager.CellDat.AllFiles)
+            {
+                if (entry.Value.GetFileType(DatDatabaseType.Portal) == DatFileType.Texture)
+                {
+                    var image = DatManager.CellDat.ReadFromDat<Texture>(entry.Value.ObjectId);
+                    //image.ExportTexture(exportDir);
+                }
+                if(entry.Value.GetFileType(DatDatabaseType.Portal) == DatFileType.SurfaceTexture && DatManager.DatVersion == DatVersionType.ACDM) {
+                    var image = DatManager.CellDat.ReadFromDat<SurfaceTexture>(entry.Value.ObjectId);
+                    image.ExportTexture(exportDir);
+                }
+            }
+            AddStatus("Export Complete");
+        }
+
+        private void exportFilesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DatManager.CellDat.ExtractCategorizedPortalContents("D:\\ACE\\portal_beta_0\\");
+            AddStatus("Export Complete");
         }
     }
 }

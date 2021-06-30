@@ -12,12 +12,15 @@ namespace MapAC.DatLoader
         
         //public uint BitFlags { get; private set; }
 
-        public uint ObjectId { get; private set; }
+        public uint ObjectId { get;  set; }
 
-        public uint FileOffset { get; private set; }
+        public uint FileOffset { get;  set; }
 
-        public uint FileSize { get; private set; }
+        public uint FileSize { get;  set; }
 
+        public uint Unk { get; private set; }
+        public uint PrevFile { get; private set; }
+        public uint NextFile { get; private set; }
         //public uint Date { get; private set; }
 
         //public uint Iteration { get; private set; }
@@ -43,6 +46,15 @@ namespace MapAC.DatLoader
                         ObjectId = reader.ReadUInt32();
                         FileOffset = reader.ReadUInt32();
                         FileSize = reader.ReadUInt32();
+
+                        // Beta 0    
+                        Unk = reader.ReadUInt32();
+                        if(Unk != 0)
+                        {
+                            var test = "test";
+                        }
+                        PrevFile = reader.ReadUInt32();
+                        NextFile = reader.ReadUInt32();
                         break;
                 }
             }catch(EndOfStreamException e)

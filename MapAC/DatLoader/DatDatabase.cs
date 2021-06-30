@@ -142,10 +142,13 @@ namespace MapAC.DatLoader
             {
                 string thisFolder;
 
+                var prefix = entry.Key >> 24;
+                string sprefix = $"{prefix:X2}";
+
                 if (entry.Value.GetFileType(DatDatabaseType.Portal) != null)
-                    thisFolder = Path.Combine(path, entry.Value.GetFileType(DatDatabaseType.Portal).ToString());
+                    thisFolder = Path.Combine(path, sprefix + "-" + entry.Value.GetFileType(DatDatabaseType.Portal).ToString());
                 else
-                    thisFolder = Path.Combine(path, "UnknownType");
+                    thisFolder = Path.Combine(path, sprefix + "-" + "UnknownType");
 
                 if (!Directory.Exists(thisFolder))
                     Directory.CreateDirectory(thisFolder);
@@ -199,7 +202,7 @@ namespace MapAC.DatLoader
         /// </summary>
         public bool IsRetailDatFile (uint objectId)
         {
-            //return false;
+            // return false;
             if (RetailPortalFiles.IndexOf(objectId) == -1)
                 return false;
             else

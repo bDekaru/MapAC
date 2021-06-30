@@ -60,6 +60,7 @@ namespace MapAC
         public static void ExportEnvCell(uint envCellId, string path, int offsetX = 0, int offsetY = 0)
         {
             if (DatManager.CellDat.IsExported(envCellId)) return;
+
             string fileName;
             var envCell = DatManager.CellDat.ReadFromDat<EnvCell>(envCellId);
 
@@ -91,6 +92,8 @@ namespace MapAC
         // Cell 0xnnnnFFFE
         public static void ExportLandblockInfo(uint landblockId, string path, int offsetX = 0, int offsetY = 0)
         {
+            if (DatManager.CellDat.IsExported(landblockId)) return;
+
             string fileName;
             var landblock = DatManager.CellDat.ReadFromDat<LandblockInfo>(landblockId);
 
@@ -98,16 +101,27 @@ namespace MapAC
             if (offsetX != 0 || offsetY != 0)
                 landblock.MoveLandblock(offsetX, offsetY);
 
+            //landblock.Buildings.Clear();
+            while(landblock.Buildings.Count > 1)
+                landblock.Buildings.RemoveAt(1);
+            // Remove all the "portals" for buildings?
+            /*
+            for(var i =0; i < landblock.Buildings.Count; i++)
+            {
+                landblock.Buildings[i].Portals.Clear();
+            }
+            */
+
             fileName = GetExportPath(DatDatabaseType.Cell, path, landblock.Id);
             using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
                 landblock.Pack(writer);
 
             landblock.Id = landblockId;// Move the landblock back!
 
-            uint baseLb = landblockId >> 24;
+            uint baseLb = landblockId >> 16;
             foreach(var e in DatManager.CellDat.AllFiles)
             {
-                if((e.Key >> 24) == baseLb && ((e.Key & 0xFFFF) < 0xFFFE))
+                if((e.Key >> 16) == baseLb && ((e.Key & 0xFFFF) < 0xFFFE))
                 {
                     ExportEnvCell(e.Key, path, offsetX, offsetY);
                 }
@@ -118,6 +132,8 @@ namespace MapAC
         // Cell 0xnnnnFFFF
         public static void ExportCellLandblock(uint landblockId, string path, int offsetX = 0, int offsetY = 0)
         {
+            if (DatManager.CellDat.IsExported(landblockId)) return;
+
             string fileName;
             var landblock = DatManager.CellDat.ReadFromDat<CellLandblock>(landblockId);
 
@@ -389,6 +405,10 @@ namespace MapAC
 
             using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
                 degrade.Pack(writer);
+
+            foreach(var deg in degrade.Degrades)
+                if(deg.Id > 0)
+                    ExportPortalFile(deg.Id, path);
         }
 
         // 0x12
@@ -519,7 +539,6 @@ namespace MapAC
                     exportFolder = Path.Combine(path, DatFile.GetFileType(datDatabaseType, objectId).ToString());
             else
                 exportFolder = Path.Combine(path, "UnknownType");
-
 
             if (!Directory.Exists(exportFolder))
                 Directory.CreateDirectory(exportFolder);
