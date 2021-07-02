@@ -1,5 +1,6 @@
 using MapAC.DatLoader.FileTypes;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace MapAC.DatLoader
@@ -19,6 +20,7 @@ namespace MapAC.DatLoader
         public static DatVersionType DatVersion;
         private static readonly uint DAT_HEADER_OFFSET_TOD = 0x140;
         private static readonly uint DAT_HEADER_OFFSET_ACDM = 0x12C;
+        public static List<uint> ReadSectors = new List<uint>();
 
         public static bool Initialize(string cellDatFile)
         {
@@ -35,6 +37,8 @@ namespace MapAC.DatLoader
 
         public static void ReadDatFile()
         {
+            ReadSectors.Clear();
+            /*
             System.Collections.Generic.List<uint> temp = new System.Collections.Generic.List<uint>();
             using (FileStream stream = new FileStream(DatFile, FileMode.Open, FileAccess.Read))
             {
@@ -45,7 +49,7 @@ namespace MapAC.DatLoader
                 }
             }
             }
-
+            */
             CellDat = new CellDatDatabase(DatFile, false);
             count = CellDat.AllFiles.Count;
 

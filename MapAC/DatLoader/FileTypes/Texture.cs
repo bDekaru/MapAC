@@ -180,7 +180,7 @@ namespace MapAC.DatLoader.FileTypes
         /// <summary>
         /// Exports RenderSurface to a image file
         /// </summary>
-        public void ExportTexture(string directory)
+        public void ExportTexture(string directory, string prefix="")
         {
             if (Length == 0) return;
 
@@ -188,7 +188,7 @@ namespace MapAC.DatLoader.FileTypes
             {
                 case SurfacePixelFormat.PFID_CUSTOM_RAW_JPEG:
                     {
-                        string filename = Path.Combine(directory, Id.ToString("X8") + ".jpg");
+                        string filename = Path.Combine(directory, prefix + Id.ToString("X8") + ".jpg");
                         using (BinaryWriter writer = new BinaryWriter(File.Open(filename, FileMode.Create)))
                         {
                             writer.Write(SourceData);
@@ -199,7 +199,7 @@ namespace MapAC.DatLoader.FileTypes
                 default:
                     {
                         var bitmapImage = GetBitmap();
-                        string filename = Path.Combine(directory, Id.ToString("X8") + ".png");
+                        string filename = Path.Combine(directory, prefix + Id.ToString("X8") + ".png");
                         bitmapImage.Save(filename, ImageFormat.Png);
                     }
                     break;

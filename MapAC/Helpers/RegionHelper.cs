@@ -82,9 +82,80 @@ namespace MapAC
             Color.FromArgb(138, 131, 113), // 32 - roads - 0x05001458
         };
 
+        private static List<Color> landColor_beta0_palette = new List<Color>(){
+            Color.FromArgb(90, 90, 75), // 0
+            Color.FromArgb(72, 102, 41), // 1
+            Color.FromArgb(178, 165, 185), // 2
+            Color.FromArgb(46, 102, 35), // 3
+            Color.FromArgb(98, 70, 34), // 4
+            Color.FromArgb(87, 50, 18), // 5
+            Color.FromArgb(22, 34, 32), // 6
+            Color.FromArgb(98, 65, 31), // 7
+            Color.FromArgb(91, 71, 29), // 8
+            Color.FromArgb(76, 88, 37), // 9
+            Color.FromArgb(165, 117, 67), // 10
+            Color.FromArgb(135, 120, 99), // 11
+            Color.FromArgb(160, 108, 64), // 12
+            Color.FromArgb(124, 80, 50), // 13
+            Color.FromArgb(85, 94, 69), // 14
+            Color.FromArgb(223, 202, 234), // 15
+            Color.FromArgb(29, 61, 95), // 16
+            Color.FromArgb(47, 83, 63), // 17
+            Color.FromArgb(0, 71, 91), // 18
+            Color.FromArgb(11, 47, 73), // 19
+            Color.FromArgb(0, 47, 78), // 20
+            Color.FromArgb(39, 74, 35), // 21
+            Color.FromArgb(29, 61, 95), // 22
+            Color.FromArgb(46, 102, 35), // 23
+            Color.FromArgb(76, 88, 37), // 24
+            Color.FromArgb(183, 76, 0), // 25
+            Color.FromArgb(183, 76, 0), // 26
+            Color.FromArgb(183, 76, 0), // 27
+            Color.FromArgb(183, 76, 0), // 28
+            Color.FromArgb(183, 76, 0), // 29
+            Color.FromArgb(183, 76, 0), // 30
+            Color.FromArgb(183, 76, 0), // 31
+            Color.FromArgb(132, 118, 103), // 32
+
+            //Color.FromArgb(89, 89, 74), // 33
+            Color.FromArgb(72, 101, 40), // 34
+            Color.FromArgb(177, 165, 184), // 35
+            Color.FromArgb(45, 102, 35), // 36
+            Color.FromArgb(96, 70, 35), // 37
+            Color.FromArgb(87, 50, 18), // 38
+            Color.FromArgb(21, 33, 32), // 39
+            Color.FromArgb(98, 65, 31), // 40
+            Color.FromArgb(91, 73, 30), // 41
+            Color.FromArgb(79, 86, 37), // 42
+            Color.FromArgb(164, 116, 67), // 43
+            Color.FromArgb(134, 120, 99), // 44
+            Color.FromArgb(160, 108, 64), // 45
+            Color.FromArgb(123, 80, 50), // 46
+            Color.FromArgb(84, 93, 68), // 47
+            Color.FromArgb(223, 202, 233), // 48
+            Color.FromArgb(29, 61, 95), // 49
+            Color.FromArgb(48, 84, 64), // 50
+            Color.FromArgb(0, 71, 91), // 51
+            Color.FromArgb(11, 47, 73), // 52
+            Color.FromArgb(0, 47, 78), // 53
+            Color.FromArgb(37, 73, 34), // 54
+            Color.FromArgb(29, 61, 95), // 55
+            Color.FromArgb(45, 102, 35), // 56
+            Color.FromArgb(79, 86, 37), // 57
+            Color.FromArgb(183, 76, 0), // 58
+            Color.FromArgb(183, 76, 0), // 59
+            Color.FromArgb(183, 76, 0), // 60
+            Color.FromArgb(183, 76, 0), // 61
+            Color.FromArgb(183, 76, 0), // 62
+            Color.FromArgb(183, 76, 0), // 63
+            Color.FromArgb(183, 76, 0), // 64
+            Color.FromArgb(132, 118, 102), // 65
+        };
+
 
         public static List<Color> GetMapColors()
         {
+            return landColor_beta0_palette;
             if (Properties.Settings.Default.ACDM_MapColor)
             {
                 return landColor_acdm;

@@ -38,11 +38,12 @@ namespace MapAC.DatLoader
                 //for (int i = 1; i < DatDirectoryHeader.EntryCount + 1; i++)
                 for (int i = 0; i < DatDirectoryHeader.Branches.Length; i++)
                 {
-                    if (DatDirectoryHeader.Branches[i] != 0 && DatDirectoryHeader.Branches[i] != 0xcdcdcdcd)
+                    if (DatDirectoryHeader.Branches[i] != 0 && DatDirectoryHeader.Branches[i] != 0xcdcdcdcd && !DatManager.ReadSectors.Contains(DatDirectoryHeader.Branches[i]))
                     {
                         var directory = new DatDirectory(DatDirectoryHeader.Branches[i], blockSize);
                         directory.Read(stream);
                         Directories.Add(directory);
+                        DatManager.ReadSectors.Add(DatDirectoryHeader.Branches[i]);
                     }
                 }
             }
@@ -53,7 +54,12 @@ namespace MapAC.DatLoader
             Directories.ForEach(d => d.AddFilesToList(dicFiles));
 
             for (int i = 0; i < DatDirectoryHeader.EntryCount; i++)
-                dicFiles[DatDirectoryHeader.Entries[i].ObjectId] = DatDirectoryHeader.Entries[i];
+            {
+                if (!dicFiles.ContainsKey(DatDirectoryHeader.Entries[i].ObjectId) || DatDirectoryHeader.Entries[i].FileOffset != 0)
+                {
+                    dicFiles[DatDirectoryHeader.Entries[i].ObjectId] = DatDirectoryHeader.Entries[i];
+                }
+            }
         }
     }
 }

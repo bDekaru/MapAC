@@ -107,7 +107,15 @@ namespace MapAC.DatLoader
             {
                 using (var memoryStream = new MemoryStream(datReader.Buffer))
                 using (var reader = new BinaryReader(memoryStream))
-                    obj.Unpack(reader);
+                {
+                    try
+                    {
+                        obj.Unpack(reader);
+                    }catch(Exception e)
+                    {
+                        var oops = 1;
+                    }
+                }
             }
 
             // Store this object in the FileCache

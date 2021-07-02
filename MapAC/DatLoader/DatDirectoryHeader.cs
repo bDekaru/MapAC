@@ -22,10 +22,6 @@ namespace MapAC.DatLoader
             for (int i = 0; i < Branches.Length; i++)
             {
                 Branches[i] = reader.ReadUInt32();
-                if(Branches[i] == 0x03dc9000)
-                {
-                    var test = "GOOD";
-                }
             }
 
             EntryCount = reader.ReadUInt32();

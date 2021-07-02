@@ -119,13 +119,13 @@ namespace MapAC.DatLoader.FileTypes
             tex.Pack(writer);
         }
 
-        public void ExportTexture(string directory)
+        public void ExportTexture(string directory, string prefix = "")
         {
             if (DatManager.DatVersion == DatVersionType.ACTOD) throw new System.NotSupportedException();
             Texture tex = ConvertToTexture(false);
             //tex.SetIdFromSurfaceTexture(Id);
             tex.Id = Id;
-            tex.ExportTexture(directory);
+            tex.ExportTexture(directory, prefix);
         }
 
         public Texture ConvertToTexture(bool forPack = true)

@@ -56,28 +56,59 @@ namespace MapAC
                     int startX = (int)(block_x * 8);
                     int startY = (int)(LANDSIZE - block_y * 8 - 1);
 
-                    CellLandblock landblock = DatManager.CellDat.ReadFromDat<CellLandblock>(entry.Key);
-
-                    for (var x = 0; x < 9; x++)
+                    if(entry.Key == 0x60a1ffff)
                     {
-                        for (var y = 0; y < 9; y++)
+                        var test = "here";
+                    }
+                    CellLandblock landblock = DatManager.CellDat.ReadFromDat<CellLandblock>(entry.Key);
+                    bool hasBuildings = landblock.HasObjects;
+                    /*
+                    if (landblock.HasObjects)
+                    {
+                        //uint lbId = (entry.Key >> 16) | 0x0000FFFE;
+                        uint baseId = (uint)entry.Key >> 16 << 16;
+                        uint lbId = baseId | 0xFFFE;
+                        LandblockInfo lbInfo = DatManager.CellDat.ReadFromDat<LandblockInfo>(lbId);
+                        if (lbInfo.Buildings.Count > 0)
                         {
-                            var type = landblock.Terrain[x * 9 + y];
-                            var newZ = landblock.Height[x * 9 + y];
-
-                             // Write new data point
-                            land[startY - y,startX + x].Type = type;
-                            land[startY - y,startX + x].Z = RegionHelper.GetLandheight(newZ);
-                            land[startY - y,startX + x].Used = true;
-                            uint itex = (uint)((type >> 2) & 0x3F);
-                            if (itex < 16 || itex > 20)
-                                land[startY - y, startX + x].Blocked = false;
-                            else
-                                land[startY - y, startX + x].Blocked = true;
+                            hasBuildings = true;
                         }
                     }
+                    */
+                    if (landblock.Terrain.Count > 0)
+                    {
+                        for (var x = 0; x < 9; x++)
+                        {
+                            for (var y = 0; y < 9; y++)
+                            {
+                                var type = landblock.Terrain[x * 9 + y];
+                                var newZ = landblock.Height[x * 9 + y];
 
-                    FoundLandblocks++;
+                                // Write new data point
+                                if (hasBuildings) { 
+                                    land[startY - y, startX + x].Type = 99;
+                                }
+                                else
+                                {
+                                    land[startY - y, startX + x].Type = type;
+                                }
+                                land[startY - y, startX + x].Z = RegionHelper.GetLandheight(newZ);
+                                land[startY - y, startX + x].Used = true;
+                                uint itex = (uint)((type >> 2) & 0x3F);
+                                if (itex < 16 || itex > 20)
+                                    land[startY - y, startX + x].Blocked = false;
+                                else
+                                    land[startY - y, startX + x].Blocked = true;
+                            }
+                        }
+
+
+                        FoundLandblocks++;
+                    }
+                    else
+                    {
+                        var not_found = true;
+                    }
                 }
             }
 
@@ -159,9 +190,23 @@ namespace MapAC
                             (v[0] * v[0] + v[1] * v[1] + v[2] * v[2]))) * 128.0 + 128.0) * LIGHTCORRECTION + AMBIENTLIGHT;
 
                         // Apply lighting scalar to base colors
-                        double r = (landColor[type].R * COLORCORRECTION / 100) * light / 256.0;
-                        double g = (landColor[type].G * COLORCORRECTION / 100) * light / 256.0;
-                        double b = (landColor[type].B * COLORCORRECTION / 100) * light / 256.0;
+                        double r, g, b;
+                        if (landColor.Count > type)
+                        {
+                            r = (landColor[type].R * COLORCORRECTION / 100) * light / 256.0;
+                            g = (landColor[type].G * COLORCORRECTION / 100) * light / 256.0;
+                            b = (landColor[type].B * COLORCORRECTION / 100) * light / 256.0;
+                        }
+                        else
+                        {
+                            r = 0; g = 255; b = 0;
+                        }
+                        if(land[y, x].Type == 99)
+                        {
+                            r = 255;
+                            g = 255;
+                            b = 0;
+                        }
                         r = ColorCheck(r);
                         g = ColorCheck(g);
                         b = ColorCheck(b);

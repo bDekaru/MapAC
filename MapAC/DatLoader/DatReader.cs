@@ -46,7 +46,14 @@ namespace MapAC.DatLoader
                     bufferOffset += Convert.ToInt32(blockSize) - 4; // Adjust this so we know where in our buffer[] the next sector gets appended to
                     stream.Seek(nextAddress, SeekOrigin.Begin); // Move the file pointer to the start of the next sector we read above.
                     nextAddress = GetNextAddress(stream, 0); // Get the start location of the next sector.
-                    size -= (blockSize - 4); // Decrease this by the amount of data we just read into buffer[] so we know how much more to go
+                    if (nextAddress == 0)
+                    {
+                        size = 0;
+                    }
+                    else
+                    {
+                        size -= (blockSize - 4); // Decrease this by the amount of data we just read into buffer[] so we know how much more to go
+                    }
                 }
             }
 

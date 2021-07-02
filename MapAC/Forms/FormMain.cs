@@ -126,8 +126,8 @@ namespace WindowsFormsApp1
                     switch (DatManager.CellDat.Blocksize)
                     {
                         case 0x100:
-                            //DrawMap();
-                            AddStatus("Skipping drawing map while debuggging...");
+                            DrawMap();
+                            //AddStatus("Skipping drawing map while debuggging...");
                             break;
                         default:
                             AddStatus("Dat file is a PORTAL type file.");
@@ -908,20 +908,100 @@ namespace WindowsFormsApp1
         private void exportImagesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string exportDir = "D:\\ACE\\portal_beta_0\\images\\";
+            List<uint> subPals = new List<uint>();
 
-            if (DatManager.CellDat.AllFiles.ContainsKey(0x06000261))
+            subPals.Add(0x040004c3);
+            subPals.Add(0x040004ba);
+            subPals.Add(0x040000c3);
+            subPals.Add(0x040004bb);
+            subPals.Add(0x040004bc);
+            subPals.Add(0x040004bd);
+            subPals.Add(0x040004be);
+            subPals.Add(0x040004b9);
+            subPals.Add(0x040004b4);
+            subPals.Add(0x040004b5);
+            subPals.Add(0x040004c0);
+            subPals.Add(0x040004b6);
+            subPals.Add(0x040004d7);
+            subPals.Add(0x040004d8);
+            subPals.Add(0x040004c2);
+            subPals.Add(0x040000cf);
+            subPals.Add(0x040004da);
+            subPals.Add(0x040004f5);
+            subPals.Add(0x040004b8);
+            subPals.Add(0x040004b3);
+            subPals.Add(0x040004b7);
+            subPals.Add(0x040009c2);
+            subPals.Add(0x040004da);
+            subPals.Add(0x040004bb);
+            subPals.Add(0x040004b5);
+            subPals.Add(0x040004d6);
+            subPals.Add(0x040004d6);
+            subPals.Add(0x040004d6);
+            subPals.Add(0x040004d6);
+            subPals.Add(0x040004d6);
+            subPals.Add(0x040004d6);
+            subPals.Add(0x040004d6);
+            subPals.Add(0x040004fc);
+
+            subPals.Add(0x040004c3);
+            subPals.Add(0x040004ba);
+            subPals.Add(0x040000c3);
+            subPals.Add(0x040004bb);
+            subPals.Add(0x040004bc);
+            subPals.Add(0x040004bd);
+            subPals.Add(0x040004be);
+            subPals.Add(0x040004b9);
+            subPals.Add(0x040004b4);
+            subPals.Add(0x040004b5);
+            subPals.Add(0x040004c0);
+            subPals.Add(0x040004b6);
+            subPals.Add(0x040004d7);
+            subPals.Add(0x040004d8);
+            subPals.Add(0x040004c2);
+            subPals.Add(0x040000cf);
+            subPals.Add(0x040004da);
+            subPals.Add(0x040004f5);
+            subPals.Add(0x040004b8);
+            subPals.Add(0x040004b3);
+            subPals.Add(0x040004b7);
+            subPals.Add(0x040009c2);
+            subPals.Add(0x040004da);
+            subPals.Add(0x040004bb);
+            subPals.Add(0x040004b5);
+            subPals.Add(0x040004d6);
+            subPals.Add(0x040004d6);
+            subPals.Add(0x040004d6);
+            subPals.Add(0x040004d6);
+            subPals.Add(0x040004d6);
+            subPals.Add(0x040004d6);
+            subPals.Add(0x040004d6);
+            subPals.Add(0x040004fc);
+
+            if (DatManager.CellDat.AllFiles.ContainsKey(0x05000e63))
             {
-                var image = DatManager.CellDat.ReadFromDat<Texture>(0x06000261);
-                image.ExportTexture(exportDir);
-                AddStatus("0x06000261 Complete");
+                var image = DatManager.CellDat.ReadFromDat<SurfaceTexture>(0x05000e63);
+                for (var i = 0; i < subPals.Count / 2; i++)
+                {
+                    image.DefaultPaletteId = subPals[i];
+                    image.ExportTexture(exportDir, subPals[i].ToString("X8") + "-");
+
+                    var c = image.GetAverageColor();
+                    AddStatus($"Color.FromArgb({c.R}, {c.G}, {c.B}), // {i}");
+                }
+                var image2 = DatManager.CellDat.ReadFromDat<SurfaceTexture>(0x05000e64);
+                for (var i = subPals.Count / 2; i < subPals.Count; i++)
+                {
+                    image2.DefaultPaletteId = subPals[i];
+                    image2.ExportTexture(exportDir, subPals[i].ToString("X8") + "-");
+
+                    var c = image2.GetAverageColor();
+                    AddStatus($"Color.FromArgb({c.R}, {c.G}, {c.B}), // {i}");
+                }
+                //AddStatus("0x06000261 Complete");
             }
-            if (DatManager.CellDat.AllFiles.ContainsKey(0x06000086))
-            {
-                var image = DatManager.CellDat.ReadFromDat<Texture>(0x06000086);
-                image.ExportTexture(exportDir);
-                AddStatus("0x06000086 Complete");
-            }
-            //return;
+
+            return;
 
             foreach (KeyValuePair<uint, DatFile> entry in DatManager.CellDat.AllFiles)
             {
