@@ -41,7 +41,8 @@
         // 0x11, max is 0x10BF
         DIDDegrade = 0x2000,
         // 0x12, max is 0x02C6
-        Scene = 0x1000,
+        //Scene = 0x1000,
+        Scene = 0x0000,
 
         // 0x20, max is 0x00DA
         SoundTable = 0x0100,

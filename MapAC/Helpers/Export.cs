@@ -400,6 +400,12 @@ namespace MapAC
 
             using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
                 scene.Pack(writer);
+
+            foreach(var entry in scene.Objects)
+            {
+                if (entry.ObjId != 0)
+                    ExportPortalFile(entry.ObjId, path);
+            }
         }
 
         // 0x20
@@ -528,10 +534,13 @@ namespace MapAC
             return fileName;
         }
 
-        private static uint GetFileWithACDMOffset(uint objectId)
+        public static uint GetFileWithACDMOffset(uint objectId)
         {
             // Do nothing!
             if (DatManager.DatVersion != DatVersionType.ACDM) return objectId;
+
+            if (objectId == 0)
+                return 0;
 
             var datFileType = DatFile.GetFileType(DatDatabaseType.Portal, objectId);
             switch (datFileType)

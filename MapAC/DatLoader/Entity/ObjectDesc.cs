@@ -45,7 +45,7 @@ namespace MapAC.DatLoader.Entity
 
         public void Pack(BinaryWriter writer)
         {
-            writer.Write(ObjId);
+            writer.Write(Export.GetFileWithACDMOffset(ObjId));
 
             BaseLoc.Pack(writer);
 

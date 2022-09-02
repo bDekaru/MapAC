@@ -199,7 +199,8 @@ namespace MapAC.DatLoader
         /// </summary>
         public bool IsRetailDatFile (uint objectId)
         {
-            //return false;
+            return false; //Disabled
+
             if (RetailPortalFiles.IndexOf(objectId) == -1)
                 return false;
             else

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 
 using MapAC.DatLoader.Entity;
+using MapAC.DatLoader.Enum;
 
 namespace MapAC.DatLoader.FileTypes
 {
@@ -22,7 +23,7 @@ namespace MapAC.DatLoader.FileTypes
 
         public override void Pack(BinaryWriter writer)
         {
-            writer.Write(Id);
+            writer.WriteOffset(Id, ACDMOffset.Scene);
             Objects.Pack(writer);
         }
     }
