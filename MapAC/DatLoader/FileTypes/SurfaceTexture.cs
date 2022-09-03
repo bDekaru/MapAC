@@ -61,18 +61,15 @@ namespace MapAC.DatLoader.FileTypes
         /// <param name="writer"></param>
         public override void Pack(BinaryWriter writer)
         {
+            writer.WriteOffset(Id, ACDMOffset.SurfaceTexture);
             switch (DatManager.DatVersion)
             {
                 case DatVersionType.ACTOD:
-                    writer.Write(Id);
                     writer.Write(Unknown); // Always 0?
                     writer.Write(UnknownByte); // Always 2?
                     Textures.Pack(writer);
                     break;
                 case DatVersionType.ACDM:
-                    // The max value in the end-of-retail Client_portal.dat was 05003358. We will add 0x00010000 to this to ensure a unique value.
-                    var newId = Id + (uint)ACDMOffset.SurfaceTexture;
-                    writer.Write(newId);
                     writer.Write(0); // Always 0?
                     writer.Write((byte)2); // Always 2?
                     Textures.Clear();
@@ -138,7 +135,12 @@ namespace MapAC.DatLoader.FileTypes
             {
                 case SurfacePixelFormat.INDEX8:
                     if (forPack)
-                        tex.DefaultPaletteId = DefaultPaletteId + (uint)ACDMOffset.Palette;
+                    {
+                        if(!DatManager.CellDat.IsSameAsEoRDatFile(DefaultPaletteId.Value))
+                            tex.DefaultPaletteId = DefaultPaletteId + (uint)ACDMOffset.Palette;
+                        else
+                            tex.DefaultPaletteId = DefaultPaletteId;
+                    }
                     else
                         tex.DefaultPaletteId = DefaultPaletteId;
                     tex.Length = Width * Height * 8 - 4;

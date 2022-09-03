@@ -43,9 +43,9 @@ namespace MapAC.DatLoader.FileTypes
 
         public override void Pack(BinaryWriter writer)
         {
+            writer.WriteOffset(Id, ACDMOffset.Palette);
             if (DatManager.DatVersion == DatVersionType.ACDM)
             {
-                writer.Write(Id + (uint)ACDMOffset.Palette);
                 if (Colors.Count == 256)
                 {
                     writer.Write(2048); // Size of Colors
@@ -58,7 +58,6 @@ namespace MapAC.DatLoader.FileTypes
             }
             else
             {
-                writer.Write(Id);
                 Colors.Pack(writer);
             }
         }

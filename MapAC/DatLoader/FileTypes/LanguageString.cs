@@ -21,14 +21,13 @@ namespace MapAC.DatLoader.FileTypes
                 byte[] thestring = reader.ReadBytes((int)strLen);
                 CharBuffer = System.Text.Encoding.Default.GetString(thestring);
             }
+            else
+                CharBuffer = "";
         }
 
         public override void Pack(BinaryWriter writer)
         {
-            if(DatManager.DatVersion == DatVersionType.ACDM)
-                writer.Write(Id + (uint)ACDMOffset.String);
-            else
-                writer.Write(Id);
+            writer.WriteOffset(Id, ACDMOffset.String);
             writer.WriteCompressedUInt32((uint)CharBuffer.Length);
             if (CharBuffer.Length > 0)
             {

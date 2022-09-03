@@ -48,13 +48,21 @@ namespace MapAC.DatLoader.FileTypes
 
             if (Type.HasFlag(SurfaceType.Base1Image) || Type.HasFlag(SurfaceType.Base1ClipMap))
             {
-                // image or clipmap
-                //TODO -- Does this need an offset for ACDM?
-                if(DatManager.DatVersion == DatVersionType.ACDM)
+                var isSame = DatManager.CellDat.IsSameAsEoRDatFile(OrigTextureId);
+                if (DatManager.DatVersion == DatVersionType.ACDM && !isSame)
+                {
                     writer.Write(OrigTextureId + (uint)ACDMOffset.SurfaceTexture);
+                }
                 else
                     writer.Write(OrigTextureId);
-                writer.Write(OrigPaletteId);
+
+                isSame = DatManager.CellDat.IsSameAsEoRDatFile(OrigPaletteId);
+                if (DatManager.DatVersion == DatVersionType.ACDM && !isSame)
+                {
+                    writer.Write(OrigPaletteId + (uint)ACDMOffset.Palette);
+                }
+                else
+                    writer.Write(OrigPaletteId);
             }
             else
             {

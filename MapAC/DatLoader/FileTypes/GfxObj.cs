@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Numerics;
-
+using HtmlAgilityPack;
 using MapAC.DatLoader.Entity;
 using MapAC.DatLoader.Enum;
 
@@ -62,19 +62,23 @@ namespace MapAC.DatLoader.FileTypes
 
         public override void Pack(BinaryWriter writer)
         {
-            if(DatManager.DatVersion == DatVersionType.ACDM)
-                writer.Write(Id + (uint)ACDMOffset.GfxObj);
-            else
-                writer.Write(Id);
-
+            writer.WriteOffset(Id, ACDMOffset.GfxObj);
             writer.Write((uint)Flags);
 
             if(DatManager.DatVersion == DatVersionType.ACDM)
             {
                 // We need to adjust the IDs of these to unique TOD values
                 List<uint> adjustedSurfaces = new List<uint>();
-                for(var i = 0; i < Surfaces.Count; i++)
-                    adjustedSurfaces.Add(Surfaces[i] + (uint)ACDMOffset.Surface);
+                for (var i = 0; i < Surfaces.Count; i++)
+                {
+                    var existingSurfaceId = DatDatabase.TranslateSurfaceId(Surfaces[i]);
+                    var isSame = DatManager.CellDat.IsSameAsEoRDatFile(existingSurfaceId);
+
+                    if (existingSurfaceId == 0 || !isSame)
+                        adjustedSurfaces.Add(Surfaces[i] + (uint)ACDMOffset.Surface);
+                    else
+                        adjustedSurfaces.Add(existingSurfaceId);
+                }
 
                 adjustedSurfaces.PackSmartArray(writer);
             }

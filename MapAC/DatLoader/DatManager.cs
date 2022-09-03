@@ -20,6 +20,8 @@ namespace MapAC.DatLoader
         private static readonly uint DAT_HEADER_OFFSET_TOD = 0x140;
         private static readonly uint DAT_HEADER_OFFSET_ACDM = 0x12C;
 
+        public static uint ForcePackWithDifferentId = 0;
+
         public static bool Initialize(string cellDatFile)
         {
             try

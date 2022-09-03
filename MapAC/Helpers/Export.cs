@@ -1,4 +1,5 @@
-﻿using MapAC.DatLoader;
+﻿using HtmlAgilityPack;
+using MapAC.DatLoader;
 using MapAC.DatLoader.Entity.AnimationHooks;
 using MapAC.DatLoader.Enum;
 using MapAC.DatLoader.FileTypes;
@@ -17,7 +18,7 @@ namespace MapAC
         public static bool ExportPortalFile(uint exportId, string path)
         {
             // Quit if this has already been handled!
-            if (DatManager.CellDat.IsExported(exportId) || DatManager.CellDat.IsRetailDatFile(exportId)) return true;
+            if (DatManager.CellDat.IsExported(exportId) || DatManager.CellDat.IsSameAsEoRDatFile(exportId)) return true;
 
             if (DatManager.CellDat.AllFiles.ContainsKey(exportId))
             {
@@ -137,6 +138,33 @@ namespace MapAC
             }
         }
 
+        public static bool IsSurfaceAddition(uint currentId, out uint id)
+        {
+            id = currentId;
+            if (DatManager.DatVersion == DatVersionType.ACDM)
+            {
+                id = DatDatabase.TranslateSurfaceId(id);
+                if (id == 0)
+                    id = currentId;
+            }
+            var isSame = DatManager.CellDat.IsSameAsEoRDatFile(id);
+
+            if (!isSame)
+                return true;
+            else
+                return false;
+        }
+
+        public static bool IsAddition(uint currentId)
+        {
+            var isSame = DatManager.CellDat.IsSameAsEoRDatFile(currentId);
+
+            if (!isSame)
+                return true;
+            else
+                return false;
+        }
+
         // 0x01
         public static void ExportGfxObject(uint gfxObjId, string path)
         {
@@ -149,7 +177,12 @@ namespace MapAC
 
             // Export all the Surfaces
             for (var i = 0; i < gfxObj.Surfaces.Count; i++)
-                ExportPortalFile(gfxObj.Surfaces[i], path);
+            {
+                if(IsSurfaceAddition(gfxObj.Surfaces[i], out var id))
+                    ExportPortalFile(gfxObj.Surfaces[i], path);
+                else
+                    gfxObj.Surfaces[i] = id;
+            }
 
             if (gfxObj.DIDDegrade > 0)
                 ExportPortalFile(gfxObj.DIDDegrade, path);
@@ -173,7 +206,9 @@ namespace MapAC
 
                 // Get all the GfxObjs in the Setup
                 for (var i = 0; i < setup.Parts.Count; i++)
+                {
                     ExportPortalFile(setup.Parts[i], path);
+                }
 
                 // Search through the ClothingTable entries for records with this Setup
                 /*
@@ -266,6 +301,15 @@ namespace MapAC
         // 0x08
         public static void ExportSurface(uint surfaceId, string path)
         {
+            if (DatManager.DatVersion == DatVersionType.ACDM)
+            {
+                var existingSurfaceId = DatDatabase.TranslateSurfaceId(surfaceId);
+                var isSame = DatManager.CellDat.IsSameAsEoRDatFile(existingSurfaceId);
+
+                if (existingSurfaceId != 0 && isSame)
+                    return;
+            }
+
             var surface = DatManager.CellDat.ReadFromDat<Surface>(surfaceId);
             var fileName = GetExportPath(DatDatabaseType.Portal, path, surfaceId);
             using (BinaryWriter writer = new BinaryWriter(File.Open(fileName, FileMode.Create)))
@@ -569,6 +613,28 @@ namespace MapAC
                     throw new NotImplementedException();
             }
             return 0;
+        }
+
+        public static void BuildPortalContentsTable()
+        {
+            StreamWriter oututFile = new StreamWriter(new FileStream("PortalContentsNew.txt", FileMode.Create, FileAccess.Write));
+            if (oututFile == null)
+            {
+                Console.WriteLine("Unable to open PortalContentsNew.txt");
+                return;
+            }
+
+            for (uint fileId = 0x00000000; fileId < 0xFFFFFFFF; fileId++)
+            {
+                if (DatManager.CellDat.AllFiles.TryGetValue(fileId, out _))
+                {
+                    var hash = DatManager.CellDat.GetHash(fileId);
+
+                    oututFile.WriteLine($"{fileId.ToString("X8")}\t{hash}");
+                    oututFile.Flush();
+                }
+            }
+            oututFile.Close();
         }
     }
 }

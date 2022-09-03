@@ -32,10 +32,7 @@ namespace MapAC.DatLoader.FileTypes
 
         public override void Pack(BinaryWriter writer)
         {
-            if(DatManager.DatVersion == DatVersionType.ACDM)
-                writer.Write(Id + (uint)ACDMOffset.SoundTable);
-            else
-                writer.Write(Id);
+            writer.WriteOffset(Id, ACDMOffset.SoundTable);
             writer.Write(Unknown);
             SoundHash.Pack(writer);
             Data.PackHashTable(writer, 0);

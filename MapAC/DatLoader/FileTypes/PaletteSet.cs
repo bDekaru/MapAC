@@ -23,10 +23,9 @@ namespace MapAC.DatLoader.FileTypes
 
         public override void Pack(BinaryWriter writer)
         {
+            writer.WriteOffset(Id, ACDMOffset.PaletteSet);
             if (DatManager.DatVersion == DatVersionType.ACDM)
             {
-                writer.Write(Id + (uint)ACDMOffset.PaletteSet);
-
                 // PaletteList
                 writer.Write(PaletteList.Count);
                 foreach (var p in PaletteList)
@@ -34,7 +33,6 @@ namespace MapAC.DatLoader.FileTypes
             }
             else
             {
-                writer.Write(Id);
                 PaletteList.Pack(writer);
             }
         }

@@ -11,6 +11,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -590,8 +591,14 @@ namespace WindowsFormsApp1
             //Export.ExportPortalFile(0x06001F99, path); // QuestionMark ICON
             //Export.ExportGfxObject(0x01000598, path);
 
+            //Export.BuildPortalContentsTable();
+            //AddStatus("Portal Contents Table Built.");
+            //return;
 
-            string path = @"C:\ace\PortalTemp\";
+            string path = @"C:\ace\PortalTemp\";            
+            
+            //Export.ExportPortalFile(0x01000CEC, path);
+
             Export.ExportPortalFile(0x12000009, path);
             Export.ExportPortalFile(0x1200000c, path);
             Export.ExportPortalFile(0x12000073, path);

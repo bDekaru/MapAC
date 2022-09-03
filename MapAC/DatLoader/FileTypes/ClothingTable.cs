@@ -36,10 +36,9 @@ namespace MapAC.DatLoader.FileTypes
 
         public override void Pack(BinaryWriter writer)
         {
+            writer.WriteOffset(Id, ACDMOffset.ClothingTable);
             if (DatManager.DatVersion == DatVersionType.ACDM)
             {
-                writer.Write(Id + (uint)ACDMOffset.ClothingTable);
-
                 // ClothingBaseEffects
                 writer.Write((ushort)ClothingBaseEffects.Count);
                 writer.Write((ushort)0x8); // Bucket Size
@@ -53,7 +52,6 @@ namespace MapAC.DatLoader.FileTypes
             }
             else
             {
-                writer.Write(Id);
                 ClothingBaseEffects.PackHashTable(writer, 0x8); //bucket size = 8
                 ClothingSubPalEffects.PackHashTable(writer, 0x20); //bucket size = 0x20
             }

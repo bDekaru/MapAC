@@ -2,7 +2,8 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
-
+using System.Security.Policy;
+using HtmlAgilityPack;
 using MapAC.DatLoader.FileTypes;
 
 namespace MapAC.DatLoader
@@ -21,7 +22,11 @@ namespace MapAC.DatLoader
         /// <summary>
         /// Contains all the objectsIDs of files found in the client_portal.dat at end of retail
         /// </summary>
-        public List<uint> RetailPortalFiles = new List<uint>();
+        //public List<uint> EoRPortalFiles = new List<uint>();
+
+        public static Dictionary<uint, uint> EoRPortalFiles = new Dictionary<uint, uint>();
+
+        public static Dictionary<uint, uint> SurfaceIdMigrationTable = new Dictionary<uint, uint>();
 
         public string FilePath { get; }
 
@@ -86,7 +91,8 @@ namespace MapAC.DatLoader
                 stream = null;
             }
 
-            LoadRetailPortalDatFiles();
+            LoadEoRPortalContents();
+            LoadTextureIdMigrationTable();
         }
 
         /// <summary>
@@ -172,39 +178,176 @@ namespace MapAC.DatLoader
         }
 
         /// <summary>
-        /// Loads the list of client_portal.dat files from end of retail so we can reference later to not dubplicate.
+        /// Loads the list of client_portal.dat files from end of retail so we can reference later to not duplicate.
         /// </summary>
-        private void LoadRetailPortalDatFiles()
+        //private void LoadEoRPortalContents()
+        //{
+        //    if (EoRPortalFiles.Count != 0) return; // Already done!
+
+        //    var contents = File.ReadAllLines(@"PortalContents.txt");
+        //    foreach(var item in contents)
+        //    {
+        //        try
+        //        {
+        //            uint dec = UInt32.Parse(item, System.Globalization.NumberStyles.HexNumber);
+        //            EoRPortalFiles.Add(dec);
+        //        }
+        //        catch(Exception E)
+        //        {
+        //            // Do nothing
+        //        }
+        //    }
+        //}
+
+        private void LoadEoRPortalContents()
         {
-            if (RetailPortalFiles.Count != 0) return; // Already done!
+            if (SurfaceIdMigrationTable.Count != 0) return; // Already done!
 
             var contents = File.ReadAllLines(@"PortalContents.txt");
-            foreach(var item in contents)
+            foreach (var item in contents)
             {
                 try
                 {
-                    uint dec = UInt32.Parse(item, System.Globalization.NumberStyles.HexNumber);
-                    RetailPortalFiles.Add(dec);
+                    string[] splitLine = item.Split('\t');
+
+                    if (splitLine.Length >= 2)
+                    {
+                        uint a = uint.Parse(splitLine[0], System.Globalization.NumberStyles.HexNumber);
+                        uint b = uint.Parse(splitLine[1]);
+                        EoRPortalFiles.Add(a, b);
+                    }
                 }
-                catch(Exception E)
+                catch (Exception E)
                 {
                     // Do nothing
                 }
             }
         }
 
-        /// <summary>
-        /// Check if the file exists in the retail portal dat
-        /// Note that Surface, SurfaceTexture, and Texture are not here--re-export all of these
-        /// </summary>
-        public bool IsRetailDatFile (uint objectId)
+        private void LoadTextureIdMigrationTable()
         {
-            return false; //Disabled
+            if (SurfaceIdMigrationTable.Count != 0) return; // Already done!
 
-            if (RetailPortalFiles.IndexOf(objectId) == -1)
-                return false;
+            var contents = File.ReadAllLines(@"SurfaceIdMigrationTable.txt");
+            foreach (var item in contents)
+            {
+                try
+                {
+                    string[] splitLine = item.Split('\t');
+
+                    if (splitLine.Length >= 2)
+                    {
+                        uint a = uint.Parse(splitLine[0], System.Globalization.NumberStyles.HexNumber);
+                        uint b = uint.Parse(splitLine[1], System.Globalization.NumberStyles.HexNumber);
+                        SurfaceIdMigrationTable.Add(a, b);
+                    }
+                }
+                catch (Exception E)
+                {
+                    // Do nothing
+                }
+            }
+        }
+
+        public static uint TranslateSurfaceId(uint id)
+        {
+            if (SurfaceIdMigrationTable.ContainsKey(id))
+                return SurfaceIdMigrationTable[id];
             else
+                return 0;
+        }
+
+        /// <summary>
+        /// Check if the file exists and is the same in EoR portal.dat
+        /// </summary>
+        public bool IsSameAsEoRDatFile(uint objectId, uint forceDifferentId = 1)
+        {
+            if (objectId == 0)
                 return true;
+
+            if (EoRPortalFiles.TryGetValue(objectId, out var eorHash))
+            {
+                if (GetHash(objectId, forceDifferentId) == eorHash)
+                    return true;
+            }
+            return false;
+        }
+
+        public uint GetHash(uint objectId, uint forceDifferentId = 1)
+        {
+            FileType file = null;
+
+            var datFileType = DatFile.GetFileType(DatDatabaseType.Portal, objectId);
+            switch (datFileType)
+            {
+                case DatFileType.GraphicsObject:
+                    file = DatManager.CellDat.ReadFromDat<GfxObj>(objectId);
+                    break;
+                case DatFileType.Setup:
+                    file = DatManager.CellDat.ReadFromDat<SetupModel>(objectId);
+                    break;
+                case DatFileType.Animation:
+                    file = DatManager.CellDat.ReadFromDat<Animation>(objectId);
+                    break;
+                case DatFileType.Palette:
+                    file = DatManager.CellDat.ReadFromDat<Palette>(objectId);
+                    break;
+                case DatFileType.SurfaceTexture:
+                    file = DatManager.CellDat.ReadFromDat<SurfaceTexture>(objectId);
+                    break;
+                case DatFileType.Texture:
+                    file = DatManager.CellDat.ReadFromDat<Texture>(objectId);
+                    break;
+                case DatFileType.Surface:
+                    file = DatManager.CellDat.ReadFromDat<Surface>(objectId);
+                    break;
+                case DatFileType.MotionTable:
+                    file = DatManager.CellDat.ReadFromDat<MotionTable>(objectId);
+                    break;
+                case DatFileType.Wave:
+                    file = DatManager.CellDat.ReadFromDat<Wave>(objectId);
+                    break;
+                case DatFileType.Environment:
+                    file = DatManager.CellDat.ReadFromDat<FileTypes.Environment>(objectId);
+                    break;
+                case DatFileType.PaletteSet:
+                    file = DatManager.CellDat.ReadFromDat<PaletteSet>(objectId);
+                    break;
+                case DatFileType.Clothing:
+                    file = DatManager.CellDat.ReadFromDat<ClothingTable>(objectId);
+                    break;
+                case DatFileType.DegradeInfo:
+                    file = DatManager.CellDat.ReadFromDat<GfxObjDegradeInfo>(objectId);
+                    break;
+                case DatFileType.Scene:
+                    file = DatManager.CellDat.ReadFromDat<Scene>(objectId);
+                    break;
+                case DatFileType.CombatTable:
+                    file = DatManager.CellDat.ReadFromDat<CombatManeuverTable>(objectId);
+                    break;
+                case DatFileType.String:
+                    file = DatManager.CellDat.ReadFromDat<LanguageString>(objectId);
+                    break;
+                case DatFileType.SoundTable:
+                    file = DatManager.CellDat.ReadFromDat<SoundTable>(objectId);
+                    break;
+                case DatFileType.ParticleEmitter:
+                    file = DatManager.CellDat.ReadFromDat<ParticleEmitterInfo>(objectId);
+                    break;
+                case DatFileType.PhysicsScript:
+                    file = DatManager.CellDat.ReadFromDat<PhysicsScript>(objectId);
+                    break;
+                case DatFileType.PhysicsScriptTable:
+                    file = DatManager.CellDat.ReadFromDat<PhysicsScriptTable>(objectId);
+                    break;
+                default:
+                    var reader = DatManager.CellDat.GetReaderForFile(objectId);
+                    if (reader == null)
+                        return 0;
+                    return Crc32.CRC32Bytes(reader.Buffer);
+            }
+
+            return file.GetHash(forceDifferentId);
         }
 
     }

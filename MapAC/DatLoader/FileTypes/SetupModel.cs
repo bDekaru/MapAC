@@ -103,10 +103,7 @@ namespace MapAC.DatLoader.FileTypes
 
         public override void Pack(BinaryWriter writer)
         {
-            if (DatManager.DatVersion == DatVersionType.ACDM)
-                writer.Write(Id + (uint)ACDMOffset.Setup);
-            else
-                writer.Write(Id);
+            writer.WriteOffset(Id, ACDMOffset.Setup);
             writer.Write((uint)Flags);
 
             // Get all the GraphicsObjects in this SetupModel. These are all the 01-types.
