@@ -1,10 +1,9 @@
+using HtmlAgilityPack;
+using MapAC.DatLoader.FileTypes;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
-using System.Security.Policy;
-using HtmlAgilityPack;
-using MapAC.DatLoader.FileTypes;
 
 namespace MapAC.DatLoader
 {
@@ -26,7 +25,9 @@ namespace MapAC.DatLoader
 
         public static Dictionary<uint, uint> EoRPortalFiles = new Dictionary<uint, uint>();
 
-        public static Dictionary<uint, uint> SurfaceIdMigrationTable = new Dictionary<uint, uint>();
+        public static Dictionary<uint, uint> SurfaceIdTranslationTable = new Dictionary<uint, uint>();
+
+        public static Dictionary<uint, uint> SurfaceTextureIdTranslationTable = new Dictionary<uint, uint>();
 
         public string FilePath { get; }
 
@@ -92,7 +93,8 @@ namespace MapAC.DatLoader
             }
 
             LoadEoRPortalContents();
-            LoadTextureIdMigrationTable();
+            LoadTextureIdTranslationTable();
+            LoadSurfaceTextureIdTranslationTable();
         }
 
         /// <summary>
@@ -201,7 +203,7 @@ namespace MapAC.DatLoader
 
         private void LoadEoRPortalContents()
         {
-            if (SurfaceIdMigrationTable.Count != 0) return; // Already done!
+            if (EoRPortalFiles.Count != 0) return; // Already done!
 
             var contents = File.ReadAllLines(@"PortalContents.txt");
             foreach (var item in contents)
@@ -224,11 +226,11 @@ namespace MapAC.DatLoader
             }
         }
 
-        private void LoadTextureIdMigrationTable()
+        private void LoadTextureIdTranslationTable()
         {
-            if (SurfaceIdMigrationTable.Count != 0) return; // Already done!
+            if (SurfaceIdTranslationTable.Count != 0) return; // Already done!
 
-            var contents = File.ReadAllLines(@"SurfaceIdMigrationTable.txt");
+            var contents = File.ReadAllLines(@"SurfaceIdTranslationTable.txt");
             foreach (var item in contents)
             {
                 try
@@ -239,7 +241,7 @@ namespace MapAC.DatLoader
                     {
                         uint a = uint.Parse(splitLine[0], System.Globalization.NumberStyles.HexNumber);
                         uint b = uint.Parse(splitLine[1], System.Globalization.NumberStyles.HexNumber);
-                        SurfaceIdMigrationTable.Add(a, b);
+                        SurfaceIdTranslationTable.Add(a, b);
                     }
                 }
                 catch (Exception E)
@@ -251,8 +253,61 @@ namespace MapAC.DatLoader
 
         public static uint TranslateSurfaceId(uint id)
         {
-            if (SurfaceIdMigrationTable.ContainsKey(id))
-                return SurfaceIdMigrationTable[id];
+            if (SurfaceIdTranslationTable.ContainsKey(id))
+                return SurfaceIdTranslationTable[id];
+            else
+                return 0;
+        }
+
+        private void LoadSurfaceTextureIdTranslationTable()
+        {
+            if (SurfaceTextureIdTranslationTable.Count != 0) return; // Already done!
+
+            var contents = File.ReadAllLines(@"SurfaceTextureTranslationTable-ExactMatch.txt");
+            foreach (var item in contents)
+            {
+                try
+                {
+                    string[] splitLine = item.Split('\t');
+
+                    if (splitLine.Length >= 2)
+                    {
+                        uint a = uint.Parse(splitLine[0], System.Globalization.NumberStyles.HexNumber);
+                        uint b = uint.Parse(splitLine[1], System.Globalization.NumberStyles.HexNumber);
+                        SurfaceTextureIdTranslationTable.Add(a, b);
+                    }
+                }
+                catch (Exception E)
+                {
+                    // Do nothing
+                }
+            }
+
+            contents = File.ReadAllLines(@"SurfaceTextureTranslationTable-Upscaled.txt");
+            foreach (var item in contents)
+            {
+                try
+                {
+                    string[] splitLine = item.Split('\t');
+
+                    if (splitLine.Length >= 2)
+                    {
+                        uint a = uint.Parse(splitLine[0], System.Globalization.NumberStyles.HexNumber);
+                        uint b = uint.Parse(splitLine[1], System.Globalization.NumberStyles.HexNumber);
+                        SurfaceTextureIdTranslationTable.Add(a, b);
+                    }
+                }
+                catch (Exception E)
+                {
+                    // Do nothing
+                }
+            }
+        }
+
+        public static uint TranslateSurfaceTextureId(uint id)
+        {
+            if (SurfaceTextureIdTranslationTable.ContainsKey(id))
+                return SurfaceTextureIdTranslationTable[id];
             else
                 return 0;
         }

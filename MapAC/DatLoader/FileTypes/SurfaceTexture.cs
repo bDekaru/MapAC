@@ -1,5 +1,6 @@
 using MapAC.DatLoader.Entity;
 using MapAC.DatLoader.Enum;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -73,7 +74,15 @@ namespace MapAC.DatLoader.FileTypes
                     writer.Write(0); // Always 0?
                     writer.Write((byte)2); // Always 2?
                     Textures.Clear();
-                    uint newTextureId = GetTextureId() + (uint)ACDMOffset.Texture; // Generates a unique 0x06 range TextureId
+
+                    uint newTextureId;
+                    if (DatManager.DatVersion == DatVersionType.ACDM && DatManager.ForcePackWithDifferentId == 0)
+                        newTextureId = GetTextureId() + (uint)ACDMOffset.Texture; // Generates a unique 0x06 range TextureId
+                    else if (DatManager.ForcePackWithDifferentId == 1)
+                        newTextureId = Id;
+                    else
+                        newTextureId = DatManager.ForcePackWithDifferentId;
+
                     Textures.Add(newTextureId);
                     Textures.Pack(writer);
                     break;
@@ -120,7 +129,8 @@ namespace MapAC.DatLoader.FileTypes
         {
             if (DatManager.DatVersion == DatVersionType.ACTOD) throw new System.NotSupportedException();
             Texture tex = ConvertToTexture(false);
-            tex.SetIdFromSurfaceTexture(Id);
+            tex.SetIdFromSurfaceTexture(Id); 
+            //tex.Id = Id; // Temp to make it easier to compare with EoR Files
             tex.ExportTexture(directory);
         }
 
@@ -136,7 +146,7 @@ namespace MapAC.DatLoader.FileTypes
                 case SurfacePixelFormat.INDEX8:
                     if (forPack)
                     {
-                        if(!DatManager.CellDat.IsSameAsEoRDatFile(DefaultPaletteId.Value))
+                        if(Export.IsAddition(DefaultPaletteId.Value))
                             tex.DefaultPaletteId = DefaultPaletteId + (uint)ACDMOffset.Palette;
                         else
                             tex.DefaultPaletteId = DefaultPaletteId;

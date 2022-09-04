@@ -25,6 +25,7 @@ namespace MapAC.DatLoader.Entity
             BaseLoc.Unpack(reader);
 
             Freq        = reader.ReadSingle();
+            //Freq = 0.25f;
 
             DisplaceX   = reader.ReadSingle();
             DisplaceY   = reader.ReadSingle();

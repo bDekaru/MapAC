@@ -104,15 +104,15 @@ namespace MapAC.DatLoader.FileTypes
             writer.Write((ushort)VisibleCells.Count);
 
             for (var i = 0; i < Surfaces.Count; i++)
-                if (DatManager.DatVersion == DatVersionType.ACDM && !DatManager.CellDat.IsSameAsEoRDatFile(Surfaces[i]))
+                if (Export.IsSurfaceAddition(Surfaces[i], out var id))
                 {
                     uint val = (Surfaces[i] + (uint)ACDMOffset.Surface);
                     writer.Write((ushort)(val & 0xFFFF));
                 }
                 else
-                    writer.Write((ushort)(Surfaces[i] & 0xFFFF));
+                    writer.Write((ushort)(id & 0xFFFF));
 
-            if (DatManager.DatVersion == DatVersionType.ACDM && !DatManager.CellDat.IsSameAsEoRDatFile(EnvironmentId))
+            if (Export.IsAddition(EnvironmentId))
                 writer.Write((ushort)((EnvironmentId + (uint)ACDMOffset.Environment) & 0xFFFF));
             else
                 writer.Write((ushort)(EnvironmentId & 0xFFFF));

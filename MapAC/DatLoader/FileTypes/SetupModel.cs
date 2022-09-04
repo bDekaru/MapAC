@@ -109,12 +109,12 @@ namespace MapAC.DatLoader.FileTypes
             // Get all the GraphicsObjects in this SetupModel. These are all the 01-types.
             writer.Write(Parts.Count); //numParts
             for (int i = 0; i < Parts.Count; i++)
-                if (DatManager.DatVersion == DatVersionType.ACDM)
+            {
+                if (Export.IsAddition(Parts[i]))
                     writer.Write(Parts[i] + (uint)ACDMOffset.GfxObj);
                 else
                     writer.Write(Parts[i]);
-
-
+            }
 
             if ((Flags & SetupFlags.HasParent) != 0)
             {
@@ -153,27 +153,52 @@ namespace MapAC.DatLoader.FileTypes
             Lights.Pack(writer);
 
             if (DefaultAnimation > 0)
-                writer.WriteOffset(DefaultAnimation, ACDMOffset.Animation);
+            {
+                if (Export.IsAddition(DefaultAnimation))
+                    writer.WriteOffset(DefaultAnimation, ACDMOffset.Animation);
+                else
+                    writer.Write(DefaultAnimation);
+            }
             else
                 writer.Write(0);
 
             if (DefaultScript > 0)
-                writer.WriteOffset(DefaultScript, ACDMOffset.PhysicsScript);
+            {
+                if (Export.IsAddition(DefaultScript))
+                    writer.WriteOffset(DefaultScript, ACDMOffset.PhysicsScript);
+                else
+                    writer.Write(DefaultScript);
+            }
             else
                 writer.Write(0);
 
             if (DefaultMotionTable > 0)
-                writer.WriteOffset(DefaultMotionTable, ACDMOffset.MotionTable);
+            {
+                if (Export.IsAddition(DefaultMotionTable))
+                    writer.WriteOffset(DefaultMotionTable, ACDMOffset.MotionTable);
+                else
+                    writer.Write(DefaultMotionTable);
+            }
             else
                 writer.Write(0);
 
             if (DefaultSoundTable > 0)
-                writer.WriteOffset(DefaultSoundTable, ACDMOffset.SoundTable);
+            {
+                if (Export.IsAddition(DefaultSoundTable))
+                    writer.WriteOffset(DefaultSoundTable, ACDMOffset.SoundTable);
+                else
+                    writer.Write(DefaultSoundTable);
+            }
             else
                 writer.Write(0);
 
             if (DefaultScriptTable > 0)
-                writer.WriteOffset(DefaultScriptTable, ACDMOffset.PhysicsScriptTable);
+            {
+                if (Export.IsAddition(DefaultScriptTable))
+                    writer.WriteOffset(DefaultScriptTable, ACDMOffset.PhysicsScriptTable);
+                else
+                    writer.Write(DefaultScriptTable);
+            }
             else
                 writer.Write(0);
         }

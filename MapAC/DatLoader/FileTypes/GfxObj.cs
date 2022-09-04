@@ -71,13 +71,10 @@ namespace MapAC.DatLoader.FileTypes
                 List<uint> adjustedSurfaces = new List<uint>();
                 for (var i = 0; i < Surfaces.Count; i++)
                 {
-                    var existingSurfaceId = DatDatabase.TranslateSurfaceId(Surfaces[i]);
-                    var isSame = DatManager.CellDat.IsSameAsEoRDatFile(existingSurfaceId);
-
-                    if (existingSurfaceId == 0 || !isSame)
+                    if(Export.IsSurfaceAddition(Surfaces[i], out var id))
                         adjustedSurfaces.Add(Surfaces[i] + (uint)ACDMOffset.Surface);
                     else
-                        adjustedSurfaces.Add(existingSurfaceId);
+                        adjustedSurfaces.Add(id);
                 }
 
                 adjustedSurfaces.PackSmartArray(writer);
@@ -107,7 +104,7 @@ namespace MapAC.DatLoader.FileTypes
             }
 
             if ((Flags & GfxObjFlags.HasDIDDegrade) != 0)
-                if (DatManager.DatVersion == DatVersionType.ACDM)
+                if(Export.IsAddition(DIDDegrade))
                     writer.Write(DIDDegrade + (uint)ACDMOffset.DIDDegrade);
                 else
                     writer.Write(DIDDegrade);

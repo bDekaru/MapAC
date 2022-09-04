@@ -44,8 +44,12 @@ namespace MapAC.DatLoader.FileTypes
                 writer.Write((ushort)0x8); // Bucket Size
                 foreach (var e in ClothingBaseEffects)
                 {
-                    writer.Write(e.Key + (uint)ACDMOffset.Setup);
-                    e.Value.Pack(writer);
+                    if (Export.IsAddition(e.Key))
+                        writer.Write(e.Key + (uint)ACDMOffset.Setup);
+                    else
+                        writer.Write(e.Key);
+
+                   e.Value.Pack(writer);
                 }
 
                 ClothingSubPalEffects.PackHashTable(writer, 0x20); //bucket size = 0x20

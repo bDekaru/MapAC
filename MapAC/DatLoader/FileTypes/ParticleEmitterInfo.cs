@@ -103,12 +103,22 @@ namespace MapAC.DatLoader.FileTypes
             writer.Write((uint)ParticleType);
 
             if (GfxObjId > 0)
-                writer.WriteOffset(GfxObjId, ACDMOffset.GfxObj);
+            {
+                if (Export.IsAddition(GfxObjId))
+                    writer.WriteOffset(GfxObjId, ACDMOffset.GfxObj);
+                else
+                    writer.Write(GfxObjId);
+            }
             else
                 writer.Write(0);
 
             if (HwGfxObjId > 0)
-                writer.WriteOffset(HwGfxObjId, ACDMOffset.GfxObj);
+            {
+                if (Export.IsAddition(HwGfxObjId))
+                    writer.WriteOffset(HwGfxObjId, ACDMOffset.GfxObj);
+                else
+                    writer.Write(HwGfxObjId);
+            }
             else
                 writer.Write(0);
 

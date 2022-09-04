@@ -48,19 +48,13 @@ namespace MapAC.DatLoader.FileTypes
 
             if (Type.HasFlag(SurfaceType.Base1Image) || Type.HasFlag(SurfaceType.Base1ClipMap))
             {
-                var isSame = DatManager.CellDat.IsSameAsEoRDatFile(OrigTextureId);
-                if (DatManager.DatVersion == DatVersionType.ACDM && !isSame)
-                {
+                if(Export.IsSurfaceTextureAddition(OrigTextureId, out var id))
                     writer.Write(OrigTextureId + (uint)ACDMOffset.SurfaceTexture);
-                }
                 else
                     writer.Write(OrigTextureId);
 
-                isSame = DatManager.CellDat.IsSameAsEoRDatFile(OrigPaletteId);
-                if (DatManager.DatVersion == DatVersionType.ACDM && !isSame)
-                {
+                if (Export.IsAddition(OrigPaletteId))
                     writer.Write(OrigPaletteId + (uint)ACDMOffset.Palette);
-                }
                 else
                     writer.Write(OrigPaletteId);
             }

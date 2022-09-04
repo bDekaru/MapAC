@@ -29,7 +29,12 @@ namespace MapAC.DatLoader.FileTypes
                 // PaletteList
                 writer.Write(PaletteList.Count);
                 foreach (var p in PaletteList)
-                    writer.Write(p + (uint)ACDMOffset.Palette);
+                {
+                    if (Export.IsAddition(p))
+                        writer.Write(p + (uint)ACDMOffset.Palette);
+                    else
+                        writer.Write(p);
+                }
             }
             else
             {
