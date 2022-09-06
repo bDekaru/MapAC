@@ -767,7 +767,7 @@ namespace MapAC
             }
         }
 
-        public async static void CreateSurfaceTextureTranslationTable(Form1 form)
+        public static void CreateSurfaceTextureTranslationTable(Form1 form)
         {
             form.AddStatus("Creating Surface Texture Translation Table, this may take a while...");
 
