@@ -6,12 +6,12 @@ namespace MapAC.DatLoader.Entity
     public class CloTextureEffect : IUnpackable
     {
         /// <summary>
-        /// Texture portal.dat 0x05000000
+        /// SurfaceTexture portal.dat 0x05000000
         /// </summary>
         public uint OldTexture { get; private set; }
 
         /// <summary>
-        /// Texture portal.dat 0x05000000
+        /// SurfaceTexture portal.dat 0x05000000
         /// </summary>
         public uint NewTexture { get; private set; }
 
@@ -23,8 +23,8 @@ namespace MapAC.DatLoader.Entity
 
         public void Pack(BinaryWriter writer)
         {
-            writer.WriteOffset(OldTexture, ACDMOffset.Texture);
-            writer.WriteOffset(NewTexture, ACDMOffset.Texture);
+            writer.WriteOffset(OldTexture, ACDMOffset.SurfaceTexture);
+            writer.WriteOffset(NewTexture, ACDMOffset.SurfaceTexture);
         }
 
     }
