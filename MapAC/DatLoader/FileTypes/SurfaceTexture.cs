@@ -77,7 +77,11 @@ namespace MapAC.DatLoader.FileTypes
 
                     uint newTextureId;
                     if (DatManager.DatVersion == DatVersionType.ACDM && DatManager.ForcePackWithDifferentId == 0)
-                        newTextureId = GetTextureId() + (uint)ACDMOffset.Texture; // Generates a unique 0x06 range TextureId
+                    {
+                        newTextureId = GetTextureId(); // Generates a unique 0x06 range TextureId
+                        if (Export.IsAddition(newTextureId) && DatManager.CellDat.ExistsInEoR(newTextureId))
+                            newTextureId += (uint)ACDMOffset.Texture;
+                    }
                     else if (DatManager.ForcePackWithDifferentId == 1)
                         newTextureId = Id;
                     else
@@ -146,7 +150,7 @@ namespace MapAC.DatLoader.FileTypes
                 case SurfacePixelFormat.INDEX8:
                     if (forPack)
                     {
-                        if(Export.IsAddition(DefaultPaletteId.Value))
+                        if(Export.IsAddition(DefaultPaletteId.Value) && DatManager.CellDat.ExistsInEoR(DefaultPaletteId.Value))
                             tex.DefaultPaletteId = DefaultPaletteId + (uint)ACDMOffset.Palette;
                         else
                             tex.DefaultPaletteId = DefaultPaletteId;

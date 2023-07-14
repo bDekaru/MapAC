@@ -106,13 +106,15 @@ namespace MapAC.DatLoader.FileTypes
             for (var i = 0; i < Surfaces.Count; i++)
                 if (Export.IsSurfaceAddition(Surfaces[i], out var id))
                 {
-                    uint val = (Surfaces[i] + (uint)ACDMOffset.Surface);
-                    writer.Write((ushort)(val & 0xFFFF));
+                    if (DatManager.CellDat.ExistsInEoR(Surfaces[i]))
+                        writer.Write((ushort)((Surfaces[i] + (uint)ACDMOffset.Surface) & 0xFFFF));
+                    else
+                        writer.Write((ushort)(Surfaces[i] & 0xFFFF));
                 }
                 else
                     writer.Write((ushort)(id & 0xFFFF));
 
-            if (Export.IsAddition(EnvironmentId))
+            if (Export.IsAddition(EnvironmentId) && DatManager.CellDat.ExistsInEoR(EnvironmentId))
                 writer.Write((ushort)((EnvironmentId + (uint)ACDMOffset.Environment) & 0xFFFF));
             else
                 writer.Write((ushort)(EnvironmentId & 0xFFFF));
@@ -137,7 +139,7 @@ namespace MapAC.DatLoader.FileTypes
                     for (int i = 0; i < StaticObjects.Count; i++)
                     {
                         Stab thisStab = StaticObjects[i];
-                        if (!DatManager.CellDat.IsSameAsEoRDatFile(thisStab.Id))
+                        if (!DatManager.CellDat.IsSameAsEoRDatFile(thisStab.Id) && DatManager.CellDat.ExistsInEoR(thisStab.Id))
                         {
                             if (thisStab.Id <= 0x01FFFFFF)
                                 thisStab.Id += (uint)ACDMOffset.GfxObj;

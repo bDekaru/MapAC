@@ -44,7 +44,7 @@ namespace MapAC.DatLoader.FileTypes
                 writer.Write((ushort)0x8); // Bucket Size
                 foreach (var e in ClothingBaseEffects)
                 {
-                    if (Export.IsAddition(e.Key))
+                    if (Export.IsAddition(e.Key) && DatManager.CellDat.ExistsInEoR(e.Key))
                         writer.Write(e.Key + (uint)ACDMOffset.Setup);
                     else
                         writer.Write(e.Key);

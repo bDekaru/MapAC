@@ -174,7 +174,9 @@ namespace MapAC.DatLoader.FileTypes
         public void SetIdFromSurfaceTexture(uint SurfaceTextureId)
         {
             if (DatManager.DatVersion == DatVersionType.ACTOD) throw new System.NotSupportedException();
-            Id = SurfaceTextureId + 0x01000000 + (uint)ACDMOffset.Texture;
+            Id = SurfaceTextureId + 0x01000000;
+            if (Export.IsAddition(Id) && DatManager.CellDat.ExistsInEoR(Id))
+                Id += (uint)ACDMOffset.Texture;
         }
 
         /// <summary>

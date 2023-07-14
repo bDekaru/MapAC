@@ -31,7 +31,8 @@ namespace MapAC.DatLoader.FileTypes
                 for (int i = 0; i < Degrades.Count; i++)
                 {
                     var gfxDegrade = Degrades[i];
-                    gfxDegrade.Id += (uint)ACDMOffset.DIDDegrade;
+                    if (Export.IsAddition(gfxDegrade.Id) && DatManager.CellDat.ExistsInEoR(gfxDegrade.Id))
+                        gfxDegrade.Id += (uint)ACDMOffset.DIDDegrade;
                     gfxDegrade.Pack(writer);
                 }
             }

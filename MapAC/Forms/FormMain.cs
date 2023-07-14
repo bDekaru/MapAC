@@ -579,7 +579,6 @@ namespace WindowsFormsApp1
             //Export.ExportPortalFile(0x0D000402, path);
             //Export.ExportPortalFile(0x0D000405, path);
 
-            //Export.ExportPortalFile(0x020002EE, path); // Lifestone
             //Export.ExportPortalFile(0x02000002, path); // Tusker
             //Export.ExportPortalFile(0x02000055, path); // OG GOlems
             //Export.ExportPortalFile(0x0200049C, path); // Early Chittick
@@ -587,7 +586,6 @@ namespace WindowsFormsApp1
             //Export.ExportPortalFile(0x01000FDE, path); // clear_cell.id = 0x01000FDE, defined in RegionDesc
             //Export.ExportPortalFile(0x02000034, path); // DRUDGE
 
-            //Export.ExportPortalFile(0x020009ED, path); // TARDIS
             //Export.ExportPortalFile(0x06001F99, path); // QuestionMark ICON
             //Export.ExportGfxObject(0x01000598, path);
 
@@ -596,6 +594,86 @@ namespace WindowsFormsApp1
             //return;
 
             string path = @"C:\ace\PortalTemp\";
+
+            //Old Models
+            //Export.ExportPortalFile(0x040009A6, path); // Olthoi Nymph corrupted palette
+            //Export.ExportPortalFile(0x040001B7, path); // Banderling corrupted palette
+            //Export.ExportPortalFile(0x040009A0, path); // Lugian corrupted palette - portal - Release.dat
+            //Export.ExportPortalFile(0x040009C0, path); // Mosswart corrupted palette - portal - Release.dat
+            //Export.ExportPortalFile(0x02000040, path); // Tumerok
+            //Export.ExportPortalFile(0x020002FF, path); // Monouga
+            //Export.ExportPortalFile(0x04000C10, path); // Monouga palette
+            //Export.ExportPortalFile(0x04000C11, path); // Monouga palette
+            //Export.ExportPortalFile(0x02000498, path); // Sclavus
+            //Export.ExportPortalFile(0x04000C02, path); // Sclavus palette
+            //Export.ExportPortalFile(0x04000C03, path); // Sclavus palette
+            //Export.ExportPortalFile(0x04000C04, path); // Sclavus palette
+            //Export.ExportPortalFile(0x04000C05, path); // Sclavus palette
+
+            //Export.ExportPortalFile(0x10000061, path); // Olthoi - portal - 2005-02-XX (Admin) (Iteration 2112)
+            //Export.ExportPortalFile(0x1000005D, path); // Banderling - portal - 2005-02-XX (Admin) (Iteration 2112)
+            //Export.ExportPortalFile(0x100002A7, path); // Lugian - xxx
+            //Export.ExportPortalFile(0x1000006A, path); // Mosswart - xxx
+            //Export.ExportPortalFile(0x100000BF, path); // Tumerok - portal - 2005-02-XX (Admin) (Iteration 2112)
+            //Export.ExportPortalFile(0x1000010E, path); // Monouga - portal - 2005-02-XX (Admin) (Iteration 2112)
+            //Export.ExportPortalFile(0x1000010F, path); // Sclavus - portal - 2005-02-XX (Admin) (Iteration 2112)
+            //Export.ExportPortalFile(0x10000202, path); // Drudge - portal - 2005-02-XX (Admin) (Iteration 2112)
+            //Export.ExportPortalFile(0x10000203, path); // Drudge - portal - 2005-02-XX (Admin) (Iteration 2112)
+            //Export.ExportPortalFile(0x10000204, path); // Drudge - portal - 2005-02-XX (Admin) (Iteration 2112)
+            //Export.ExportPortalFile(0x10000205, path); // Drudge - portal - 2005-02-XX (Admin) (Iteration 2112)
+            //Export.ExportPortalFile(0x10000206, path); // Drudge - portal - 2005-02-XX (Admin) (Iteration 2112)
+            //Export.ExportPortalFile(0x10000207, path); // Drudge - portal - 2005-02-XX (Admin) (Iteration 2112)
+            //Export.ExportPortalFile(0x10000208, path); // Drudge - portal - 2005-02-XX (Admin) (Iteration 2112)
+            //Export.ExportPortalFile(0x10000209, path); // Drudge - portal - 2005-02-XX (Admin) (Iteration 2112)
+
+            //Export.ExportPortalFile(0x02000002, path); // Tusker with knee armor?
+            //Export.ExportPortalFile(0x02000046, path); // Mite?
+            //Export.ExportPortalFile(0x0200040C, path); // Tusker without knee armor?
+            //Export.ExportPortalFile(0x0200049C, path); // Early Chittick?
+
+            //Export.ExportPortalFile(0x1000005F, path); // Old Drudge - portal - 2005-02-XX (Admin) (Iteration 2112)
+            //Export.ExportPortalFile(0x10000060, path); // Lugian - Leather - portal - 2005-02-XX (Admin) (Iteration 2112)
+            //Export.ExportPortalFile(0x10000065, path); // Tusker - portal - 2005-02-XX (Admin) (Iteration 2112)
+            //Export.ExportPortalFile(0x10000067, path); // Mite - portal - 2005-02-XX (Admin) (Iteration 2112)
+            //Export.ExportPortalFile(0x10000068, path); // Lugian - Same as 0x10000060
+            //Export.ExportPortalFile(0x10000069, path); // Lugian - Same as 0x10000060
+            //Export.ExportPortalFile(0x100004F8, path); // Mite - different palettes - portal - 2005-02-XX (Admin) (Iteration 2112)
+
+            //Export.ExportPortalFile(0x10000111, path); // Mattekar
+            //Export.ExportPortalFile(0x10000248, path); // Ursuin
+            //Export.ExportPortalFile(0x10000499, path); // Ursuin
+            //Export.ExportPortalFile(0x100002e3, path); // Carenzi
+            //Export.ExportPortalFile(0x100004fc, path); // Carenzi
+            //Export.ExportPortalFile(0x100002e2, path); // Siraluun
+
+            //Export.ExportPortalFile(0x05000FF3, path); // Rocks and cave exterior
+
+            //Export.ExportPortalFile(0x02000A36, path);
+
+            //Export.ExportPortalFile(0x100002AE, path); // TARDIS ClothingTable
+            //Export.ExportPortalFile(0x020009ED, path); // TARDIS
+
+            //Export.ExportPortalFile(0x020002EE, path); // Lifestone
+
+            //Export.ExportCellLandblock(0x2d00FFFF, path);
+
+            //Export.ExportPortalFile(0x0d00026c, path); // Missing environment for Fort Tununska
+
+            //Export.ExportPortalFile(0x01000849, path); // Missing object for Advocate Dungeon
+            //Export.ExportPortalFile(0x0100084C, path); // Missing object for Advocate Dungeon
+            //Export.ExportPortalFile(0x0100281E, path); // Missing object for Training Academy Original (Dec 2001)
+
+            //Missing object for CustomDM
+            //Export.ExportPortalFile(0x01000598, path);
+            //Export.ExportPortalFile(0x0100281E, path);
+            //Export.ExportPortalFile(0x01000FDE, path);
+            //Export.ExportPortalFile(0x020001DC, path);
+            //Export.ExportPortalFile(0x10000484, path);
+            //Export.ExportPortalFile(0x10000491, path);
+            //Export.ExportPortalFile(0x090000C4, path);
+            //Export.ExportPortalFile(0x010015F3, path);
+            //Export.ExportPortalFile(0x010015F4, path);
+            //Export.ExportPortalFile(0x01000fd4, path);
 
             //Export.ExportAllSurfaceTextures(path);
             //AddStatus("All Surface Textures Extracted.");
@@ -615,122 +693,124 @@ namespace WindowsFormsApp1
             //Export.ExportPortalFile(0x13000000, path); // Region with Ice Island Scene
             //Export.ExportPortalFile(0x1200025b, path); // Ice Island Scene
 
-            //Scenes with old trees
-            Export.ExportPortalFile(0x12000009, path);
-            Export.ExportPortalFile(0x1200000c, path);
-            Export.ExportPortalFile(0x12000073, path);
-            Export.ExportPortalFile(0x12000074, path);
-            Export.ExportPortalFile(0x12000075, path);
-            Export.ExportPortalFile(0x12000076, path);
-            Export.ExportPortalFile(0x12000077, path);
-            Export.ExportPortalFile(0x12000078, path);
-            Export.ExportPortalFile(0x12000079, path);
-            Export.ExportPortalFile(0x1200007b, path);
-            Export.ExportPortalFile(0x1200007c, path);
-            Export.ExportPortalFile(0x12000080, path);
-            Export.ExportPortalFile(0x12000084, path);
-            Export.ExportPortalFile(0x1200008b, path);
-            Export.ExportPortalFile(0x1200008c, path);
-            Export.ExportPortalFile(0x1200008d, path);
-            Export.ExportPortalFile(0x1200008e, path);
-            Export.ExportPortalFile(0x12000099, path);
-            Export.ExportPortalFile(0x120000a5, path);
-            Export.ExportPortalFile(0x120000bf, path);
-            Export.ExportPortalFile(0x120000c0, path);
-            Export.ExportPortalFile(0x120000c1, path);
-            Export.ExportPortalFile(0x120000c5, path);
-            Export.ExportPortalFile(0x120000c6, path);
-            Export.ExportPortalFile(0x120000c7, path);
-            Export.ExportPortalFile(0x120000c8, path);
-            Export.ExportPortalFile(0x120000c9, path);
-            Export.ExportPortalFile(0x120000ca, path);
-            Export.ExportPortalFile(0x120000cb, path);
-            Export.ExportPortalFile(0x120000cc, path);
-            Export.ExportPortalFile(0x120000cd, path);
-            Export.ExportPortalFile(0x120000ce, path);
-            Export.ExportPortalFile(0x120000cf, path);
-            Export.ExportPortalFile(0x120000d0, path);
-            Export.ExportPortalFile(0x120000d1, path);
-            Export.ExportPortalFile(0x120000d2, path);
-            Export.ExportPortalFile(0x120000d3, path);
-            Export.ExportPortalFile(0x120000d5, path);
-            Export.ExportPortalFile(0x120000e4, path);
-            Export.ExportPortalFile(0x120000e5, path);
-            Export.ExportPortalFile(0x120000e6, path);
-            Export.ExportPortalFile(0x120000e7, path);
-            Export.ExportPortalFile(0x120000e8, path);
-            Export.ExportPortalFile(0x120000e9, path);
-            Export.ExportPortalFile(0x120000ea, path);
-            Export.ExportPortalFile(0x120000eb, path);
-            Export.ExportPortalFile(0x120000ec, path);
-            Export.ExportPortalFile(0x120000ed, path);
-            Export.ExportPortalFile(0x120000ef, path);
-            Export.ExportPortalFile(0x120000f0, path);
-            Export.ExportPortalFile(0x120000f1, path);
-            Export.ExportPortalFile(0x120000f2, path);
-            Export.ExportPortalFile(0x120000f4, path);
-            Export.ExportPortalFile(0x120000f6, path);
-            Export.ExportPortalFile(0x120000f7, path);
-            Export.ExportPortalFile(0x120000f8, path);
-            Export.ExportPortalFile(0x120000f9, path);
-            Export.ExportPortalFile(0x120000fa, path);
-            Export.ExportPortalFile(0x120000fb, path);
-            Export.ExportPortalFile(0x120000fc, path);
-            Export.ExportPortalFile(0x120000fd, path);
-            Export.ExportPortalFile(0x120000fe, path);
-            Export.ExportPortalFile(0x120000ff, path);
-            Export.ExportPortalFile(0x12000101, path);
-            Export.ExportPortalFile(0x12000102, path);
-            Export.ExportPortalFile(0x12000103, path);
-            Export.ExportPortalFile(0x12000104, path);
-            Export.ExportPortalFile(0x12000105, path);
-            Export.ExportPortalFile(0x12000106, path);
-            Export.ExportPortalFile(0x12000107, path);
-            Export.ExportPortalFile(0x1200010a, path);
-            Export.ExportPortalFile(0x1200010b, path);
-            Export.ExportPortalFile(0x1200010c, path);
-            Export.ExportPortalFile(0x1200010d, path);
-            Export.ExportPortalFile(0x1200010e, path);
-            Export.ExportPortalFile(0x1200010f, path);
-            Export.ExportPortalFile(0x12000110, path);
-            Export.ExportPortalFile(0x12000111, path);
-            Export.ExportPortalFile(0x12000112, path);
-            Export.ExportPortalFile(0x12000191, path);
-            Export.ExportPortalFile(0x12000193, path);
-            Export.ExportPortalFile(0x120001f4, path);
-            Export.ExportPortalFile(0x1200023b, path);
-            Export.ExportPortalFile(0x1200023c, path);
-            Export.ExportPortalFile(0x1200023e, path);
-            Export.ExportPortalFile(0x1200023f, path);
-            Export.ExportPortalFile(0x12000240, path);
-            Export.ExportPortalFile(0x12000241, path);
-            Export.ExportPortalFile(0x12000242, path);
-            Export.ExportPortalFile(0x12000243, path);
-            Export.ExportPortalFile(0x12000244, path);
-            Export.ExportPortalFile(0x12000245, path);
-            Export.ExportPortalFile(0x12000246, path);
-            Export.ExportPortalFile(0x12000247, path);
-            Export.ExportPortalFile(0x12000248, path);
-            Export.ExportPortalFile(0x1200024a, path);
-            Export.ExportPortalFile(0x1200024c, path);
-            Export.ExportPortalFile(0x12000255, path);
-            Export.ExportPortalFile(0x1200029d, path);
-            Export.ExportPortalFile(0x1200029e, path);
-            Export.ExportPortalFile(0x1200029f, path);
-            Export.ExportPortalFile(0x120002a0, path);
-            Export.ExportPortalFile(0x120002a1, path);
-            Export.ExportPortalFile(0x120002a2, path);
-            Export.ExportPortalFile(0x120002a3, path);
-            Export.ExportPortalFile(0x120002a4, path);
-            Export.ExportPortalFile(0x120002a5, path);
-            Export.ExportPortalFile(0x120002a6, path);
-            Export.ExportPortalFile(0x120002a7, path);
-            Export.ExportPortalFile(0x120002a8, path);
-            Export.ExportPortalFile(0x120002a9, path);
-            Export.ExportPortalFile(0x120002aa, path);
-            Export.ExportPortalFile(0x120002ac, path);
-            Export.ExportPortalFile(0x120002b2, path);
-            Export.ExportPortalFile(0x120002b3, path);
+            //Export.ExportPortalFile(0x02000F06, path); // Tree for the Fir Tree from Weeping Weapons quest and trees from Noir Assassination Investigation quest
+
+            ////Scenes with old trees
+            //Export.ExportPortalFile(0x12000009, path);
+            //Export.ExportPortalFile(0x1200000c, path);
+            //Export.ExportPortalFile(0x12000073, path);
+            //Export.ExportPortalFile(0x12000074, path);
+            //Export.ExportPortalFile(0x12000075, path);
+            //Export.ExportPortalFile(0x12000076, path);
+            //Export.ExportPortalFile(0x12000077, path);
+            //Export.ExportPortalFile(0x12000078, path);
+            //Export.ExportPortalFile(0x12000079, path);
+            //Export.ExportPortalFile(0x1200007b, path);
+            //Export.ExportPortalFile(0x1200007c, path);
+            //Export.ExportPortalFile(0x12000080, path);
+            //Export.ExportPortalFile(0x12000084, path);
+            //Export.ExportPortalFile(0x1200008b, path);
+            //Export.ExportPortalFile(0x1200008c, path);
+            //Export.ExportPortalFile(0x1200008d, path);
+            //Export.ExportPortalFile(0x1200008e, path);
+            //Export.ExportPortalFile(0x12000099, path);
+            //Export.ExportPortalFile(0x120000a5, path);
+            //Export.ExportPortalFile(0x120000bf, path);
+            //Export.ExportPortalFile(0x120000c0, path);
+            //Export.ExportPortalFile(0x120000c1, path);
+            //Export.ExportPortalFile(0x120000c5, path);
+            //Export.ExportPortalFile(0x120000c6, path);
+            //Export.ExportPortalFile(0x120000c7, path);
+            //Export.ExportPortalFile(0x120000c8, path);
+            //Export.ExportPortalFile(0x120000c9, path);
+            //Export.ExportPortalFile(0x120000ca, path);
+            //Export.ExportPortalFile(0x120000cb, path);
+            //Export.ExportPortalFile(0x120000cc, path);
+            //Export.ExportPortalFile(0x120000cd, path);
+            //Export.ExportPortalFile(0x120000ce, path);
+            //Export.ExportPortalFile(0x120000cf, path);
+            //Export.ExportPortalFile(0x120000d0, path);
+            //Export.ExportPortalFile(0x120000d1, path);
+            //Export.ExportPortalFile(0x120000d2, path);
+            //Export.ExportPortalFile(0x120000d3, path);
+            //Export.ExportPortalFile(0x120000d5, path);
+            //Export.ExportPortalFile(0x120000e4, path);
+            //Export.ExportPortalFile(0x120000e5, path);
+            //Export.ExportPortalFile(0x120000e6, path);
+            //Export.ExportPortalFile(0x120000e7, path);
+            //Export.ExportPortalFile(0x120000e8, path);
+            //Export.ExportPortalFile(0x120000e9, path);
+            //Export.ExportPortalFile(0x120000ea, path);
+            //Export.ExportPortalFile(0x120000eb, path);
+            //Export.ExportPortalFile(0x120000ec, path);
+            //Export.ExportPortalFile(0x120000ed, path);
+            //Export.ExportPortalFile(0x120000ef, path);
+            //Export.ExportPortalFile(0x120000f0, path);
+            //Export.ExportPortalFile(0x120000f1, path);
+            //Export.ExportPortalFile(0x120000f2, path);
+            //Export.ExportPortalFile(0x120000f4, path);
+            //Export.ExportPortalFile(0x120000f6, path);
+            //Export.ExportPortalFile(0x120000f7, path);
+            //Export.ExportPortalFile(0x120000f8, path);
+            //Export.ExportPortalFile(0x120000f9, path);
+            //Export.ExportPortalFile(0x120000fa, path);
+            //Export.ExportPortalFile(0x120000fb, path);
+            //Export.ExportPortalFile(0x120000fc, path);
+            //Export.ExportPortalFile(0x120000fd, path);
+            //Export.ExportPortalFile(0x120000fe, path);
+            //Export.ExportPortalFile(0x120000ff, path);
+            //Export.ExportPortalFile(0x12000101, path);
+            //Export.ExportPortalFile(0x12000102, path);
+            //Export.ExportPortalFile(0x12000103, path);
+            //Export.ExportPortalFile(0x12000104, path);
+            //Export.ExportPortalFile(0x12000105, path);
+            //Export.ExportPortalFile(0x12000106, path);
+            //Export.ExportPortalFile(0x12000107, path);
+            //Export.ExportPortalFile(0x1200010a, path);
+            //Export.ExportPortalFile(0x1200010b, path);
+            //Export.ExportPortalFile(0x1200010c, path);
+            //Export.ExportPortalFile(0x1200010d, path);
+            //Export.ExportPortalFile(0x1200010e, path);
+            //Export.ExportPortalFile(0x1200010f, path);
+            //Export.ExportPortalFile(0x12000110, path);
+            //Export.ExportPortalFile(0x12000111, path);
+            //Export.ExportPortalFile(0x12000112, path);
+            //Export.ExportPortalFile(0x12000191, path);
+            //Export.ExportPortalFile(0x12000193, path);
+            //Export.ExportPortalFile(0x120001f4, path);
+            //Export.ExportPortalFile(0x1200023b, path);
+            //Export.ExportPortalFile(0x1200023c, path);
+            //Export.ExportPortalFile(0x1200023e, path);
+            //Export.ExportPortalFile(0x1200023f, path);
+            //Export.ExportPortalFile(0x12000240, path);
+            //Export.ExportPortalFile(0x12000241, path);
+            //Export.ExportPortalFile(0x12000242, path);
+            //Export.ExportPortalFile(0x12000243, path);
+            //Export.ExportPortalFile(0x12000244, path);
+            //Export.ExportPortalFile(0x12000245, path);
+            //Export.ExportPortalFile(0x12000246, path);
+            //Export.ExportPortalFile(0x12000247, path);
+            //Export.ExportPortalFile(0x12000248, path);
+            //Export.ExportPortalFile(0x1200024a, path);
+            //Export.ExportPortalFile(0x1200024c, path);
+            //Export.ExportPortalFile(0x12000255, path);
+            //Export.ExportPortalFile(0x1200029d, path);
+            //Export.ExportPortalFile(0x1200029e, path);
+            //Export.ExportPortalFile(0x1200029f, path);
+            //Export.ExportPortalFile(0x120002a0, path);
+            //Export.ExportPortalFile(0x120002a1, path);
+            //Export.ExportPortalFile(0x120002a2, path);
+            //Export.ExportPortalFile(0x120002a3, path);
+            //Export.ExportPortalFile(0x120002a4, path);
+            //Export.ExportPortalFile(0x120002a5, path);
+            //Export.ExportPortalFile(0x120002a6, path);
+            //Export.ExportPortalFile(0x120002a7, path);
+            //Export.ExportPortalFile(0x120002a8, path);
+            //Export.ExportPortalFile(0x120002a9, path);
+            //Export.ExportPortalFile(0x120002aa, path);
+            //Export.ExportPortalFile(0x120002ac, path);
+            //Export.ExportPortalFile(0x120002b2, path);
+            //Export.ExportPortalFile(0x120002b3, path);
 
             AddStatus("Export complete.");
             return;

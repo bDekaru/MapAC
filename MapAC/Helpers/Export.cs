@@ -451,9 +451,11 @@ namespace MapAC
                     uint gfxObjId = cloObjEffect.ModelId;
                     ExportPortalFile(gfxObjId, path);
 
-                    // Just export the "NewTexture"...the old one is being replaced, so we don't need it
                     for (var j = 0; j < cloObjEffect.CloTextureEffects.Count; j++)
+                    {
+                        ExportPortalFile(cloObjEffect.CloTextureEffects[j].OldTexture, path);
                         ExportPortalFile(cloObjEffect.CloTextureEffects[j].NewTexture, path);
+                    }
                 }
             }
 
@@ -669,6 +671,9 @@ namespace MapAC
 
             if (objectId == 0)
                 return 0;
+
+            if (!IsAddition(objectId) || !DatManager.CellDat.ExistsInEoR(objectId))
+                return objectId;
 
             var datFileType = DatFile.GetFileType(DatDatabaseType.Portal, objectId);
             switch (datFileType)

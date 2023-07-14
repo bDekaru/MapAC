@@ -79,10 +79,13 @@ namespace MapAC.DatLoader.FileTypes
             {
                 if (DatManager.DatVersion == DatVersionType.ACDM)
                 {
-                    if (o.Id <= 0x01FFFFFF)
-                        o.Id += (uint)ACDMOffset.GfxObj;
-                    else // Setup
-                        o.Id += (uint)ACDMOffset.Setup;
+                    if (Export.IsAddition(o.Id) && DatManager.CellDat.ExistsInEoR(o.Id))
+                    {
+                        if (o.Id <= 0x01FFFFFF)
+                            o.Id += (uint)ACDMOffset.GfxObj;
+                        else // Setup
+                            o.Id += (uint)ACDMOffset.Setup;
+                    }
                 }
                 o.Pack(writer);
             }
@@ -97,11 +100,13 @@ namespace MapAC.DatLoader.FileTypes
             {
                 if (DatManager.DatVersion == DatVersionType.ACDM)
                 {
-                    if (e.ModelId <= 0x01FFFFFF)
-                        e.ModelId += (uint)ACDMOffset.GfxObj;
-                    else // Setup
-                        e.ModelId += (uint)ACDMOffset.Setup;
-
+                    if (Export.IsAddition(e.ModelId) && DatManager.CellDat.ExistsInEoR(e.ModelId))
+                    {
+                        if (e.ModelId <= 0x01FFFFFF)
+                            e.ModelId += (uint)ACDMOffset.GfxObj;
+                        else // Setup
+                            e.ModelId += (uint)ACDMOffset.Setup;
+                    }
                 }
                 e.Pack(writer);
             }

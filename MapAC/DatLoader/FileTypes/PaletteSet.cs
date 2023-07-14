@@ -30,7 +30,7 @@ namespace MapAC.DatLoader.FileTypes
                 writer.Write(PaletteList.Count);
                 foreach (var p in PaletteList)
                 {
-                    if (Export.IsAddition(p))
+                    if (Export.IsAddition(p) && DatManager.CellDat.ExistsInEoR(p))
                         writer.Write(p + (uint)ACDMOffset.Palette);
                     else
                         writer.Write(p);

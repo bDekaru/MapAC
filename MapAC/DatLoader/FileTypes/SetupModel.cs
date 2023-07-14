@@ -110,7 +110,7 @@ namespace MapAC.DatLoader.FileTypes
             writer.Write(Parts.Count); //numParts
             for (int i = 0; i < Parts.Count; i++)
             {
-                if (Export.IsAddition(Parts[i]))
+                if (Export.IsAddition(Parts[i]) && DatManager.CellDat.ExistsInEoR(Parts[i]))
                     writer.Write(Parts[i] + (uint)ACDMOffset.GfxObj);
                 else
                     writer.Write(Parts[i]);

@@ -128,10 +128,14 @@ namespace MapAC.DatLoader
         /// </summary>
         public static void WriteOffset(this BinaryWriter writer, uint value, ACDMOffset offset)
         {
-            //if(DatManager.DatVersion == DatVersionType.ACDM && !DatManager.CellDat.IsSameAsEoRDatFile(value))
             if (DatManager.DatVersion == DatVersionType.ACDM && DatManager.ForcePackWithDifferentId == 0)
-                writer.Write(value + (uint)offset);
-            else if(DatManager.ForcePackWithDifferentId == 1)
+            {
+                if (DatManager.CellDat.ExistsInEoR(value))
+                    writer.Write(value + (uint)offset);
+                else
+                    writer.Write(value);
+            }
+            else if (DatManager.ForcePackWithDifferentId == 1)
                 writer.Write(value);
             else
                 writer.Write(DatManager.ForcePackWithDifferentId);

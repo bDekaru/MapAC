@@ -30,7 +30,7 @@ namespace MapAC.DatLoader.Entity.AnimationHooks
             base.Pack(writer);
             writer.Write(APChange.PartIndex);
             writer.Write(Unknown);
-            if (Export.IsAddition(APChange.PartID))
+            if (Export.IsAddition(APChange.PartID) && DatManager.CellDat.ExistsInEoR(APChange.PartID))
                 writer.WriteAsDataIDOfKnownType(APChange.PartID + (uint)ACDMOffset.GfxObj, 0x01000000);
             else
                 writer.WriteAsDataIDOfKnownType(APChange.PartID, 0x01000000);

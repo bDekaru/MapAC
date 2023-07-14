@@ -328,6 +328,11 @@ namespace MapAC.DatLoader
             return false;
         }
 
+        public bool ExistsInEoR(uint objectId)
+        {
+            return EoRPortalFiles.ContainsKey(objectId);
+        }
+
         public uint GetHash(uint objectId, uint forceDifferentId = 1)
         {
             FileType file = null;

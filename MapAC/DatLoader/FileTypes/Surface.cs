@@ -48,12 +48,17 @@ namespace MapAC.DatLoader.FileTypes
 
             if (Type.HasFlag(SurfaceType.Base1Image) || Type.HasFlag(SurfaceType.Base1ClipMap))
             {
-                if(Export.IsSurfaceTextureAddition(OrigTextureId, out var id))
-                    writer.Write(OrigTextureId + (uint)ACDMOffset.SurfaceTexture);
+                if (Export.IsSurfaceTextureAddition(OrigTextureId, out var id))
+                {
+                    if(DatManager.CellDat.ExistsInEoR(OrigTextureId))
+                        writer.Write(OrigTextureId + (uint)ACDMOffset.SurfaceTexture);
+                    else
+                        writer.Write(OrigTextureId);
+                }
                 else
-                    writer.Write(OrigTextureId);
+                    writer.Write(id);
 
-                if (Export.IsAddition(OrigPaletteId))
+                if (Export.IsAddition(OrigPaletteId) && DatManager.CellDat.ExistsInEoR(OrigPaletteId))
                     writer.Write(OrigPaletteId + (uint)ACDMOffset.Palette);
                 else
                     writer.Write(OrigPaletteId);
